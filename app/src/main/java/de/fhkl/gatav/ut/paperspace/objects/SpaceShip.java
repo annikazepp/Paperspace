@@ -410,7 +410,7 @@ public class SpaceShip extends SpaceObject {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(GL10 gl) {
         gl.glMatrixMode(GL10.GL_MODELVIEW);
 
         gl.glPushMatrix();

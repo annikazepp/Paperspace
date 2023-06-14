@@ -23,7 +23,7 @@ public abstract class SpaceObject {
         Matrix.setIdentityM(transformationMatrix, 0);
     }
 
-    public abstract void draw(Canvas canvas);
+    public abstract void draw(GL10 gl);
 
     public abstract void update(float fracSec);
 
