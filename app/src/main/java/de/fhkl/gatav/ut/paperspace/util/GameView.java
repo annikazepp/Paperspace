@@ -1,6 +1,8 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,17 +12,21 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import de.fhkl.gatav.ut.paperspace.R;
 import de.fhkl.gatav.ut.paperspace.objects.Comet;
 
 public class GameView extends SurfaceView implements Runnable {
 
     private Thread gameThread;
+    private Bitmap backgroundImage;
     private SurfaceHolder surfaceHolder;
     private volatile boolean playing;
     private boolean paused = true;
@@ -33,12 +39,61 @@ public class GameView extends SurfaceView implements Runnable {
     private Path shipPath;
     private List<Comet> comets;
 
-    public GameView(Context context) {
+    private ImageView spaceship;
+
+
+    public GameView(Context context, ImageView spaceship) {
         super(context);
+        this.spaceship = spaceship;
         surfaceHolder = getHolder();
         paint = new Paint();
         shipPath = new Path();
 
+        backgroundImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
+
+        spaceship.setOnTouchListener(new View.OnTouchListener(){
+            private float startX;
+            private float startY;
+            private float lastX;
+            private float lastY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                float x = event.getRawX();
+                float y = event.getRawY();
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Finger berührt das Bild
+                        startX = x;
+                        startY = y;
+                        lastX = x;
+                        lastY = y;
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        // Fingerbewegung
+                        float offsetX = x - lastX;
+                        float offsetY = y - lastY;
+
+                        float imageX = spaceship.getX() + offsetX;
+                        float imageY = spaceship.getY() + offsetY;
+
+                        spaceship.setX(imageX);
+                        spaceship.setY(imageY);
+
+                        lastX = x;
+                        lastY = y;
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Finger vom Bild entfernt
+                        break;
+                }
+
+                return true;
+            }
+        });
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         Point size = new Point();
@@ -57,6 +112,10 @@ public class GameView extends SurfaceView implements Runnable {
         comets = new ArrayList<>();
         initializeComets();
     }
+
+
+
+
 
     private void initializeComets() {
         Random random = new Random();
@@ -89,7 +148,10 @@ public class GameView extends SurfaceView implements Runnable {
     private void draw() {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
-            canvas.drawColor(Color.BLACK);
+            canvas.drawBitmap(backgroundImage,0,0,null);
+
+
+
 
             paint.setColor(Color.WHITE);
             canvas.drawPath(shipPath, paint);
@@ -131,5 +193,8 @@ public class GameView extends SurfaceView implements Runnable {
         }
         return true;
     }
+
+
+
 }
 
