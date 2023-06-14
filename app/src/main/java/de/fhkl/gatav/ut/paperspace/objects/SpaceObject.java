@@ -6,6 +6,11 @@ import android.graphics.Canvas;
 import android.opengl.Matrix;
 
 public abstract class SpaceObject {
+
+    private float speed = 10f;
+    public void setSpeed(float speed) {this.speed = speed;}
+
+
     // current transformation matrix
     public float[] transformationMatrix;
     // current velocity (x,y,z)
@@ -15,7 +20,6 @@ public abstract class SpaceObject {
 
     public float scale = 1.0f;
 
-    public float speed = 1.0f;	// alternative way to control speed, additional scaling factor
 
     public SpaceObject() {
         transformationMatrix = new float[16];
