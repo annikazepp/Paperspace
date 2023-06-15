@@ -51,6 +51,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         backgroundImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
 
+
         spaceship.setOnTouchListener(new View.OnTouchListener(){
             private float startX;
             private float startY;
@@ -94,6 +95,8 @@ public class GameView extends SurfaceView implements Runnable {
                 return true;
             }
         });
+
+
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         Point size = new Point();
