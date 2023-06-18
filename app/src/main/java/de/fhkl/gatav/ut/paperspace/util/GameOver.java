@@ -3,7 +3,6 @@ package de.fhkl.gatav.ut.paperspace.util;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +23,8 @@ public class GameOver extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GameOver.this, MainGameActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(GameOver.this, MainActivity.class);
+                startActivity(intent); //Zurück zum StartBildschirm
             }
 
         });
@@ -34,7 +33,7 @@ public class GameOver extends AppCompatActivity {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                finishAffinity(); //CLOSE APP
             }
 
         });

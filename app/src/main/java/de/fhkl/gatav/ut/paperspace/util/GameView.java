@@ -52,7 +52,7 @@ public class GameView extends SurfaceView implements Runnable {
         backgroundImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
 
 
-        spaceship.setOnTouchListener(new View.OnTouchListener(){
+        spaceship.setOnTouchListener(new OnTouchListener(){
             private float startX;
             private float startY;
             private float lastX;
