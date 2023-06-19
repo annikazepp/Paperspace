@@ -107,11 +107,8 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
             }
 
 
-
-
-
         }
-        }
+    }
 
         //TODO dauert zu lange bis GameOver angezeigt wird
     private void startGameOverActivity() {
