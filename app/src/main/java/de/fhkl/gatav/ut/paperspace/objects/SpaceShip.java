@@ -51,8 +51,9 @@ public class SpaceShip {
 
         this.random = new Random();
 
-        this.x = random.nextFloat() * screenWidth;
-        this.y = random.nextFloat() * screenHeight;
+        // Start in der Mitte des Bildschirms
+        this.x = screenWidth/2;
+        this.y = screenHeight/2;
         this.speed = 10; //TODO anderer Wert?
 
         spaceshipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship2);
