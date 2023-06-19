@@ -155,6 +155,28 @@ public class GameContent implements Drawable {
                 return;
             }
 
+            boolean positionOK = true;
+            float scale = (float)Math.random() * (asteroidMaxScale - asteroidMinScale) + asteroidMinScale;
+            // calculate source vertex position, <0.5 horizontal, else vertical
+            if(Math.random()<0.5){  // horizontal placing, top or bottom
+                float spawnY = (sourceCode&2)>0?boundaryBottom-spawnOffset : boundaryTop+spawnOffset;
+                float spawnX = (sourceCode&1)>0?boundaryRight*(float)Math.random() : boundaryLeft*(float)Math.random();
+            }
+            else{  // vertical placing, left or right
+                spawnZ = (sourceCode&2)>0?boundaryBottom*(float)Math.random() : boundaryTop*(float)Math.random();
+                spawnX = (sourceCode&1)>0?boundaryRight+spawnOffset : boundaryLeft-spawnOffset;
+            }
+
+            // check distance to player
+            float minPlayerDistance = 0.5f * scale + 0.5f * ship.scale + minSpawnDistanceToPlayer;
+            if(Math.abs(spawnX - spaceShip.getX()) < minPlayerDistance &&
+                    Math.abs(spawnZ - spaceShip.getY()) < minPlayerDistance)
+                positionOk = false;	// Distance to player too small -> invalid position
+
+            if (!positionOk)
+                continue; // Invalid spawn position -> try again next time
+
+
             for (int i = 0; i < MAX_ASTEROIDS - asteroids.size(); i++) {
                 Asteroid asteroid = new Asteroid(gameWidth, gameHeight, context);
                 asteroids.add(asteroid);

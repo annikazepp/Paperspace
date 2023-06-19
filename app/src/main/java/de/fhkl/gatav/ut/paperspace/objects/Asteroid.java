@@ -16,7 +16,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     //Asteroid in general
     private float x, y; // Position des Asteroiden
     private float speedX, speedY; // Geschwindigkeit des Asteroiden
-    private float width,heigth;
+    private float width,height;
 
     public float getWidth() {
         return asteroidBitmap.getWidth();
@@ -66,8 +66,8 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.random = new Random();
 
         // Zufällige Position innerhalb des Bildschirms
-        this.x = random.nextFloat() * screenWidth;
-        this.y = random.nextFloat() * screenHeight;
+        this.x = random.nextFloat() * (screenWidth - this.width);
+        this.y = random.nextFloat() * (screenHeight - this.height);
 
         // Zufällige Geschwindigkeit in X- und Y-Richtung
         this.speedX = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED; // Geschwindigkeit zwischen MIN und MAX
@@ -87,7 +87,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         float scale = (float) size / Math.max(asteroidBitmap.getWidth(),asteroidBitmap.getHeight());
         this.asteroidBitmap = Bitmap.createScaledBitmap(asteroidBitmap, (int)(asteroidBitmap.getWidth() * scale), (int) (asteroidBitmap.getHeight() * scale),true);
         this.width = asteroidBitmap.getWidth();
-        this.heigth = asteroidBitmap.getHeight();
+        this.height = asteroidBitmap.getHeight();
 
         this.damage = 1; // TODO zufällig? bzw je nach Größe?
 
@@ -218,7 +218,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     }
 
     public RectF getBounds() {
-        return new RectF(x,y,x+width,y+heigth);
+        return new RectF(x,y,x+width,y+height);
     }
 
     public double getDamage() {
