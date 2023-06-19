@@ -3,6 +3,8 @@ package de.fhkl.gatav.ut.paperspace.util;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -59,9 +61,12 @@ public class GameContent implements Drawable {
         asteroids = new ArrayList<>();
         spaceShip = new SpaceShip(gameWidth,gameHeight,context);
         //shots = new ArrayList<>();
+
+
     }
 
     // TODO Steuerung SpaceShip
+
 
 
     //Spielinhalt Zeichnen
@@ -88,7 +93,6 @@ public class GameContent implements Drawable {
     @Override
     public void update() {
 
-        // Asteroid
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
 
         // move asteroids
@@ -101,8 +105,6 @@ public class GameContent implements Drawable {
             }
         }
 
-
-
         // Überprüfe die Kollision mit anderen Asteroiden
         for(int i= 0; i<asteroids.size(); i++) {
             Asteroid asteroid = asteroids.get(i);
@@ -114,27 +116,17 @@ public class GameContent implements Drawable {
                     }
                 }
             }
-            //TODO KOLLISION MIT ASTEROID UND SPACESHIP
-            boolean isCollision = checkCollision(spaceShip, asteroid);
-            if(isCollision && !spaceShip.isCollisionDetected()){
-                if(!spaceShip.isCollisionDetected()){
-                    spaceShip.damage(1);
-                    spaceShip.setCollisionDetected(true);
-                }
-                else if(!isCollision){
-                    spaceShip.setCollisionDetected(false);
-                }
 
-                asteroidToRemove.add(asteroid);
-
-                //spaceshipCollied = true;
+            //Überprüfe KOLLISION MIT ASTEROID UND SPACESHIP
+            if(checkCollision(spaceShip, asteroid)){
+                    spaceShip.damage(asteroid.getDamage());
+                    asteroidToRemove.add(asteroid);
+                    //TODO Explosion? "Loch im Blatt"?
             }
         }
+
         // getroffene Asteroiden entfernen
         asteroids.removeAll(asteroidToRemove);
-
-
-
 
 
         //
@@ -153,31 +145,6 @@ public class GameContent implements Drawable {
             return false; // Keine Kollision
         }
     }
-        /**
-        RectF spaceshipRect = spaceShip.getBounds();
-        //boolean collisionDetected = false; //damit nur ein Schaden abgezogen wird
-
-        // TODO Überprüfe Kollision mit SpaceShip
-
-
-            RectF asteroidRect = asteroid.getBounds();
-
-            if(RectF.intersects(spaceshipRect,asteroidRect)){
-                //collisionDetected = true;
-                //spaceShip.damage(1);
-                return true;
-
-            }
-         */
-
-/**
-        if(collisionDetected){
-            spaceshipCollied = true;
-        }else{
-            spaceshipCollied = false;
-        }
-        */
-        //return collisionDetected;
 
 
 

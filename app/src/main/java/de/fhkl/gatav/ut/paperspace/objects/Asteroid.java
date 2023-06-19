@@ -30,6 +30,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     private float scale = 1.0f; //TODO
 
     private int velocity;
+    private int damage;
 
     // drawables
     Drawable asteroidDrawable;
@@ -88,6 +89,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.width = asteroidBitmap.getWidth();
         this.heigth = asteroidBitmap.getHeight();
 
+        this.damage = 1; // TODO zufällig? bzw je nach Größe?
 
     }
 
@@ -217,6 +219,10 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
     public RectF getBounds() {
         return new RectF(x,y,x+width,y+heigth);
+    }
+
+    public double getDamage() {
+        return damage;
     }
 }
 

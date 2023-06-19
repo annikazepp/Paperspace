@@ -113,6 +113,7 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
         }
         }
 
+        //TODO dauert zu lange bis GameOver angezeigt wird
     private void startGameOverActivity() {
         Intent gameOverIntent = new Intent(getContext(), GameOver.class);
         getContext().startActivity(gameOverIntent);
