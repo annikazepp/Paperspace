@@ -50,32 +50,35 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     // Constants
     public static final int MIN_SIZE = 150; //TODO ANPASSEN?
     public static final int MAX_SIZE = 300;
-
     public static final int MIN_SPEED = 1;
     public static final int MAX_SPEED = 10;
 
 
-    //Construtor
     private Random random;
     private int screenWidth, screenHeight; // Bildschirmgröße
 
+    //Construtor
     public Asteroid(int screenWidth, int screenHeight, Context context) {
+
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
         this.random = new Random();
 
-        // Zufällige Position innerhalb des Bildschirms
+        // Zufällige Position innerhalb des Bildschirms //TODO POSITION Außerhalb schon starten
         this.x = random.nextFloat() * (screenWidth - this.width);
         this.y = random.nextFloat() * (screenHeight - this.height);
+
+        // Position außerhalb
+        //this.x = x;
+        //this.y = y;
 
         // Zufällige Geschwindigkeit in X- und Y-Richtung
         this.speedX = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED; // Geschwindigkeit zwischen MIN und MAX
         this.speedY = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED;
 
 
-
-        // Zufälliges Bild TODO ?
+        // TODO Zufälliges Bild ?
         asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_1);
         //this.imageResource = asteroidImages[random.nextInt(asteroidImages.length)];
         //this.asteroidDrawable = context.getResources().getDrawable(imageResource);
@@ -86,6 +89,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         // Bitmaps Skalieren
         float scale = (float) size / Math.max(asteroidBitmap.getWidth(),asteroidBitmap.getHeight());
         this.asteroidBitmap = Bitmap.createScaledBitmap(asteroidBitmap, (int)(asteroidBitmap.getWidth() * scale), (int) (asteroidBitmap.getHeight() * scale),true);
+
         this.width = asteroidBitmap.getWidth();
         this.height = asteroidBitmap.getHeight();
 
@@ -111,9 +115,23 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         return y;
     }
 
+    public int getAsteroidWidth(){
+        return -1;
+        //TODO überhaupt nötig?
+    }
+    public RectF getBounds() {
+        return new RectF(x,y,x+width,y+height);
+    }
 
+    public double getDamage() {
+        return damage;
+    }
 
-
+    public boolean isShot() {
+        //TODO was passiert wenn Asteroid getroffen ist
+        // Hier überhaupt richtige Stelle?
+        return false;
+    }
 
 
 
@@ -125,13 +143,6 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
 
 
-
-
-
-    public int getAsteroidWidth(){
-        return -1;
-        //TODO
-    }
 
     //true wenn sie sich berühren
     public boolean collidesWith(Asteroid otherAsteroid) {
@@ -149,14 +160,6 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
          */
 
     }
-    public boolean collidesWith(SpaceShip spaceShip) {
-        float distanceX = spaceShip.getX() - this.x;
-        float distanceY = spaceShip.getY() - this.y;
-        float distance = (float) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-        return distance <= (this.size+ spaceShip.getSize())/2;
-
-    }
-
 
 
     //TODO könnte noch Verbessert werden
@@ -194,35 +197,39 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         y += speedY;
 
         // Überprüfe die Kollision mit den Bildschirmrändern
+
         if (x < 0 || x > screenWidth) {
             speedX = -speedX; // Ändere die Richtung, wenn der Asteroid den Rand erreicht
         }
-        
 
         if (y < 0 || y > screenHeight) {
             speedY = -speedY;
         }
 
+
+
     }
 
-    public boolean isShot() {
-        //TODO
-        return false;
-    }
+
     private int generateRandomSize(int minSize, int maxSize) {
         Random random = new Random();
         return random.nextInt(maxSize - minSize + 1) + minSize;
     }
 
-    public void update() { //TODO
+    public void update() { //TODO update Asteroid?
     }
 
-    public RectF getBounds() {
-        return new RectF(x,y,x+width,y+height);
+    public boolean outOfView() {
+        if (x < 0 || x > screenWidth || y < 0 || y > screenHeight){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public double getDamage() {
-        return damage;
+    public void setPosition(float spawnX, float spawnY) {
+        this.x = spawnX;
+        this.y = spawnY;
     }
 }
 
