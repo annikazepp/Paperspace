@@ -79,8 +79,9 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
 
         // Zufälliges Bild Asteroid
-        int index = random.nextInt(asteroidImages.length);
-        asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), asteroidImages[index]);
+       // int index = random.nextInt(asteroidImages.length);
+       // asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), asteroidImages[index]);
+        asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_1);
 
 
         // Zufällige Größe Asteroiden-Bitmaps
@@ -146,12 +147,21 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
     //true wenn sie sich berühren
     public boolean collidesWith(Asteroid otherAsteroid) {
+        double distanceX = otherAsteroid.getX() - this.getX();
+        double distanceY = otherAsteroid.getY() - this.getY();
+        double squaredDistance = distanceX * distanceX + distanceY * distanceY;
+        double sumOfRadiiSquared = Math.pow((this.getWidthAsteroid() + otherAsteroid.getWidthAsteroid()) / 2, 2);
+
+        return squaredDistance <= sumOfRadiiSquared;
+        /**
         RectF aRect = this.getBounds();
         RectF oARect = otherAsteroid.getBounds();
         if(RectF.intersects(aRect,oARect)){
             return true;
         }
         return false;
+         */
+
         /**
         float distanceX = otherAsteroid.x - this.x;
         float distanceY = otherAsteroid.y - this.y;
@@ -159,7 +169,18 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         return distance <= (this.size + otherAsteroid.size)/2;
          */
 
+        /**
+        double distance = Math.sqrt(Math.pow(this.getX() - otherAsteroid.getX(), 2) + Math.pow(this.getY() - otherAsteroid.getY(), 2));
+        // Überprüfe, ob die Distanz kleiner ist als die kombinierten Radien von Raumschiff und Asteroid
+        if (distance < this.getWidthAsteroid()/2 + otherAsteroid.getWidthAsteroid()/2) {
+            return true; // Kollision erfolgt
+        } else {
+            return false; // Keine Kollision
+        }
+         */
     }
+
+
 
 
     //TODO könnte noch Verbessert werden
