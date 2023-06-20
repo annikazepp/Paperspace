@@ -7,10 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import de.fhkl.gatav.ut.paperspace.R;
 
@@ -147,11 +145,10 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
     /**
      * startet, wenn das Spielvorbei ist eine neue Acitivity GameOver
      */
-
-    //TODO dauert zu lange bis GameOver angezeigt wird
+    //TODO dauert manchmal zulange
     private void startGameOverActivity() {
         Intent gameOverIntent = new Intent(getContext(), GameOver.class);
-        getContext().startActivity(gameOverIntent);//TODO?
+        getContext().startActivity(gameOverIntent);
         ((Activity) getContext()).finish();
 
     }
@@ -175,7 +172,6 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }
             }
-
             if(gameContent.isGameOver()) {
                 startGameOverActivity();
             }

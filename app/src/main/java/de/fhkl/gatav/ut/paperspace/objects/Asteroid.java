@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.widget.Toast;
 
 import java.util.Random;
 
@@ -23,7 +22,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     private float widthAsteroid, heightAsteroid; // Breite und Höhe Asteroid
 
     private float size; //TODO?
-    private float scale = 1.0f; //Skalierungsfaktor für Bitmap TODO?
+    private float scale = 1.0f; //Skalierungsfaktor für Bitmap
 
     // Bitmap
     private Bitmap asteroidBitmap;
@@ -37,7 +36,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
     private static final int DAMAGE = 1;
 
-    private static final int[] ASTEROID_IMAGES ={ //TODO verschiedene Asteroiden
+    private static final int[] ASTEROID_IMAGES ={ //TODO verschiedene Asteroiden Bilder anpassen?
             R.drawable.asteroid_1,
             R.drawable.asteroid_2,
             R.drawable.asteroid_3,
@@ -103,18 +102,8 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         return heightAsteroid;
     }
 
-    public RectF getBounds() { //TODO?
-        return new RectF(x,y,x + widthAsteroid,y + heightAsteroid);
-    }
-
     public double getDamage() {
         return DAMAGE;
-    }
-
-    public boolean isShot() {
-        //TODO was passiert wenn Asteroid getroffen ist
-        // Hier überhaupt richtige Stelle?
-        return false;
     }
 
 

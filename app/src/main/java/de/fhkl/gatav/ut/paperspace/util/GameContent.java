@@ -3,9 +3,6 @@ package de.fhkl.gatav.ut.paperspace.util;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,30 +12,20 @@ import de.fhkl.gatav.ut.paperspace.objects.Drawable;
 import de.fhkl.gatav.ut.paperspace.objects.Shot;
 import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
 
-
+/**
+ * Enthält Spielinhalt und Logik
+ */
 public class GameContent implements Drawable {
 
     private int gameWidth; // in Konstruktor initalisiert
     private int gameHeight;
-    Random random = new Random();
 
-    public int getGameWidth() {
-        return gameWidth;
-    }
-
-    public int getGameHeight() {
-        return gameHeight;
-    }
-
-
-
-    // Objects TODO
+    // Objects
     private SpaceShip spaceShip;
-
     private ArrayList<Shot> shots;
-
     private ArrayList<Asteroid> asteroids;
 
+    Random random = new Random();
     private Context context;
 
     // Constants
@@ -49,14 +36,13 @@ public class GameContent implements Drawable {
     private final float minSpawnDistanceToPlayer = 1.5f; //TODO WERT?
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
 
-    public int getHealthSpaceShip(){
-        return spaceShip.getHealth();
-    }
 
-    private boolean spaceshipCollied = false;
-    private boolean isShot =false;
+    private boolean isShot = false; //TODO?
 
-    //Constructor
+    /**
+     *Initialisiert Space Objekte
+     * @param context
+     */
     public GameContent(Context context) {
         this.context = context;
 
@@ -72,16 +58,30 @@ public class GameContent implements Drawable {
 
     }
 
-    // TODO Steuerung SpaceShip
+    //Getter-Setter
+    public int getHealthSpaceShip(){
+        return spaceShip.getHealth();
+    }
+    public int getGameWidth() {
+        return gameWidth;
+    }
+
+    public int getGameHeight() {
+        return gameHeight;
+    }
+
+    //TODO Steuerung SpaceShip
 
 
-
-    //Spielinhalt Zeichnen
+    /**
+     * Zeichnet Spielinhalte auf Leinwand
+     * @param c Zeichenfläche, auf die zu zeichnen ist
+     */
     public void draw(Canvas c) { //TODO
         // Spaceship zeichnen
         spaceShip.draw(c);
 
-        // Draw Shot. Dem Shot muss ein Bewegungsvektor mit festgelegter Länge (speed) übergeben werden
+        //TODO Draw Shot. Dem Shot muss ein Bewegungsvektor mit festgelegter Länge (speed) übergeben werden
         /**
         Shot shot = new Shot(context, spaceShip.getWidth()/2, spaceShip.getY());
         shots.add(shot);
@@ -96,10 +96,15 @@ public class GameContent implements Drawable {
 
     }
 
+    /**
+     * aktualisiert Spielinhalt
+     * wird regelmäßig aufgerufen, um Bewegungen, Kollisionen usw. zu verarbeiten
+     */
     @Override
     public void update() {
 
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
+
         for(Shot shot:shots){
             //move shots
             shot.move();
@@ -113,19 +118,7 @@ public class GameContent implements Drawable {
             if(asteroid.outOfView()){
                 asteroidToRemove.add(asteroid);
             }
-
-            //TODO abgeschossene
-            if(asteroid.isShot()) {
-                asteroidToRemove.add(asteroid);
-            }
         }
-
-        /**
-        // getroffene Asteroiden entfernen
-        asteroids.removeAll(asteroidToRemove);
-        // Liste leeren
-        asteroidToRemove.clear();
-*/
 
         // Überprüfe die Kollision Asteroid - Asteroid
         for(int i = 0; i < asteroids.size(); i++) {
@@ -144,7 +137,7 @@ public class GameContent implements Drawable {
 
         // Kollision Asteroid - Spaceship
         for(Asteroid asteroid : asteroids){
-            if(checkCollision(spaceShip, asteroid)){
+            if(checkSpacshipCollision(spaceShip, asteroid)){
                 spaceShip.damage(asteroid.getDamage());
                 asteroidToRemove.add(asteroid);
                 //TODO Explosion? "Loch im Blatt"?
@@ -182,134 +175,129 @@ public class GameContent implements Drawable {
         }
     }
 
-    public boolean checkCollision(SpaceShip spaceship, Asteroid asteroid){
+    /**
+     * Überprüft, ob es eine Kollision zwischen Asteroid und Spaceship gibt
+     * @param spaceship Player
+     * @param asteroid
+     * @return Kollision true, wenn distance ist kleiner als kombinierter Radius ist
+     */
+    public boolean checkSpacshipCollision(SpaceShip spaceship, Asteroid asteroid){
         double distance = Math.sqrt(Math.pow(spaceship.getX() - asteroid.getX(), 2) + Math.pow(spaceship.getY() - asteroid.getY(), 2));
         // Überprüfe, ob die Distanz kleiner ist als die kombinierten Radien von Raumschiff und Asteroid
-        if (distance < spaceship.getWidth()/2 + asteroid.getWidthAsteroid()/2) {
-            return true; // Kollision erfolgt
-        } else {
-            return false; // Keine Kollision
-        }
+        return (distance < spaceship.getWidth()/2 + asteroid.getWidthAsteroid()/2);
     }
 
+    /**
+     * Überprüft, ob Shot Asteroiden getroffen hat
+     * @param shot Schuss Spaceship
+     * @param asteroid
+     * @return Treffer true, wenn distance ist kleiner als kombinierter Radius ist
+     */
     public boolean checkShotCollision(Shot shot, Asteroid asteroid){
         double distance = Math.sqrt(Math.pow(shot.getX() - asteroid.getX(), 2) + Math.pow(shot.getY() - asteroid.getY(), 2));
         //Überprüfe, ob der Shot den Radius des Asteroids trifft
-        if (distance < shot.getWidth()/2 + asteroid.getWidthAsteroid()/2) {
-            return true; // Kollision erfolgt
-        } else {
-            return false; // Keine Kollision
-        }
+        return (distance < shot.getWidth()/2 + asteroid.getWidthAsteroid()/2);
     }
 
 
-    // Asteroiden hinzufügen
-    // Asteroiden hinzufügen
+    /**
+     * fügt Asteroiden zum Spiel hinzu, wenn MAX_ASTEROIDS größer ist, als aktuelle Anzahl
+     */
     private void addAsteroids() {
-
-
         if (MAX_ASTEROIDS > asteroids.size()) {
-            /**
-             if (Math.random() > ASTEROIDS_FREQUENCY) {
+            // Wahrscheinlichkeit, dass Asteroiden erzeugt werden //TODO SINNVOLL?
+            if (Math.random() > ASTEROIDS_FREQUENCY) {
              return;
              }
 
-             for (int i = 0; i < MAX_ASTEROIDS - asteroids.size(); i++) {
-             Asteroid asteroid = new Asteroid(gameWidth, gameHeight, context);
-             asteroids.add(asteroid);
-             }
-             */
-        }
+            for (int i = 0; i < MAX_ASTEROIDS - asteroids.size(); i++) {
+                float scale = (float) Math.random() * (asteroidMaxScale - asteroidMinScale) + asteroidMinScale;
+                float spawnOffset = scale * 0.5f;
+
+                // Calculate spawn position
+                float spawnX, spawnY;
+
+                // Determine the side of the screen where the asteroid will spawn
+                int side = (int) (Math.random() * 4); // 0: top, 1: right, 2: bottom, 3: left
 
 
-        for (int i = 0; i < MAX_ASTEROIDS - asteroids.size(); i++) {
-
-            float scale = (float) Math.random() * (asteroidMaxScale - asteroidMinScale) + asteroidMinScale;
-            float spawnOffset = scale * 0.5f;
-
-
-            // Calculate spawn position
-            float spawnX, spawnY;
-
-            // Determine the side of the screen where the asteroid will spawn
-            int side = (int) (Math.random() * 4); // 0: top, 1: right, 2: bottom, 3: left
-
-
-            // Spawn on the top side
-            if (side == 0) {
-                spawnX = (float) (Math.random() * getGameWidth());
-                spawnY = -spawnOffset;
-            }
-            // Spawn on the right side
-            else if (side == 1) {
-                spawnX = getGameWidth() + spawnOffset;
-                spawnY = (float) (Math.random() * getGameHeight());
-            }
-            // Spawn on the bottom side
-            else if (side == 2) {
-                spawnX = (float) (Math.random() * getGameWidth());
-                spawnY = getGameHeight() + spawnOffset;
-            }
-            // Spawn on the left side
-            else {
-                spawnX = -spawnOffset;
-                spawnY = (float) (Math.random() * getGameHeight());
-            }
-
-
-
-
-            boolean positionOk = true;
-/**
- // check distance to player
- float minPlayerDistance = 0.5f * scale + 0.5f * spaceShip.getWidth() + minSpawnDistanceToPlayer;
- if (Math.abs(spawnX - spaceShip.getX()) < minPlayerDistance &&
- Math.abs(spawnY - spaceShip.getY()) < minPlayerDistance)
- positionOk = false;    // Distance to player too small -> invalid position
- */
-            // Check distance to other asteroids
-            for (Asteroid asteroid : asteroids) {
-
-                float minDistance = 0.5f * scale + 0.5f * asteroid.getWidthAsteroid() + minSpawnDistanceBetweenAsteroids;
-                if (Math.abs(spawnX - asteroid.getX()) < minDistance &&
-                        Math.abs(spawnY - asteroid.getY()) < minDistance) {
-                    positionOk = false;    // Distance too small -> invalid position
-                    break;
+                // Spawn on the top side
+                if (side == 0) {
+                    spawnX = (float) (Math.random() * getGameWidth());
+                    spawnY = -spawnOffset;
                 }
+                // Spawn on the right side
+                else if (side == 1) {
+                    spawnX = getGameWidth() + spawnOffset;
+                    spawnY = (float) (Math.random() * getGameHeight());
+                }
+                // Spawn on the bottom side
+                else if (side == 2) {
+                    spawnX = (float) (Math.random() * getGameWidth());
+                    spawnY = getGameHeight() + spawnOffset;
+                }
+                // Spawn on the left side
+                else {
+                    spawnX = -spawnOffset;
+                    spawnY = (float) (Math.random() * getGameHeight());
+                }
+
+
+
+
+                boolean positionOk = true;
+
+                //TODO wenn check Distanc wenn player sich bewegen kann
+                /*
+                 // check distance to player
+                 float minPlayerDistance = 0.5f * scale + 0.5f * spaceShip.getWidth() + minSpawnDistanceToPlayer;
+                 if (Math.abs(spawnX - spaceShip.getX()) < minPlayerDistance &&
+                 Math.abs(spawnY - spaceShip.getY()) < minPlayerDistance)
+                 positionOk = false;    // Distance to player too small -> invalid position
+                 */
+
+                // Check distance to other asteroids
+                for (Asteroid asteroid : asteroids) {
+                    float minDistance = 0.5f * scale + 0.5f * asteroid.getWidthAsteroid() + minSpawnDistanceBetweenAsteroids;
+                    if (Math.abs(spawnX - asteroid.getX()) < minDistance &&
+                            Math.abs(spawnY - asteroid.getY()) < minDistance) {
+                        positionOk = false;    // Distance too small -> invalid position
+                        break;
+                    }
+                }
+
+
+
+                if (!positionOk) {
+                    continue; // Invalid spawn position -> try again next time
+                }
+
+
+
+                // Calculate destination position
+                float destX, destY;
+
+                // Spawn on the top or bottom side
+                if (side == 0 || side == 2) {
+                    destX = (float) (Math.random() * getGameWidth()); //TODO anpassen?
+                    destY = -spawnOffset;
+                }
+                // Spawn on the right or left side
+                else{
+                    destX = getGameWidth() + spawnOffset;
+                    destY = (float) (Math.random() * getGameHeight());
+                }
+
+                destY-= spawnY;
+                destX-= spawnX;
+
+
+                Asteroid asteroid = new Asteroid(gameHeight, gameWidth, context);
+                asteroid.setPosition(spawnX, spawnY);
+                asteroid.setDestination(destX, destY);
+                asteroids.add(asteroid);
             }
-
-            if (!positionOk) {
-               continue; // Invalid spawn position -> try again next time
-             }
-
-
-
-             // Calculate destination position
-             float destX, destY;
-
-            // Spawn on the top or bottom side
-            if (side == 0 || side == 2) {
-                destX = (float) (Math.random() * getGameWidth()); //TODO anpassen?
-                destY = -spawnOffset;
-            }
-            // Spawn on the right or left side
-            else{
-                destX = getGameWidth() + spawnOffset;
-                destY = (float) (Math.random() * getGameHeight());
-            }
-
-            destY-= spawnY;
-            destX-= spawnX;
-
-
-            Asteroid asteroid = new Asteroid(gameHeight, gameWidth, context);
-            asteroid.setPosition(spawnX, spawnY);
-            asteroid.setDestination(destX, destY);
-            asteroids.add(asteroid);
         }
-
-
-
     }
 
 

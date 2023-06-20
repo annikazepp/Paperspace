@@ -1,7 +1,6 @@
 package de.fhkl.gatav.ut.paperspace.objects;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,24 +9,18 @@ import android.graphics.RectF;
 import java.util.Random;
 
 import de.fhkl.gatav.ut.paperspace.R;
-import de.fhkl.gatav.ut.paperspace.util.GameOver;
 
 public class SpaceShip {
     //TODO eventuell abstrakte Klasse erzeugen
 
-    // spaceShip in general
-    private float x,y; //position spaceShip
-    private float speed;
-    private int size = 3; //TODO Size festlegen/berechnen
-    private float width,heigth;
+    /**
+     * Eigenschaften der Klasse SpaceShip
+     */
+    private float x,y; // Koordinaten des Asteroiden
+    private float speed; //Geschwindigkeit SpaceShip
+    private float width, height;  //Breite und Höhe Spaceship
 
-    public float getWidth() {
-        return spaceshipBitmap.getWidth();
-    }
-
-    public float getHeigth() {
-        return spaceshipBitmap.getHeight();
-    }
+    //Bitmap
     private Bitmap spaceshipBitmap;
 
 
@@ -36,22 +29,18 @@ public class SpaceShip {
 
     // Condition
     private int health = FULL_HEALTH;
-    boolean isAlive = true;
-    boolean collisionDetected = false;
 
-    public void setCollisionDetected(boolean collisionDetected) {
-        this.collisionDetected = collisionDetected;
-    }
 
-    private Random random;
+
+
+    private Random random = new Random();
     private int screenWidth, screenHeight; // Bildschirmgröße
 
     // Constructor
     public SpaceShip(int screenWidth, int screenHeight, Context context){
+
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-
-        this.random = new Random();
 
         // Start in der Mitte des Bildschirms
         this.x = screenWidth/2;
@@ -60,11 +49,8 @@ public class SpaceShip {
 
         spaceshipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship2);
 
-        this.heigth = getHeigth();
+        this.height = getHeight();
         this.width = getWidth();
-
-
-
     }
 
     //Getter-Setter
@@ -74,45 +60,42 @@ public class SpaceShip {
     public float getY() {
         return y;
     }
-    public float getSize() {
-        return size;
-    }
+
     public int getHealth() {
         return health;
     }
 
-
-    public void setHealth(int health) {
-        this.health = health;
+    public float getWidth() {
+        return spaceshipBitmap.getWidth();
+    }
+    public float getHeight() {
+        return spaceshipBitmap.getHeight();
     }
 
-    // Methoden
+    /**
+     * Zeichnet Raumschiff auf
+     * @param canvas Leinwand
+     */
     public void draw(Canvas canvas){
-        // An der aktuellen Position des Spaceship
         canvas.drawBitmap(spaceshipBitmap, x, y, null);
     }
 
-    //TODO UPDATE SPACESHIP
+    //TODO UPDATE SPACESHIP ?
     public void update(){
 
     }
 
-
-
-
+    /**
+     * Schaden durch treffer eines Asteroiden wird von Leben abgezogen
+     * @param dmg Schaden des Asteroiden
+     */
     public void damage(double dmg){
         health -=dmg;
     }
 
     public void resetHealth(){
         health = FULL_HEALTH;
-    }
+    } //TODO gibt es möglichkeit?
 
-    public RectF getBounds() {
-        return new RectF(x,y,x+width,y+heigth);
-    }
 
-    public boolean isCollisionDetected() {
-        return collisionDetected;
-    }
 }
