@@ -15,7 +15,9 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
     //Asteroid in general
     private float x, y; // Position des Asteroiden
-    private float speedX, speedY; // Geschwindigkeit des Asteroiden
+    private float destinationX, destinationY;
+    private float speedX, speedY; // Geschwindigkeit des Asteroiden //TODO WEG?
+    private float speed;
     private float widthAsteroid, heightAsteroid;
 
     public float getWidthAsteroid() {
@@ -30,7 +32,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     private float scale = 1.0f; //TODO
 
     private int velocity;
-    private int damage;
+    private int damage = 1;
 
     // drawables
     Drawable asteroidDrawable;
@@ -43,7 +45,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     public static final int MIN_SIZE = 150; //TODO ANPASSEN?
     public static final int MAX_SIZE = 300;
     public static final int MIN_SPEED = 1;
-    public static final int MAX_SPEED = 10;
+    public static final int MAX_SPEED = 5;
     private static final int[] ASTEROID_IMAGES ={ //TODO verschiedene Asteroiden
             R.drawable.asteroid_1,
             R.drawable.asteroid_2,
@@ -55,7 +57,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     };
 
 
-    private Random random;
+    private Random random = new Random();
     private float screenWidth, screenHeight; // Bildschirmgröße
 
     //Construtor
@@ -64,7 +66,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
-        this.random = new Random();
+
 
         // Zufällige Position innerhalb des Bildschirms //TODO POSITION Außerhalb schon starten
         this.x = random.nextFloat() * (screenWidth - this.widthAsteroid);
@@ -78,12 +80,11 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.speedX = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED; // Geschwindigkeit zwischen MIN und MAX
         this.speedY = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED;
 
+        this.speed = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED;
 
+        // Zufälliges Bild Asteroid
         int imageIndex = random.nextInt(ASTEROID_IMAGES.length);
-        // TODO Zufälliges Bild ?
         asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), ASTEROID_IMAGES[imageIndex]);
-        //this.imageResource = asteroidImages[random.nextInt(asteroidImages.length)];
-        //this.asteroidDrawable = context.getResources().getDrawable(imageResource);
 
         // Zufällige Größe Asteroiden-Bitmaps
         this.size = generateRandomSize();
@@ -94,9 +95,6 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
         this.widthAsteroid = asteroidBitmap.getWidth();
         this.heightAsteroid = asteroidBitmap.getHeight();
-
-        this.damage = 1; // TODO zufällig? bzw je nach Größe?
-
     }
 
     // Getter-Setter
@@ -236,7 +234,18 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         return random.nextInt(MAX_SIZE - MIN_SIZE + 1) + MIN_SIZE;
     }
 
-    public void update() { //TODO update Asteroid?
+    public void update() {
+        // Berechnung der Richtung zum Ziel
+        double dx = destinationX - x;
+        double dy = destinationY - y;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        double directionX = dx / distance;
+        double directionY = dy / distance;
+
+        // Bewegung des Asteroiden in Richtung des Ziels
+        x += directionX * speed;
+        y += directionY * speed;
+        //TODO update Asteroid?
     }
 
     /**
@@ -250,6 +259,11 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     public void setPosition(float spawnX, float spawnY) {
         this.x = spawnX;
         this.y = spawnY;
+    }
+
+    public void setDestination(float destX, float destY) {
+        this.destinationX = destX;
+        this.destinationY = destY;
     }
 }
 

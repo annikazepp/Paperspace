@@ -259,16 +259,7 @@ public class GameContent implements Drawable {
             }
 
 
-            // Randomly determine if the obstacle will spawn on the top or bottom boundary
-            //boolean spawnOnTop = Math.random() < 0.5;
 
-            //if (spawnOnTop) {
-            // spawnY = 50;
-            // spawnX = (float) ((sourceDirection == -1) ? getGameWidth() * Math.random() : 1.0f * Math.random());
-            //} else {
-            //spawnY = getGameHeight();
-            //spawnX = (float) ((sourceDirection == -1) ? getGameWidth() * Math.random() : 1.0f * Math.random());
-            //}
 
             boolean positionOk = true;
 /**
@@ -289,27 +280,33 @@ public class GameContent implements Drawable {
                 }
             }
 
-            //if (!positionOk) {
-            //    continue; // Invalid spawn position -> try again next time
-            // }
+            if (!positionOk) {
+               continue; // Invalid spawn position -> try again next time
+             }
 
 
-            /**
+
              // Calculate destination position
              float destX, destY;
 
-             if (spawnOnTop) {
-             destY = getGameHeight();
-             destX = (float) ((destDirection == -1) ? getGameWidth() * Math.random() : 1.0 * Math.random());
-             } else {
-             destY = 0;
-             destX = (float) ((destDirection == -1) ? getGameWidth() * Math.random() : 1.0 * Math.random());
-             }
-             */
+            // Spawn on the top or bottom side
+            if (side == 0 || side == 2) {
+                destX = (float) (Math.random() * getGameWidth());
+                destY = -spawnOffset;
+            }
+            // Spawn on the right side
+            else{
+                destX = getGameWidth() + spawnOffset;
+                destY = (float) (Math.random() * getGameHeight());
+            }
+
+            destY-= spawnY;
+            destX-= spawnX;
 
 
             Asteroid asteroid = new Asteroid(gameWidth, gameHeight, context);
             asteroid.setPosition(spawnX, spawnY);
+            asteroid.setDestination(destX, destY);
             asteroids.add(asteroid);
         }
 
