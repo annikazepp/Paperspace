@@ -16,9 +16,9 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     //Asteroid in general
     private float x, y; // Position des Asteroiden
     private float speedX, speedY; // Geschwindigkeit des Asteroiden
-    private float width,height;
+    private float widthAsteroid, heightAsteroid;
 
-    public float getWidth() {
+    public float getWidthAsteroid() {
         return asteroidBitmap.getWidth();
     }
 
@@ -26,7 +26,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         return asteroidBitmap.getHeight();
     }
 
-    private float size= 10;
+    private float size= 10; //TODO?
     private float scale = 1.0f; //TODO
 
     private int velocity;
@@ -48,17 +48,17 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     };
 
     // Constants
-    public static final int MIN_SIZE = 150; //TODO ANPASSEN?
-    public static final int MAX_SIZE = 300;
+    public static final int MIN_SIZE = 100; //TODO ANPASSEN?
+    public static final int MAX_SIZE = 200;
     public static final int MIN_SPEED = 1;
-    public static final int MAX_SPEED = 10;
+    public static final int MAX_SPEED = 5;
 
 
     private Random random;
-    private int screenWidth, screenHeight; // Bildschirmgröße
+    private float screenWidth, screenHeight; // Bildschirmgröße
 
     //Construtor
-    public Asteroid(int screenWidth, int screenHeight, Context context) {
+    public Asteroid(float screenWidth, float screenHeight, Context context) {
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
@@ -66,8 +66,8 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.random = new Random();
 
         // Zufällige Position innerhalb des Bildschirms //TODO POSITION Außerhalb schon starten
-        this.x = random.nextFloat() * (screenWidth - this.width);
-        this.y = random.nextFloat() * (screenHeight - this.height);
+        //this.x = random.nextFloat() * (screenWidth - this.width);
+        //this.y = random.nextFloat() * (screenHeight - this.height);
 
         // Position außerhalb
         //this.x = x;
@@ -75,13 +75,13 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
         // Zufällige Geschwindigkeit in X- und Y-Richtung
         this.speedX = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED; // Geschwindigkeit zwischen MIN und MAX
-        this.speedY = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED;
+        this.speedY = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) - MIN_SPEED;
 
 
-        // TODO Zufälliges Bild ?
-        asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_1);
-        //this.imageResource = asteroidImages[random.nextInt(asteroidImages.length)];
-        //this.asteroidDrawable = context.getResources().getDrawable(imageResource);
+        // Zufälliges Bild Asteroid
+        int index = random.nextInt(asteroidImages.length);
+        asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), asteroidImages[index]);
+
 
         // Zufällige Größe Asteroiden-Bitmaps
         this.size = generateRandomSize(MIN_SIZE, MAX_SIZE);
@@ -90,8 +90,8 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         float scale = (float) size / Math.max(asteroidBitmap.getWidth(),asteroidBitmap.getHeight());
         this.asteroidBitmap = Bitmap.createScaledBitmap(asteroidBitmap, (int)(asteroidBitmap.getWidth() * scale), (int) (asteroidBitmap.getHeight() * scale),true);
 
-        this.width = asteroidBitmap.getWidth();
-        this.height = asteroidBitmap.getHeight();
+        this.widthAsteroid = asteroidBitmap.getWidth();
+        this.heightAsteroid = asteroidBitmap.getHeight();
 
         this.damage = 1; // TODO zufällig? bzw je nach Größe?
 
@@ -120,7 +120,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         //TODO überhaupt nötig?
     }
     public RectF getBounds() {
-        return new RectF(x,y,x+width,y+height);
+        return new RectF(x,y,x + widthAsteroid,y + heightAsteroid);
     }
 
     public double getDamage() {
@@ -138,7 +138,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
 
     public void draw(Canvas c){
-        c.drawBitmap(asteroidBitmap, x,y,null);
+        c.drawBitmap(asteroidBitmap, this.x, this.y,null);
     }
 
 
