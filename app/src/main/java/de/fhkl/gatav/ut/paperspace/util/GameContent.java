@@ -20,6 +20,7 @@ public class GameContent implements Drawable {
 
     private int gameWidth; // in Konstruktor initalisiert
     private int gameHeight;
+    Random random = new Random();
 
     public int getGameWidth() {
         return gameWidth;
@@ -87,8 +88,8 @@ public class GameContent implements Drawable {
          */
 
         // Draw Asteroids
-        for (Asteroid asteroid : asteroids) {
-            asteroid.draw(c);
+        for (int i; i < asteroids.length; i++) {
+            asteroids[random.nextInt(asteroids.length)].draw(c);
         }
 
     }
