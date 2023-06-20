@@ -121,7 +121,6 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
         if(gameContent!= null){
             gameContent.update();
         }
-
     }
 
     /**

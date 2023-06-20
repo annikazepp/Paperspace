@@ -81,7 +81,7 @@ public class GameContent implements Drawable {
         // Spaceship zeichnen
         spaceShip.draw(c);
 
-        // Draw Shot. Denkt daran, dass dem Shot einen bewegungsvektor mit festgelegter länge (speed) übergeben werden muss
+        // Draw Shot. Dem Shot muss ein Bewegungsvektor mit festgelegter Länge (speed) übergeben werden
         /**
         Shot shot = new Shot(context, spaceShip.getWidth()/2, spaceShip.getY());
         shots.add(shot);
