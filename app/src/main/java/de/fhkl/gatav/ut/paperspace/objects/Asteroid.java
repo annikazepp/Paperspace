@@ -37,7 +37,14 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     private Bitmap asteroidBitmap;
 
     private int imageResource;
-    private int[] asteroidImages ={ //TODO verschiedene Asteroiden
+    
+
+    // Constants
+    public static final int MIN_SIZE = 150; //TODO ANPASSEN?
+    public static final int MAX_SIZE = 300;
+    public static final int MIN_SPEED = 1;
+    public static final int MAX_SPEED = 10;
+    private static final int[] ASTEROID_IMAGES ={ //TODO verschiedene Asteroiden
             R.drawable.asteroid_1,
             R.drawable.asteroid_2,
             R.drawable.asteroid_3,
@@ -46,12 +53,6 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
             R.drawable.asteroid_6,
             R.drawable.asteroid_7
     };
-
-    // Constants
-    public static final int MIN_SIZE = 150; //TODO ANPASSEN?
-    public static final int MAX_SIZE = 300;
-    public static final int MIN_SPEED = 1;
-    public static final int MAX_SPEED = 10;
 
 
     private Random random;
@@ -78,8 +79,9 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.speedY = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED;
 
 
+        int imageIndex = random.nextInt(ASTEROID_IMAGES.length);
         // TODO Zufälliges Bild ?
-        asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_1);
+        asteroidBitmap = BitmapFactory.decodeResource(context.getResources(), ASTEROID_IMAGES[imageIndex]);
         //this.imageResource = asteroidImages[random.nextInt(asteroidImages.length)];
         //this.asteroidDrawable = context.getResources().getDrawable(imageResource);
 
