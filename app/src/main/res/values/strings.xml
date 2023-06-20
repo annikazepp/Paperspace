@@ -3,4 +3,5 @@
     <string name="Play">Play</string>
     <string name="Restart">Restart</string>
     <string name="Exit">Exit</string>
+    <string name="gameover">GAME OVER</string>
 </resources>

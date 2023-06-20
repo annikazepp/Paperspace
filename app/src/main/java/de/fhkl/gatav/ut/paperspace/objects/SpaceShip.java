@@ -1,6 +1,7 @@
 package de.fhkl.gatav.ut.paperspace.objects;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,6 +10,7 @@ import android.graphics.RectF;
 import java.util.Random;
 
 import de.fhkl.gatav.ut.paperspace.R;
+import de.fhkl.gatav.ut.paperspace.util.GameOver;
 
 public class SpaceShip {
     //TODO eventuell abstrakte Klasse erzeugen
@@ -61,6 +63,8 @@ public class SpaceShip {
         this.heigth = getHeigth();
         this.width = getWidth();
 
+
+
     }
 
     //Getter-Setter
@@ -77,20 +81,19 @@ public class SpaceShip {
         return health;
     }
 
+
     public void setHealth(int health) {
         this.health = health;
     }
 
     // Methoden
-    public void draw(Canvas c){ //TODO
-        // An der aktuellen Position Spaceship
-        c.drawBitmap(spaceshipBitmap, x, y, null);
+    public void draw(Canvas canvas){
+        // An der aktuellen Position des Spaceship
+        canvas.drawBitmap(spaceshipBitmap, x, y, null);
     }
 
-    //TODO
+    //TODO UPDATE SPACESHIP
     public void update(){
-
-
 
     }
 

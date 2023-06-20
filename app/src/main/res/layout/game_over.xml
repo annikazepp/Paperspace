@@ -9,6 +9,18 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gameover"
+            android:textSize="30dp"
+            android:textColor="@color/black" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/return_button"
@@ -46,4 +58,6 @@
             android:textSize="18sp"/>
 
     </LinearLayout>
+
+
 </LinearLayout>

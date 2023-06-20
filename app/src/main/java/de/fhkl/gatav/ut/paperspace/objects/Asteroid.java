@@ -16,9 +16,9 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     //Asteroid in general
     private float x, y; // Position des Asteroiden
     private float speedX, speedY; // Geschwindigkeit des Asteroiden
-    private float width,height;
+    private float widthAsteroid, heightAsteroid;
 
-    public float getWidth() {
+    public float getWidthAsteroid() {
         return asteroidBitmap.getWidth();
     }
 
@@ -26,7 +26,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         return asteroidBitmap.getHeight();
     }
 
-    private float size= 10;
+    private float size= 10; //TODO?
     private float scale = 1.0f; //TODO
 
     private int velocity;
@@ -37,7 +37,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     private Bitmap asteroidBitmap;
 
     private int imageResource;
-    
+
 
     // Constants
     public static final int MIN_SIZE = 150; //TODO ANPASSEN?
@@ -56,10 +56,10 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
 
     private Random random;
-    private int screenWidth, screenHeight; // Bildschirmgröße
+    private float screenWidth, screenHeight; // Bildschirmgröße
 
     //Construtor
-    public Asteroid(int screenWidth, int screenHeight, Context context) {
+    public Asteroid(float screenWidth, float screenHeight, Context context) {
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
@@ -67,8 +67,8 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.random = new Random();
 
         // Zufällige Position innerhalb des Bildschirms //TODO POSITION Außerhalb schon starten
-        this.x = random.nextFloat() * (screenWidth - this.width);
-        this.y = random.nextFloat() * (screenHeight - this.height);
+        this.x = random.nextFloat() * (screenWidth - this.widthAsteroid);
+        this.y = random.nextFloat() * (screenHeight - this.heightAsteroid);
 
         // Position außerhalb
         //this.x = x;
@@ -86,14 +86,14 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         //this.asteroidDrawable = context.getResources().getDrawable(imageResource);
 
         // Zufällige Größe Asteroiden-Bitmaps
-        this.size = generateRandomSize(MIN_SIZE, MAX_SIZE);
+        this.size = generateRandomSize();
 
         // Bitmaps Skalieren
         float scale = (float) size / Math.max(asteroidBitmap.getWidth(),asteroidBitmap.getHeight());
         this.asteroidBitmap = Bitmap.createScaledBitmap(asteroidBitmap, (int)(asteroidBitmap.getWidth() * scale), (int) (asteroidBitmap.getHeight() * scale),true);
 
-        this.width = asteroidBitmap.getWidth();
-        this.height = asteroidBitmap.getHeight();
+        this.widthAsteroid = asteroidBitmap.getWidth();
+        this.heightAsteroid = asteroidBitmap.getHeight();
 
         this.damage = 1; // TODO zufällig? bzw je nach Größe?
 
@@ -122,7 +122,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         //TODO überhaupt nötig?
     }
     public RectF getBounds() {
-        return new RectF(x,y,x+width,y+height);
+        return new RectF(x,y,x + widthAsteroid,y + heightAsteroid);
     }
 
     public double getDamage() {
@@ -148,19 +148,37 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
     //true wenn sie sich berühren
     public boolean collidesWith(Asteroid otherAsteroid) {
+        double distanceX = otherAsteroid.getX() - this.getX();
+        double distanceY = otherAsteroid.getY() - this.getY();
+        double squaredDistance = distanceX * distanceX + distanceY * distanceY;
+        double sumOfRadiiSquared = Math.pow((this.getWidthAsteroid() + otherAsteroid.getWidthAsteroid()) / 2, 2);
+
+        return squaredDistance <= sumOfRadiiSquared;
+        /*
         RectF aRect = this.getBounds();
         RectF oARect = otherAsteroid.getBounds();
         if(RectF.intersects(aRect,oARect)){
             return true;
         }
         return false;
-        /**
+         */
+
+        /*
         float distanceX = otherAsteroid.x - this.x;
         float distanceY = otherAsteroid.y - this.y;
         float distance = (float) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
         return distance <= (this.size + otherAsteroid.size)/2;
          */
 
+        /*
+        double distance = Math.sqrt(Math.pow(this.getX() - otherAsteroid.getX(), 2) + Math.pow(this.getY() - otherAsteroid.getY(), 2));
+        // Überprüfe, ob die Distanz kleiner ist als die kombinierten Radien von Raumschiff und Asteroid
+        if (distance < this.getWidthAsteroid()/2 + otherAsteroid.getWidthAsteroid()/2) {
+            return true; // Kollision erfolgt
+        } else {
+            return false; // Keine Kollision
+        }
+         */
     }
 
 
@@ -213,20 +231,20 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     }
 
 
-    private int generateRandomSize(int minSize, int maxSize) {
+    private int generateRandomSize() {
         Random random = new Random();
-        return random.nextInt(maxSize - minSize + 1) + minSize;
+        return random.nextInt(MAX_SIZE - MIN_SIZE + 1) + MIN_SIZE;
     }
 
     public void update() { //TODO update Asteroid?
     }
 
+    /**
+     * Überprüft, ob Asteroid außerhalb des Sichtbereichs ist
+     * @return true, wenn x oder y Koordinaten des Asteroiden außerhalb des Display ist
+     */
     public boolean outOfView() {
-        if (x < 0 || x > screenWidth || y < 0 || y > screenHeight){
-            return true;
-        }else{
-            return false;
-        }
+        return x < 0 || x > screenWidth || y < 0 || y > screenHeight;
     }
 
     public void setPosition(float spawnX, float spawnY) {
