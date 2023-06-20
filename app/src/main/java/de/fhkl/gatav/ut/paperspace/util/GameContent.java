@@ -155,8 +155,15 @@ public class GameContent implements Drawable {
         for(Shot shot : shots){
             for(Asteroid asteroid : asteroids){
                 if(checkShotCollision(shot, asteroid)){
-                    //TODO remove Shot and give asteroid damage(add to remove)
+                    shots.remove(shot);
+                    asteroidToRemove.add(asteroid); //TODO oder damage
                 }
+            }
+        }
+
+        for(Shot shot: shots){
+            if (shot.isobsolete()){
+                shots.remove(shot);
             }
         }
 
