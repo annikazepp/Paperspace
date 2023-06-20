@@ -204,79 +204,119 @@ public class GameContent implements Drawable {
 
 
     // Asteroiden hinzufügen
+    // Asteroiden hinzufügen
     private void addAsteroids() {
+
+
         if (MAX_ASTEROIDS > asteroids.size()) {
-            for (int i = 0; i < MAX_ASTEROIDS - asteroids.size(); i++) {
+            /**
+             if (Math.random() > ASTEROIDS_FREQUENCY) {
+             return;
+             }
 
-                float scale = (float) Math.random() * (asteroidMaxScale - asteroidMinScale) + asteroidMinScale;
-                float spawnOffset = scale * 0.5f;
-
-                int sourceDirection = Math.random() < 0.5 ? -1 : 1;  // -1 for left, 1 for right
-                int destDirection = -sourceDirection;  // Opposite direction of the source
-
-                // Calculate spawn position
-                float spawnX, spawnY;
-
-                // Randomly determine if the obstacle will spawn on the top or bottom boundary
-                boolean spawnOnTop = Math.random() < 0.5;
-
-                if (spawnOnTop) {
-                    spawnY = 0;
-                    spawnX = (float) ((sourceDirection == -1) ? getGameWidth() * Math.random() : 1.0f * Math.random());
-                } else {
-                    spawnY = getGameHeight();
-                    spawnX = (float) ((sourceDirection == -1) ? getGameWidth() * Math.random() : 1.0f * Math.random());
-                }
-
-                boolean positionOk = true;
-
-                // check distance to player
-                float minPlayerDistance = 0.5f * scale + 0.5f * spaceShip.getWidth() + minSpawnDistanceToPlayer;
-                if (Math.abs(spawnX - spaceShip.getX()) < minPlayerDistance &&
-                        Math.abs(spawnY - spaceShip.getY()) < minPlayerDistance)
-                    positionOk = false;    // Distance to player too small -> invalid position
-
-                // Check distance to other asteroids
-                for (Asteroid asteroid : asteroids) {
-                    float minDistance = 0.5f * scale + 0.5f * asteroid.getWidthAsteroid() + minSpawnDistanceBetweenAsteroids;
-                    if (Math.abs(spawnX - asteroid.getX()) < minDistance &&
-                            Math.abs(spawnY - asteroid.getY()) < minDistance) {
-                        positionOk = false;    // Distance too small -> invalid position
-                        break;
-                    }
-                }
-
-                if (!positionOk) {
-                    continue; // Invalid spawn position -> try again next time
-                }
-
-
-                /**
-                // Calculate destination position
-                float destX, destY;
-
-                if (spawnOnTop) {
-                    destY = getGameHeight();
-                    destX = (float) ((destDirection == -1) ? getGameWidth() * Math.random() : 1.0 * Math.random());
-                } else {
-                    destY = 0;
-                    destX = (float) ((destDirection == -1) ? getGameWidth() * Math.random() : 1.0 * Math.random());
-                }
-                 */
-
-
-
-
-
-
-                Asteroid asteroid = new Asteroid(getGameHeight(), getGameWidth(), context);
-                asteroid.setPosition(spawnX, spawnY);
-                asteroids.add(asteroid);
-            }
-
-
-            }
+             for (int i = 0; i < MAX_ASTEROIDS - asteroids.size(); i++) {
+             Asteroid asteroid = new Asteroid(gameWidth, gameHeight, context);
+             asteroids.add(asteroid);
+             }
+             */
         }
+
+
+        for (int i = 0; i < MAX_ASTEROIDS - asteroids.size(); i++) {
+
+            float scale = (float) Math.random() * (asteroidMaxScale - asteroidMinScale) + asteroidMinScale;
+            float spawnOffset = scale * 0.5f;
+
+            int sourceDirection = Math.random() < 0.5 ? -1 : 1;  // -1 for left, 1 for right
+            int destDirection = -sourceDirection;  // Opposite direction of the source
+
+            // Calculate spawn position
+            float spawnX, spawnY;
+
+            // Determine the side of the screen where the asteroid will spawn
+            int side = (int) (Math.random() * 4); // 0: top, 1: right, 2: bottom, 3: left
+
+
+            // Spawn on the top side
+            if (side == 0) {
+                spawnX = (float) (Math.random() * getGameWidth());
+                spawnY = -spawnOffset;
+            }
+            // Spawn on the right side
+            else if (side == 1) {
+                spawnX = getGameWidth() + spawnOffset;
+                spawnY = (float) (Math.random() * getGameHeight());
+            }
+            // Spawn on the bottom side
+            else if (side == 2) {
+                spawnX = (float) (Math.random() * getGameWidth());
+                spawnY = getGameHeight() + spawnOffset;
+            }
+            // Spawn on the left side
+            else {
+                spawnX = -spawnOffset;
+                spawnY = (float) (Math.random() * getGameHeight());
+            }
+
+
+            // Randomly determine if the obstacle will spawn on the top or bottom boundary
+            //boolean spawnOnTop = Math.random() < 0.5;
+
+            //if (spawnOnTop) {
+            // spawnY = 50;
+            // spawnX = (float) ((sourceDirection == -1) ? getGameWidth() * Math.random() : 1.0f * Math.random());
+            //} else {
+            //spawnY = getGameHeight();
+            //spawnX = (float) ((sourceDirection == -1) ? getGameWidth() * Math.random() : 1.0f * Math.random());
+            //}
+
+            boolean positionOk = true;
+/**
+ // check distance to player
+ float minPlayerDistance = 0.5f * scale + 0.5f * spaceShip.getWidth() + minSpawnDistanceToPlayer;
+ if (Math.abs(spawnX - spaceShip.getX()) < minPlayerDistance &&
+ Math.abs(spawnY - spaceShip.getY()) < minPlayerDistance)
+ positionOk = false;    // Distance to player too small -> invalid position
+ */
+            // Check distance to other asteroids
+            for (Asteroid asteroid : asteroids) {
+
+                float minDistance = 0.5f * scale + 0.5f * asteroid.getWidthAsteroid() + minSpawnDistanceBetweenAsteroids;
+                if (Math.abs(spawnX - asteroid.getX()) < minDistance &&
+                        Math.abs(spawnY - asteroid.getY()) < minDistance) {
+                    positionOk = false;    // Distance too small -> invalid position
+                    break;
+                }
+            }
+
+            //if (!positionOk) {
+            //    continue; // Invalid spawn position -> try again next time
+            // }
+
+
+            /**
+             // Calculate destination position
+             float destX, destY;
+
+             if (spawnOnTop) {
+             destY = getGameHeight();
+             destX = (float) ((destDirection == -1) ? getGameWidth() * Math.random() : 1.0 * Math.random());
+             } else {
+             destY = 0;
+             destX = (float) ((destDirection == -1) ? getGameWidth() * Math.random() : 1.0 * Math.random());
+             }
+             */
+
+
+            Asteroid asteroid = new Asteroid(gameWidth, gameHeight, context);
+            asteroid.setPosition(spawnX, spawnY);
+            asteroids.add(asteroid);
+        }
+
+
+
+    }
+
 
     public boolean isGameOver() {
         return getHealthSpaceShip() == 0;
