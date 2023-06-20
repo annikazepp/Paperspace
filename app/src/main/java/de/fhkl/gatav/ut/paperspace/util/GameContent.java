@@ -34,7 +34,9 @@ public class GameContent implements Drawable {
 
     // Objects TODO
     private SpaceShip spaceShip;
-    //private ArrayList<Shot> shots;
+
+    private ArrayList<Shot> shots;
+
     private ArrayList<Asteroid> asteroids;
 
     private Context context;
@@ -79,7 +81,7 @@ public class GameContent implements Drawable {
         // Spaceship zeichnen
         spaceShip.draw(c);
 
-        // Draw Shot
+        // Draw Shot. Denkt daran, dass dem Shot einen bewegungsvektor mit festgelegter länge (speed) übergeben werden muss
         /**
         Shot shot = new Shot(context, spaceShip.getWidth()/2, spaceShip.getY());
         shots.add(shot);
@@ -98,7 +100,11 @@ public class GameContent implements Drawable {
     public void update() {
 
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
+        for(Shot shot:shots){
+            //move shots
+            shot.move();
 
+        }
         for(Asteroid asteroid :asteroids){
             //move Asteroids
             asteroid.move();
@@ -145,6 +151,15 @@ public class GameContent implements Drawable {
             }
         }
 
+        //Kollision Shot - Asteroid
+        for(Shot shot : shots){
+            for(Asteroid asteroid : asteroids){
+                if(checkShotCollision(shot, asteroid)){
+                    //TODO remove Shot and give asteroid damage(add to remove)
+                }
+            }
+        }
+
         // getroffene Asteroiden entfernen
         asteroids.removeAll(asteroidToRemove);
         // Liste leeren
@@ -170,6 +185,15 @@ public class GameContent implements Drawable {
         }
     }
 
+    public boolean checkShotCollision(Shot shot, Asteroid asteroid){
+        double distance = Math.sqrt(Math.pow(shot.getX() - asteroid.getX(), 2) + Math.pow(shot.getY() - asteroid.getY(), 2));
+        //Überprüfe, ob der Shot den Radius des Asteroids trifft
+        if (distance < shot.getWidth()/2 + asteroid.getWidth()/2) {
+            return true; // Kollision erfolgt
+        } else {
+            return false; // Keine Kollision
+        }
+    }
 
 
     // Asteroiden hinzufügen
