@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -13,32 +13,20 @@ import de.fhkl.gatav.ut.paperspace.R;
 
 public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
-    //Asteroid in general
-    private float x, y; // Position des Asteroiden
-    private float destinationX, destinationY;
+    /**
+     * Eigenschaften der Klasse Asteroid
+     */
+    private float x, y; // Koordinaten des Asteroiden
+    private float destinationX, destinationY; // Zielkoordinaten, zu denen sich der Asteroid bewegt
     private float speedX, speedY; // Geschwindigkeit des Asteroiden //TODO WEG?
-    private float speed;
-    private float widthAsteroid, heightAsteroid;
+    private float speed; //Geschwindigkeit Asteroiden TODO ? zu const
+    private float widthAsteroid, heightAsteroid; // Breite und Höhe Asteroid
 
-    public float getWidthAsteroid() {
-        return asteroidBitmap.getWidth();
-    }
+    private float size; //TODO?
+    private float scale = 1.0f; //Skalierungsfaktor für Bitmap TODO?
 
-    public float getHeigth() {
-        return asteroidBitmap.getHeight();
-    }
-
-    private float size= 10; //TODO?
-    private float scale = 1.0f; //TODO
-
-    private int velocity;
-    private int damage = 1;
-
-    // drawables
-    Drawable asteroidDrawable;
+    // Bitmap
     private Bitmap asteroidBitmap;
-
-    private int imageResource;
 
 
     // Constants
@@ -46,6 +34,9 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     public static final int MAX_SIZE = 300;
     public static final int MIN_SPEED = 1;
     public static final int MAX_SPEED = 5;
+
+    private static final int DAMAGE = 1;
+
     private static final int[] ASTEROID_IMAGES ={ //TODO verschiedene Asteroiden
             R.drawable.asteroid_1,
             R.drawable.asteroid_2,
@@ -59,28 +50,27 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
 
     private Random random = new Random();
     private float screenWidth, screenHeight; // Bildschirmgröße
+    private Context context;
 
-    //Construtor
-    public Asteroid(float screenWidth, float screenHeight, Context context) {
 
-        this.screenWidth = screenWidth;
+    /**
+     * Konstruktor - initialisiert Asteroiden zufällig
+     * @param screenHeight
+     * @param screenWidth
+     * @param context
+     */
+    public Asteroid(float screenHeight, float screenWidth, Context context) {
+
         this.screenHeight = screenHeight;
+        this.screenWidth = screenWidth;
 
+        this.context = context;
 
-
-        // Zufällige Position innerhalb des Bildschirms //TODO POSITION Außerhalb schon starten
-        this.x = random.nextFloat() * (screenWidth - this.widthAsteroid);
-        this.y = random.nextFloat() * (screenHeight - this.heightAsteroid);
-
-        // Position außerhalb
-        //this.x = x;
-        //this.y = y;
-
-        // Zufällige Geschwindigkeit in X- und Y-Richtung
+        // Zufällige Geschwindigkeit in X- und Y-Richtung //TODO?
         this.speedX = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED; // Geschwindigkeit zwischen MIN und MAX
         this.speedY = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED;
 
-        this.speed = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED;
+        this.speed = random.nextFloat() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED; //TODO?
 
         // Zufälliges Bild Asteroid
         int imageIndex = random.nextInt(ASTEROID_IMAGES.length);
@@ -98,16 +88,6 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     }
 
     // Getter-Setter
-    public float getSize() {
-        return size;
-    }
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
-    }
-
-    public int getImageResource() {
-        return imageResource;
-    }
     public float getX() {
         return x;
     }
@@ -115,16 +95,20 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         return y;
     }
 
-    public int getAsteroidWidth(){
-        return -1;
-        //TODO überhaupt nötig?
+    public float getWidthAsteroid() {
+        return asteroidBitmap.getWidth();
     }
-    public RectF getBounds() {
+
+    public float getHeightAsteroid() {
+        return heightAsteroid;
+    }
+
+    public RectF getBounds() { //TODO?
         return new RectF(x,y,x + widthAsteroid,y + heightAsteroid);
     }
 
     public double getDamage() {
-        return damage;
+        return DAMAGE;
     }
 
     public boolean isShot() {
@@ -134,107 +118,60 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     }
 
 
-
-
-
-    public void draw(Canvas c){
-        c.drawBitmap(asteroidBitmap, x,y,null);
+    /**
+     * Zeichnet Asteroiden
+     * @param canvas Zeichenfläche, auf die zu zeichnen ist
+     */
+    public void draw(Canvas canvas){
+        canvas.drawBitmap(asteroidBitmap, x,y,null);
     }
 
 
-
-
-    //true wenn sie sich berühren
+    /**
+     * Überprüft, ob Asteroiden kollidieren
+     * @param otherAsteroid
+     * @return true, wenn Asteroiden zusammenstoßen
+     */
     public boolean collidesWith(Asteroid otherAsteroid) {
-        double distanceX = otherAsteroid.getX() - this.getX();
-        double distanceY = otherAsteroid.getY() - this.getY();
-        double squaredDistance = distanceX * distanceX + distanceY * distanceY;
-        double sumOfRadiiSquared = Math.pow((this.getWidthAsteroid() + otherAsteroid.getWidthAsteroid()) / 2, 2);
-
-        return squaredDistance <= sumOfRadiiSquared;
-        /*
-        RectF aRect = this.getBounds();
-        RectF oARect = otherAsteroid.getBounds();
-        if(RectF.intersects(aRect,oARect)){
-            return true;
-        }
-        return false;
-         */
-
-        /*
         float distanceX = otherAsteroid.x - this.x;
         float distanceY = otherAsteroid.y - this.y;
         float distance = (float) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
         return distance <= (this.size + otherAsteroid.size)/2;
-         */
-
-        /*
-        double distance = Math.sqrt(Math.pow(this.getX() - otherAsteroid.getX(), 2) + Math.pow(this.getY() - otherAsteroid.getY(), 2));
-        // Überprüfe, ob die Distanz kleiner ist als die kombinierten Radien von Raumschiff und Asteroid
-        if (distance < this.getWidthAsteroid()/2 + otherAsteroid.getWidthAsteroid()/2) {
-            return true; // Kollision erfolgt
-        } else {
-            return false; // Keine Kollision
-        }
-         */
     }
 
-
+    /**
+     * Berechnet die Abstoßungsreaktion zwischen diesem Asteroiden und einem anderen Asteroiden
+     * @param otherAsteroid
+     */
     //TODO könnte noch Verbessert werden
-    // Berechnet die Abstoßungsreaktion zwischen diesem Asteroiden und einem anderen Asteroiden
     public void bounceOff(Asteroid otherAsteroid) {
-        // Calculate the direction from this asteroid to the other asteroid
-        float directionX = otherAsteroid.x - this.x;
-        float directionY = otherAsteroid.y - this.y;
 
-        // Calculate the distance between the two asteroids
-        float distance = (float) Math.sqrt(directionX * directionX + directionY * directionY);
+            // Berechnen der Richtung vom aktuellen Asteroiden zum anderen Asteroiden
+            float directionX = otherAsteroid.x - this.x;
+            float directionY = otherAsteroid.y - this.y;
 
-        // Calculate the normalized direction values
-        float normalizedDirectionX = directionX / distance;
-        float normalizedDirectionY = directionY / distance;
+            // Berechnen der Distanz zwischen den beiden Asteroiden
+            float distance = (float) Math.sqrt(directionX * directionX + directionY * directionY);
 
-        // Calculate the relative velocity of the two asteroids
-        float relativeVelocityX = this.speedX - otherAsteroid.speedX;
-        float relativeVelocityY = this.speedY - otherAsteroid.speedY;
+            // Berechnen der normalisierten Richtungswerte
+            float normalizedDirectionX = directionX / distance;
+            float normalizedDirectionY = directionY / distance;
 
-        // Calculate the impulse magnitude based on the relative velocity and the masses of the asteroids
-        float impulseMagnitude = 2.0f * (relativeVelocityX * normalizedDirectionX + relativeVelocityY * normalizedDirectionY) /
-                (this.size + otherAsteroid.size);
+            // Berechnen der Impulsgröße basierend auf der Masse der Asteroiden
+            float impulseMagnitude = 5.0f / (this.getWidthAsteroid() + otherAsteroid.getWidthAsteroid());
 
-        // Apply the impulse to the velocities of the asteroids
-        this.speedX -= impulseMagnitude * otherAsteroid.size * normalizedDirectionX;
-        this.speedY -= impulseMagnitude * otherAsteroid.size * normalizedDirectionY;
-        otherAsteroid.speedX += impulseMagnitude * this.size * normalizedDirectionX;
-        otherAsteroid.speedY += impulseMagnitude * this.size * normalizedDirectionY;
+            // Anwenden des Impulses auf die Positionen der Asteroiden
+            this.x -= impulseMagnitude * otherAsteroid.getWidthAsteroid() * normalizedDirectionX;
+            this.y -= impulseMagnitude * otherAsteroid.getHeightAsteroid() * normalizedDirectionY;
+            otherAsteroid.x += impulseMagnitude * this.getWidthAsteroid() * normalizedDirectionX;
+            otherAsteroid.y += impulseMagnitude * this.getHeightAsteroid() * normalizedDirectionY;
     }
 
+    /**
+     * Bewegt Asteroid basierend auf seiner Geschwindigkeit und Zielrichtung
+     */
     public void move() {
-        // Bewege den Asteroiden basierend auf seiner Geschwindigkeit
-        x += speedX;
-        y += speedY;
-
-        // Überprüfe die Kollision mit den Bildschirmrändern
-
-        if (x < 0 || x > screenWidth) {
-            speedX = -speedX; // Ändere die Richtung, wenn der Asteroid den Rand erreicht
-        }
-
-        if (y < 0 || y > screenHeight) {
-            speedY = -speedY;
-        }
-
-
-
-    }
-
-
-    private int generateRandomSize() {
-        Random random = new Random();
-        return random.nextInt(MAX_SIZE - MIN_SIZE + 1) + MIN_SIZE;
-    }
-
-    public void update() {
         // Berechnung der Richtung zum Ziel
         double dx = destinationX - x;
         double dy = destinationY - y;
@@ -245,7 +182,18 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         // Bewegung des Asteroiden in Richtung des Ziels
         x += directionX * speed;
         y += directionY * speed;
-        //TODO update Asteroid?
+    }
+
+
+    /**
+     * Generiert eine zufällige Größe für Asteroiden
+     */
+    private int generateRandomSize() {
+        return random.nextInt(MAX_SIZE - MIN_SIZE + 1) + MIN_SIZE;
+    }
+
+
+    public void update() { //TODO?
     }
 
     /**
@@ -256,11 +204,21 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         return x < 0 || x > screenWidth || y < 0 || y > screenHeight;
     }
 
+    /**
+     * Setzt Startposition des Asteroiden
+     * @param spawnX Startwert x
+     * @param spawnY Startwert y
+     */
     public void setPosition(float spawnX, float spawnY) {
         this.x = spawnX;
         this.y = spawnY;
     }
 
+    /**
+     * Setzt Zielposition
+     * @param destX Zielwert x
+     * @param destY Zielwert y
+     */
     public void setDestination(float destX, float destY) {
         this.destinationX = destX;
         this.destinationY = destY;

@@ -195,7 +195,7 @@ public class GameContent implements Drawable {
     public boolean checkShotCollision(Shot shot, Asteroid asteroid){
         double distance = Math.sqrt(Math.pow(shot.getX() - asteroid.getX(), 2) + Math.pow(shot.getY() - asteroid.getY(), 2));
         //Überprüfe, ob der Shot den Radius des Asteroids trifft
-        if (distance < shot.getWidth()/2 + asteroid.getAsteroidWidth()/2) {
+        if (distance < shot.getWidth()/2 + asteroid.getWidthAsteroid()/2) {
             return true; // Kollision erfolgt
         } else {
             return false; // Keine Kollision
@@ -227,8 +227,6 @@ public class GameContent implements Drawable {
             float scale = (float) Math.random() * (asteroidMaxScale - asteroidMinScale) + asteroidMinScale;
             float spawnOffset = scale * 0.5f;
 
-            int sourceDirection = Math.random() < 0.5 ? -1 : 1;  // -1 for left, 1 for right
-            int destDirection = -sourceDirection;  // Opposite direction of the source
 
             // Calculate spawn position
             float spawnX, spawnY;
@@ -291,10 +289,10 @@ public class GameContent implements Drawable {
 
             // Spawn on the top or bottom side
             if (side == 0 || side == 2) {
-                destX = (float) (Math.random() * getGameWidth());
+                destX = (float) (Math.random() * getGameWidth()); //TODO anpassen?
                 destY = -spawnOffset;
             }
-            // Spawn on the right side
+            // Spawn on the right or left side
             else{
                 destX = getGameWidth() + spawnOffset;
                 destY = (float) (Math.random() * getGameHeight());
@@ -304,7 +302,7 @@ public class GameContent implements Drawable {
             destX-= spawnX;
 
 
-            Asteroid asteroid = new Asteroid(gameWidth, gameHeight, context);
+            Asteroid asteroid = new Asteroid(gameHeight, gameWidth, context);
             asteroid.setPosition(spawnX, spawnY);
             asteroid.setDestination(destX, destY);
             asteroids.add(asteroid);
