@@ -88,8 +88,8 @@ public class GameContent implements Drawable {
          */
 
         // Draw Asteroids
-        for (int i; i < asteroids.length; i++) {
-            asteroids[random.nextInt(asteroids.length)].draw(c);
+        for (Asteroid asteroid : asteroids) {
+            asteroid.draw(c);
         }
 
     }
