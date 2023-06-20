@@ -67,7 +67,7 @@ public class GameContent implements Drawable {
 
         asteroids = new ArrayList<>();
         spaceShip = new SpaceShip(gameWidth,gameHeight,context);
-        //shots = new ArrayList<>();
+        shots = new ArrayList<>();
 
 
     }
@@ -185,7 +185,7 @@ public class GameContent implements Drawable {
     public boolean checkCollision(SpaceShip spaceship, Asteroid asteroid){
         double distance = Math.sqrt(Math.pow(spaceship.getX() - asteroid.getX(), 2) + Math.pow(spaceship.getY() - asteroid.getY(), 2));
         // Überprüfe, ob die Distanz kleiner ist als die kombinierten Radien von Raumschiff und Asteroid
-        if (distance < spaceship.getWidth()/2 + asteroid.getWidth()/2) {
+        if (distance < spaceship.getWidth()/2 + asteroid.getWidthAsteroid()/2) {
             return true; // Kollision erfolgt
         } else {
             return false; // Keine Kollision
@@ -195,7 +195,7 @@ public class GameContent implements Drawable {
     public boolean checkShotCollision(Shot shot, Asteroid asteroid){
         double distance = Math.sqrt(Math.pow(shot.getX() - asteroid.getX(), 2) + Math.pow(shot.getY() - asteroid.getY(), 2));
         //Überprüfe, ob der Shot den Radius des Asteroids trifft
-        if (distance < shot.getWidth()/2 + asteroid.getWidth()/2) {
+        if (distance < shot.getWidth()/2 + asteroid.getAsteroidWidth()/2) {
             return true; // Kollision erfolgt
         } else {
             return false; // Keine Kollision
@@ -238,7 +238,7 @@ public class GameContent implements Drawable {
 
                 // Check distance to other asteroids
                 for (Asteroid asteroid : asteroids) {
-                    float minDistance = 0.5f * scale + 0.5f * asteroid.getWidth() + minSpawnDistanceBetweenAsteroids;
+                    float minDistance = 0.5f * scale + 0.5f * asteroid.getWidthAsteroid() + minSpawnDistanceBetweenAsteroids;
                     if (Math.abs(spawnX - asteroid.getX()) < minDistance &&
                             Math.abs(spawnY - asteroid.getY()) < minDistance) {
                         positionOk = false;    // Distance too small -> invalid position
@@ -278,6 +278,9 @@ public class GameContent implements Drawable {
             }
         }
 
+    public boolean isGameOver() {
+        return getHealthSpaceShip() == 0;
     }
+}
 
 
