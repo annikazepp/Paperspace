@@ -15,6 +15,7 @@ import de.fhkl.gatav.ut.paperspace.objects.Drawable;
 import de.fhkl.gatav.ut.paperspace.objects.Explosion;
 import de.fhkl.gatav.ut.paperspace.objects.Shot;
 import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
+import de.fhkl.gatav.ut.paperspace.objects.Joystick;
 
 /**
  * Enthält Spielinhalt und Logik
@@ -36,6 +37,8 @@ public class GameContent implements Drawable {
     private ArrayList<Asteroid> asteroids;
     private Explosion explosion;
     private ArrayList<Explosion> explosions;
+
+    private Joystick joystick;
 
     Random random = new Random();
     private Context context;
@@ -80,6 +83,7 @@ public class GameContent implements Drawable {
         spaceShip = new SpaceShip(gameWidth, gameHeight, context);
         shots = new ArrayList<>();
         explosions = new ArrayList<>();
+        joystick = new Joystick(250,850,200,100);
     }
 
     //Getter-Setter
@@ -129,6 +133,9 @@ public class GameContent implements Drawable {
                 explosions.remove(i);
             }
         }
+
+        // Draw Joystick
+        joystick.draw(c);
     }
 
 
