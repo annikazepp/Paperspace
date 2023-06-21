@@ -21,6 +21,12 @@ public class GameContent implements Drawable {
     private int gameWidth; // in Konstruktor initalisiert
     private int gameHeight;
 
+    /**
+     * Treffer Asteroiden
+     */
+    private int score = 0; // Zählt Treffer
+
+
     // Objects
     private SpaceShip spaceShip;
     private ArrayList<Shot> shots;
@@ -40,7 +46,7 @@ public class GameContent implements Drawable {
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
 
 
-    private boolean isShot = false; //TODO?
+    private boolean isShot = false; //TODO kann weg?
 
     /**
      *Initialisiert Space Objekte
@@ -55,11 +61,9 @@ public class GameContent implements Drawable {
 
 
         asteroids = new ArrayList<>();
-        spaceShip = new SpaceShip(gameWidth,gameHeight,context);
+        spaceShip = new SpaceShip(gameWidth, gameHeight, context);
         shots = new ArrayList<>();
         explosions = new ArrayList<>();
-
-
     }
 
     //Getter-Setter
@@ -74,6 +78,9 @@ public class GameContent implements Drawable {
         return gameHeight;
     }
 
+    public int getScore() {
+        return score;
+    }
     //TODO Steuerung SpaceShip
 
 
@@ -82,6 +89,7 @@ public class GameContent implements Drawable {
      * @param c Zeichenfläche, auf die zu zeichnen ist
      */
     public void draw(Canvas c) { //TODO
+
         // Spaceship zeichnen
         spaceShip.draw(c);
 
@@ -169,6 +177,11 @@ public class GameContent implements Drawable {
                 if(checkShotCollision(shot, asteroid)){
                     shots.remove(shot);
                     asteroidToRemove.add(asteroid); //TODO oder damage
+                    //Explosion
+                    explosion = new Explosion(context, asteroid.getX(), asteroid.getY());
+                    explosions.add(explosion);
+                    //Punkte
+                    score++;
                 }
             }
         }
@@ -323,6 +336,10 @@ public class GameContent implements Drawable {
     public boolean isGameOver() {
         return getHealthSpaceShip() == 0;
     }
+
+
 }
+
+
 
 

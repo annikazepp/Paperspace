@@ -24,7 +24,7 @@ public class SpaceShip {
 
 
     // Constants
-    private int FULL_HEALTH = 5;
+    private static final int FULL_HEALTH = 5;
 
     // Condition
     private int health = FULL_HEALTH;
@@ -60,6 +60,13 @@ public class SpaceShip {
         return y;
     }
 
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
 
     public int getHealth() {
         return health;

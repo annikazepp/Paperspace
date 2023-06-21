@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,25 +30,21 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
      * Spielstatus verfolgen
      */
     private boolean isRunning = false;
-    private boolean gameOver = false;
+    private boolean gameOver = false; //TODO WEG?
 
     /**
-     * Hintergrund und Lebenssymbol
+     * Hintergrund, Lebenssymbol und Score
      */
     private Bitmap backgroundBitmap;
     private Bitmap healthBitmap;
+    private Paint scorePaint;
+    private static final int TEXT_SIZE = 50; //TODO WERT?
 
     /**
      * für den Spielinhalt
      */
     private GameContent gameContent;
 
-
-
-
-    public void setGameOver() {
-        this.gameOver = true;
-    }
 
     /**
      * Initialisiert Oberfläche und gameContent
@@ -63,6 +61,10 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
 
         backgroundBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
         healthBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.heart);
+
+        scorePaint = new Paint();
+        scorePaint.setColor(Color.BLUE); //TODO Farbe anpassen
+        scorePaint.setTextSize(TEXT_SIZE);
     }
 
     /**
@@ -139,6 +141,9 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
                 canvas.drawBitmap(healthBitmap,
                         gameContent.getGameWidth() - (healthBitmap.getWidth() +5) * i ,40,null);
             }
+            // Score
+            // TODO in SpaceView? Koordinaten anpassen
+            canvas.drawText("Score: " + gameContent.getScore(),  (scorePaint.getTextScaleX() + 15) ,85, scorePaint);
         }
     }
 
@@ -148,6 +153,7 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
     //TODO dauert manchmal zulange
     private void startGameOverActivity() {
         Intent gameOverIntent = new Intent(getContext(), GameOver.class);
+        gameOverIntent.putExtra("score", gameContent.getScore());
         getContext().startActivity(gameOverIntent);
         ((Activity) getContext()).finish();
 
