@@ -3,6 +3,7 @@ package de.fhkl.gatav.ut.paperspace.util;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.util.DisplayMetrics;
 
 import java.util.ArrayList;
@@ -39,8 +40,11 @@ public class GameContent implements Drawable {
     Random random = new Random();
     private Context context;
 
+    // SOUND
     private MediaPlayer mLaserShoot;
-    private MediaPlayer mExplosion;
+    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(10).build();
+    private int explosionSoundId;
+
 
     // Constants
     private final int MAX_ASTEROIDS = 10; // TODO anderer Wert?
@@ -68,8 +72,8 @@ public class GameContent implements Drawable {
         mLaserShoot = MediaPlayer.create(context, R.raw.lasershoot);
         //mLaserShoot.start();
 
-        mExplosion = MediaPlayer.create(context, R.raw.hitboom);
-
+        // Explosionssound in den Sound Pool laden
+        explosionSoundId = soundPool.load(context, R.raw.hitboom, 1);
 
 
         asteroids = new ArrayList<>();
@@ -177,7 +181,8 @@ public class GameContent implements Drawable {
                 // Explosion // TODO Explosion hier lassen? oder nur bei SHOT?
                 explosion = new Explosion(context, asteroid.getX(), asteroid.getY());
                 explosions.add(explosion);
-                mExplosion.start();
+                // Sound
+                soundPool.play(explosionSoundId, 30, 30, 1,0,1.0f);
                 //TODO "Loch im Blatt"?
             }
         }
