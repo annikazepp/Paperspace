@@ -1,5 +1,9 @@
 package de.fhkl.gatav.ut.paperspace.objects;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
 public class Joystick {
 
     private int outerCircleCenterPositionX;
