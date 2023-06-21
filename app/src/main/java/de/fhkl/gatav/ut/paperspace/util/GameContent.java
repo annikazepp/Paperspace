@@ -39,6 +39,9 @@ public class GameContent implements Drawable {
     Random random = new Random();
     private Context context;
 
+    private MediaPlayer mLaserShoot;
+    private MediaPlayer mExplosion;
+
     // Constants
     private final int MAX_ASTEROIDS = 10; // TODO anderer Wert?
     private final float ASTEROIDS_FREQUENCY = 0.5f; // zu 50% entsteht ein Asteroid
@@ -60,6 +63,13 @@ public class GameContent implements Drawable {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         this.gameWidth = displayMetrics.widthPixels;
         this.gameHeight = displayMetrics.heightPixels;
+
+        //Sounds
+        mLaserShoot = MediaPlayer.create(context, R.raw.lasershoot);
+        //mLaserShoot.start();
+
+        mExplosion = MediaPlayer.create(context, R.raw.hitboom);
+
 
 
         asteroids = new ArrayList<>();
@@ -167,6 +177,7 @@ public class GameContent implements Drawable {
                 // Explosion // TODO Explosion hier lassen? oder nur bei SHOT?
                 explosion = new Explosion(context, asteroid.getX(), asteroid.getY());
                 explosions.add(explosion);
+                mExplosion.start();
                 //TODO "Loch im Blatt"?
             }
         }
