@@ -2,11 +2,13 @@ package de.fhkl.gatav.ut.paperspace.util;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import de.fhkl.gatav.ut.paperspace.R;
 import de.fhkl.gatav.ut.paperspace.objects.Asteroid;
 import de.fhkl.gatav.ut.paperspace.objects.Drawable;
 import de.fhkl.gatav.ut.paperspace.objects.Explosion;
@@ -113,10 +115,8 @@ public class GameContent implements Drawable {
                 explosions.remove(i);
             }
         }
-
-
-
     }
+
 
     /**
      * aktualisiert Spielinhalt

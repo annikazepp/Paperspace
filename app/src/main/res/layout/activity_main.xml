@@ -19,7 +19,6 @@
         android:layout_height="42dp" />
 
 
-
     <Button
         android:id="@+id/play_button"
         style="@style/AppTheme.ButtonStyle"

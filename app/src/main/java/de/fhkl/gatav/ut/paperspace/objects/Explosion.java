@@ -3,6 +3,7 @@ package de.fhkl.gatav.ut.paperspace.objects;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 
 import de.fhkl.gatav.ut.paperspace.R;
 
@@ -38,5 +39,4 @@ public class Explosion {
     public Bitmap getExplosion(int explosionFrame){
         return explosion[explosionFrame];
     }
-
 }
