@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.RectF;
 
 import java.util.Random;
 
@@ -31,8 +30,8 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     // Constants
     public static final int MIN_SIZE = 150; //TODO ANPASSEN?
     public static final int MAX_SIZE = 300;
-    public static final int MIN_SPEED = 1;
-    public static final int MAX_SPEED = 5;
+    public static final int MIN_SPEED = 3;
+    public static final int MAX_SPEED = 6;
 
     private static final int DAMAGE = 1;
 
@@ -190,6 +189,10 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
      * @return true, wenn x oder y Koordinaten des Asteroiden außerhalb des Display ist
      */
     public boolean outOfView() {
+        //TODO Asteroiden fliegen nach draußen und werden dann gelöscht - momentan werden sie sobald sie am rand ankommen gelöscht
+        // d.h. kein Übergang -> mit code untendrunter fliegen sie raus und verschwinden dann, aber falls ein Asteroid gerade erzeugt wird
+        // "steckt" sichtbarer Asteroid fest und bewegt sich nicht
+        //return x+widthAsteroid < 0 || x > screenWidth || y+heightAsteroid < 0 || y > screenHeight;
         return x < 0 || x > screenWidth || y < 0 || y > screenHeight;
     }
 

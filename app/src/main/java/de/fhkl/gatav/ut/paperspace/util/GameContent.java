@@ -9,6 +9,7 @@ import java.util.Random;
 
 import de.fhkl.gatav.ut.paperspace.objects.Asteroid;
 import de.fhkl.gatav.ut.paperspace.objects.Drawable;
+import de.fhkl.gatav.ut.paperspace.objects.Explosion;
 import de.fhkl.gatav.ut.paperspace.objects.Shot;
 import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
 
@@ -24,6 +25,8 @@ public class GameContent implements Drawable {
     private SpaceShip spaceShip;
     private ArrayList<Shot> shots;
     private ArrayList<Asteroid> asteroids;
+    private Explosion explosion;
+    private ArrayList<Explosion> explosions;
 
     Random random = new Random();
     private Context context;
@@ -54,6 +57,7 @@ public class GameContent implements Drawable {
         asteroids = new ArrayList<>();
         spaceShip = new SpaceShip(gameWidth,gameHeight,context);
         shots = new ArrayList<>();
+        explosions = new ArrayList<>();
 
 
     }
@@ -93,6 +97,16 @@ public class GameContent implements Drawable {
         for (Asteroid asteroid : asteroids) {
             asteroid.draw(c);
         }
+
+        for(int i=0; i < explosions.size(); i++){
+            c.drawBitmap(explosions.get(i).getExplosion(explosions.get(i).explosionFrame), explosions.get(i).eX, explosions.get(i).eY, null);
+            explosions.get(i).explosionFrame++;
+            if(explosions.get(i).explosionFrame > 8){
+                explosions.remove(i);
+            }
+        }
+
+
 
     }
 
@@ -135,12 +149,17 @@ public class GameContent implements Drawable {
             }
         }
 
+
+
         // Kollision Asteroid - Spaceship
         for(Asteroid asteroid : asteroids){
             if(checkSpacshipCollision(spaceShip, asteroid)){
                 spaceShip.damage(asteroid.getDamage());
                 asteroidToRemove.add(asteroid);
-                //TODO Explosion? "Loch im Blatt"?
+                // Explosion // TODO Explosion hier lassen? oder nur bei SHOT?
+                explosion = new Explosion(context, asteroid.getX(), asteroid.getY());
+                explosions.add(explosion);
+                //TODO "Loch im Blatt"?
             }
         }
 

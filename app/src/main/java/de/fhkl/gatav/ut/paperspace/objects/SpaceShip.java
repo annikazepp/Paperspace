@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.RectF;
 
 import java.util.Random;
 
@@ -60,6 +59,7 @@ public class SpaceShip {
     public float getY() {
         return y;
     }
+
 
     public int getHealth() {
         return health;
