@@ -16,13 +16,22 @@ public class Shot {
     boolean obsolete = false; //if shot is obsolete
 
     float screentolerance; //TODO how much the shot needs to leave the screen to disappear
-
-    public Shot(Context context, float x, float y, float speedX, float speedY){
+    public Shot(int screenWidth, int screenHeight,Context context, float x, float y, float speedX, float speedY){
         shotBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_purple);
         this.x = x;
         this.y = y;
         this.speedX = speedX;
         this.speedY = speedY;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        //setze screentolerance auf höchsten Wert + 10%
+        if(this.screenHeight>this.screenWidth){
+            this.screentolerance = this.screenHeight + this.screenHeight/100*10;
+        }
+        else{
+            this.screentolerance = this.screenWidth + this.screenWidth/100*10;
+        }
+
     }
     public float getX() {
         return x;
@@ -53,7 +62,7 @@ public class Shot {
             obsolete = true;
         }
 
-        if (y < 0-screentolerance || y > screenHeight-screentolerance) {
+        if (y < 0-screentolerance || y > screenHeight+screentolerance) {
             obsolete = true;
         }
     }
