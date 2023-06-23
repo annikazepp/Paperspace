@@ -9,6 +9,8 @@ import java.util.Random;
 
 import de.fhkl.gatav.ut.paperspace.R;
 
+
+
 public class SpaceShip {
     //TODO eventuell abstrakte Klasse erzeugen
 
@@ -25,6 +27,7 @@ public class SpaceShip {
 
     // Constants
     private static final int FULL_HEALTH = 5;
+    private static final int MAX_SPEED = 1;
 
     // Condition
     private int health = FULL_HEALTH;
@@ -105,4 +108,21 @@ public class SpaceShip {
     } //TODO gibt es möglichkeit?
 
 
+    public void update(float joystickX, float joystickY) {
+        // Hier können Sie die Logik für die Bewegung des Raumschiffs basierend auf den Joystick-Eingaben implementieren
+        // Beispiel: Aktualisieren der Geschwindigkeit basierend auf Joystick-Eingaben
+        speed = joystickY * MAX_SPEED;
+
+        // Beispiel: Aktualisieren der Position basierend auf Geschwindigkeit und Joystick-Eingaben
+        x += joystickX * speed;
+        y += joystickY * speed;
+    }
+
+    public float getPositionX() {
+        return x;
+    }
+
+    public float getPositionY() {
+        return y;
+    }
 }

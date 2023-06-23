@@ -83,7 +83,9 @@ public class GameContent implements Drawable {
         spaceShip = new SpaceShip(gameWidth, gameHeight, context);
         shots = new ArrayList<>();
         explosions = new ArrayList<>();
-        joystick = new Joystick(250,850,200,100);
+        joystick = new Joystick(250,850,150,100);
+
+
     }
 
     //Getter-Setter
@@ -359,7 +361,6 @@ public class GameContent implements Drawable {
     public boolean isGameOver() {
         return getHealthSpaceShip() == 0;
     }
-
 
 }
 
