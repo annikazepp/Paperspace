@@ -9,10 +9,20 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.GestureDetectorCompat;
 
 import de.fhkl.gatav.ut.paperspace.R;
+
+import de.fhkl.gatav.ut.paperspace.objects.Joystick;
+import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
+
 
 /**
  * @class SpaceView benutzerdefinierte Ansichtsklasse, die eigentliches Spiel darstellt
@@ -39,6 +49,7 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private Bitmap healthBitmap;
     private Paint scorePaint;
     private static final int TEXT_SIZE = 50; //TODO WERT?
+    private Joystick joystick;
 
     /**
      * für den Spielinhalt
@@ -53,6 +64,8 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
      */
     public SpaceView(Context context){
         super(context);
+
+        joystick = Joystick.getJoystick();
 
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
@@ -183,5 +196,27 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
             }
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        SpaceShip player = SpaceShip.getPlayer();
+        switch(event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (joystick.isPressed((double) event.getX(), (double) event.getY())) {
+                    joystick.setIsPressed(true);
+                }
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                if(joystick.getIsPressed()){
+                    joystick.setActuator((double) event.getX(), (double) event.getY());
+                }
+                return true;
+            case MotionEvent.ACTION_UP:
+                joystick.setIsPressed(false);
+                joystick.resetActuator();
+                return true;
+        }
+        return super.onTouchEvent(event);
+    };
 }
 

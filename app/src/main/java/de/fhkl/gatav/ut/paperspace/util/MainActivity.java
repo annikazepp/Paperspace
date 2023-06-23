@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, MainGameActivity.class);
                 startActivity(intent);
             }
-
         });
 
         //Sounds

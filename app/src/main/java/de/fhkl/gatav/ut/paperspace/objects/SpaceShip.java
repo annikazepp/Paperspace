@@ -9,6 +9,7 @@ import java.util.Random;
 
 import de.fhkl.gatav.ut.paperspace.R;
 
+import de.fhkl.gatav.ut.paperspace.objects.Joystick;
 
 
 public class SpaceShip {
@@ -17,9 +18,11 @@ public class SpaceShip {
     /**
      * Eigenschaften der Klasse SpaceShip
      */
+    private static SpaceShip player;
     private float x,y; // Koordinaten des Asteroiden
     private float speed; //Geschwindigkeit SpaceShip
     private float width, height;  //Breite und Höhe Spaceship
+    private Joystick joystick;
 
     //Bitmap
     private Bitmap spaceshipBitmap;
@@ -38,8 +41,18 @@ public class SpaceShip {
     private Random random = new Random();
     private int screenWidth, screenHeight; // Bildschirmgröße
 
+    public static void createPlayer(int screenWidth, int screenHeight, Context context) {
+        if (player != null) {
+            return;
+        }
+        player = new SpaceShip(screenWidth, screenHeight, context);
+    }
+
+    public static SpaceShip getPlayer() {
+        return player;
+    }
     // Constructor
-    public SpaceShip(int screenWidth, int screenHeight, Context context){
+    private SpaceShip(int screenWidth, int screenHeight, Context context){
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
@@ -53,6 +66,8 @@ public class SpaceShip {
 
         this.height = getHeight();
         this.width = getWidth();
+
+        this.joystick = joystick;
     }
 
     //Getter-Setter

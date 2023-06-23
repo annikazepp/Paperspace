@@ -4,7 +4,16 @@ import android.graphics.Paint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 
+import de.fhkl.gatav.ut.paperspace.util.GameContent;
+
 public class Joystick {
+
+    private static Joystick joystick = new Joystick(250,850,150,80);
+
+    public static Joystick getJoystick() {
+        return joystick;
+    }
+
     private int outerCircleRadius;
     private int innerCircleRadius;
     private int outerCircleCenterPositionX;
@@ -17,7 +26,7 @@ public class Joystick {
     private boolean isPressed = false;
     private double actuatorX;
     private double actuatorY;
-    public Joystick( int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius){
+    private Joystick( int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius){
         //outer and inner circle of the joystick
         outerCircleCenterPositionX = centerPositionX;
         outerCircleCenterPositionY = centerPositionY;
@@ -54,7 +63,7 @@ public class Joystick {
     public void update(){
         updateInnerCirclePosition();
     }
-    public void updateInnerCirclePosition(){
+    private void updateInnerCirclePosition(){
         innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + actuatorX*outerCircleRadius);
         innerCircleCenterPositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
 

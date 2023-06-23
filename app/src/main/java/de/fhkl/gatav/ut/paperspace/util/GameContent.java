@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,6 +18,7 @@ import de.fhkl.gatav.ut.paperspace.objects.Explosion;
 import de.fhkl.gatav.ut.paperspace.objects.Shot;
 import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
 import de.fhkl.gatav.ut.paperspace.objects.Joystick;
+import de.fhkl.gatav.ut.paperspace.objects.Hole;
 
 /**
  * Enthält Spielinhalt und Logik
@@ -37,11 +40,12 @@ public class GameContent implements Drawable {
     private ArrayList<Asteroid> asteroids;
     private Explosion explosion;
     private ArrayList<Explosion> explosions;
-
     private Joystick joystick;
 
     Random random = new Random();
     private Context context;
+    private Hole hole;
+    private ArrayList<Hole>holes;
 
     // SOUND
     private MediaPlayer mLaserShoot;
@@ -56,7 +60,7 @@ public class GameContent implements Drawable {
     private final float asteroidMaxScale = 1.0f; //TODO WERT?
     private final float minSpawnDistanceToPlayer = 1.5f; //TODO WERT?
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
-
+    private final float HOLE_FREQUENCY = 0.3f;
 
     private boolean isShot = false; //TODO kann weg?
 
@@ -78,13 +82,13 @@ public class GameContent implements Drawable {
         // Explosionssound in den Sound Pool laden
         explosionSoundId = soundPool.load(context, R.raw.hitboom, 1);
 
-
         asteroids = new ArrayList<>();
-        spaceShip = new SpaceShip(gameWidth, gameHeight, context);
+        SpaceShip.createPlayer(gameWidth, gameHeight, context);
+        spaceShip = SpaceShip.getPlayer();
         shots = new ArrayList<>();
         explosions = new ArrayList<>();
-        joystick = new Joystick(250,850,150,100);
-
+        hole = new Hole(context);
+        holes = new ArrayList<>();
 
     }
 
@@ -111,6 +115,10 @@ public class GameContent implements Drawable {
      * @param c Zeichenfläche, auf die zu zeichnen ist
      */
     public void draw(Canvas c) { //TODO
+
+        for(Hole hole : holes) {
+            hole.draw(c);
+        }
 
         // Spaceship zeichnen
         spaceShip.draw(c);
@@ -147,6 +155,8 @@ public class GameContent implements Drawable {
      */
     @Override
     public void update() {
+
+        joystick.update();
 
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
 
@@ -193,6 +203,7 @@ public class GameContent implements Drawable {
                 // Sound
                 soundPool.play(explosionSoundId, 30, 30, 1,0,1.0f);
                 //TODO "Loch im Blatt"?
+                addHole(asteroid.getX(), asteroid.getY());
             }
         }
 
@@ -357,11 +368,22 @@ public class GameContent implements Drawable {
         }
     }
 
-
     public boolean isGameOver() {
         return getHealthSpaceShip() == 0;
     }
 
+    /**
+     Zu 30% wird ein Loch hinzugefügt
+     @param x x-Koordinate des Asteroiden
+     @param y y-Koordinate des Asteroiden
+     */
+    private void addHole(float x, float y) {
+        if (Math.random() <= HOLE_FREQUENCY) {
+            hole = new Hole(context);
+            holes.add(hole);
+            hole.setPosition(x, y);
+        }
+    }
 }
 
 
