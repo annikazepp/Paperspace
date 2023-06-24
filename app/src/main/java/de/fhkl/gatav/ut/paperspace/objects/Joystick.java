@@ -26,7 +26,7 @@ public class Joystick {
     private boolean isPressed = false;
     private double actuatorX;
     private double actuatorY;
-    private Joystick( int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius){
+    public Joystick(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius){
         //outer and inner circle of the joystick
         outerCircleCenterPositionX = centerPositionX;
         outerCircleCenterPositionY = centerPositionY;
