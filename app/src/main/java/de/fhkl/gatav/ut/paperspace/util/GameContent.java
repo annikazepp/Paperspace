@@ -1,6 +1,7 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -217,6 +218,7 @@ public class GameContent implements Drawable {
 
                     if (asteroid.collidesWith(otherAsteroid)) {
                         asteroid.bounceOff(otherAsteroid);
+                        //asteroid.rotateAsteroid();
                     }
                 }
             }

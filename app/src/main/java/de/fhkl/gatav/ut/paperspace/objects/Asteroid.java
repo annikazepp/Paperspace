@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.RectF;
 
 import java.util.Random;
@@ -217,6 +219,17 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.destinationX = destX;
         this.destinationY = destY;
     }
+
+    /*
+    public void rotateAsteroid() {
+        Bitmap rotatedBitmap = Bitmap.createBitmap(asteroidBitmap.getWidth(), asteroidBitmap.getHeight(), asteroidBitmap.getConfig());
+        Canvas canvas = new Canvas(rotatedBitmap);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(15, asteroidBitmap.getWidth() / 2, asteroidBitmap.getHeight() / 2);
+        canvas.drawBitmap(asteroidBitmap, matrix, new Paint());
+        this.asteroidBitmap = rotatedBitmap;
+    }
+     */
 }
 
 

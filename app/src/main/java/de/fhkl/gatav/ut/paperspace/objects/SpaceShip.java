@@ -102,7 +102,10 @@ public class SpaceShip {
      * @param canvas Leinwand
      */
     public void draw(Canvas canvas){
+        canvas.save(); // Aktueller Zustand
+        canvas.rotate((float) rX, x + width/2, y+height/2);
         canvas.drawBitmap(spaceshipBitmap, x, y, null);
+        canvas.restore();
     }
 
     //TODO UPDATE SPACESHIP ?
@@ -111,10 +114,17 @@ public class SpaceShip {
         velocityY = joystickSteuerung.getActuatorY()*MAX_SPEED;
         x += velocityX;
         y += velocityY;
+        /*
         rotateX = joystickRotation.getActuatorX()*MAX_ROTATION;
         rotateY = joystickRotation.getActuatorX()*MAX_ROTATION;
         rX += rotateX;
         rY += rotateY;
+         */
+
+        double angle = Math.atan2(joystickRotation.getActuatorX(), -joystickRotation.getActuatorY());
+        double joysticAngle = Math.toDegrees(angle);
+        rX = joysticAngle;
+
     }
 
 
