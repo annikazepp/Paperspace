@@ -7,7 +7,7 @@ import android.graphics.Color;
 public class Joystick {
 
     private static Joystick joystickSteuerung = new Joystick(250,850,150,80);
-    private static Joystick joystickRotation = new Joystick(1950,850,150,80);
+    private static Joystick joystickRotation = new Joystick(1850,850,150,80);
 
     public static Joystick getJoystickSteuerung() {
         return joystickSteuerung;
