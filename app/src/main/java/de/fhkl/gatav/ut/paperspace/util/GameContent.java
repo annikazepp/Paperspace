@@ -107,15 +107,12 @@ public class GameContent implements Drawable {
         asteroids = new ArrayList<>();
         SpaceShip.createPlayer(gameWidth, gameHeight, context);
         spaceShip = SpaceShip.getPlayer();
-        joystick = new Joystick(250,850,150,80);
         shots = new ArrayList<>();
         explosions = new ArrayList<>();
         hole = new Hole(context);
         holes = new ArrayList<>();
 
         joystickSteuerung = Joystick.getJoystickSteuerung();
-        //joystickSteuerung = new Joystick(250,850,150,80);
-
     }
 
     //Getter-Setter
