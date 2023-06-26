@@ -6,6 +6,8 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.DisplayMetrics;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -181,6 +183,7 @@ public class GameContent implements Drawable {
     public void update() {
 
         joystickSteuerung.update();
+        SpaceShip.update(Joystick.getJoystickSteuerung());
 
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
 
