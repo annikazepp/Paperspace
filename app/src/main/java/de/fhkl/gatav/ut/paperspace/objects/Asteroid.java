@@ -18,6 +18,7 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     private float x, y; // Koordinaten des Asteroiden
     private float destinationX, destinationY; // Zielkoordinaten, zu denen sich der Asteroid bewegt
     private float speedX, speedY; // Geschwindigkeit des Asteroiden //TODO WEG?
+    private double rotX, rotY; //Rotation der Asteroiden um die eigene Achse //TODO
     private float speed; //Geschwindigkeit Asteroiden TODO ? zu const
     private float widthAsteroid, heightAsteroid; // Breite und Höhe Asteroid
 

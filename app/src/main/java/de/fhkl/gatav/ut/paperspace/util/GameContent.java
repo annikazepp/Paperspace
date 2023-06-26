@@ -186,7 +186,9 @@ public class GameContent implements Drawable {
     public void update() {
 
         joystickSteuerung.update();
-        SpaceShip.update(Joystick.getJoystickSteuerung());
+        joystickRotation.update();
+        SpaceShip.update(Joystick.getJoystickSteuerung(),Joystick.getJoystickRotation());
+
 
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
 

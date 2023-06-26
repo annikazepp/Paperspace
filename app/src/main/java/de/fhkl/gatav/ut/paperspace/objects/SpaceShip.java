@@ -18,11 +18,14 @@ public class SpaceShip {
      */
     private static SpaceShip player;
     private static float x,y; // Koordinaten des Spaceship
+    private static double rX,rY = 0; //TODO
     private float speed; //Geschwindigkeit SpaceShip
     private float width, height;  //Breite und Höhe Spaceship
 
     private static double velocityX;
     private static double velocityY;
+    private static double rotateX;
+    private static double rotateY;
 
     //Bitmap
     private Bitmap spaceshipBitmap;
@@ -31,7 +34,7 @@ public class SpaceShip {
     // Constants
 
     private static final int MAX_SPEED = 1;
-
+    private static final int MAX_ROTATION = 1;
 
 
 
@@ -103,11 +106,15 @@ public class SpaceShip {
     }
 
     //TODO UPDATE SPACESHIP ?
-    public static void update(Joystick joystickSteuerung){
+    public static void update(Joystick joystickSteuerung, Joystick joystickRotation){
         velocityX = joystickSteuerung.getActuatorX()*MAX_SPEED;
         velocityY = joystickSteuerung.getActuatorY()*MAX_SPEED;
         x += velocityX;
         y += velocityY;
+        rotateX = joystickRotation.getActuatorX()*MAX_ROTATION;
+        rotateY = joystickRotation.getActuatorX()*MAX_ROTATION;
+        rX += rotateX;
+        rY += rotateY;
     }
 
 

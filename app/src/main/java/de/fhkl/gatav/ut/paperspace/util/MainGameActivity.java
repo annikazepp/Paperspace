@@ -43,17 +43,25 @@ public class MainGameActivity extends AppCompatActivity {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         if (joystickSteuerung.isPressed((double) event.getX(), (double) event.getY())) {
-                            joystickSteuerung.setIsPressed(true);
+                            joystickSteuerung.setIsPressed(true);}
+                            if (joystickRotation.isPressed((double) event.getX(), (double) event.getY())){
+                                joystickRotation.setIsPressed(true);
                         }
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         if(joystickSteuerung.getIsPressed()){
                             joystickSteuerung.setActuator((double) event.getX(), (double) event.getY());
                         }
+                        if(joystickRotation.getIsPressed()){
+                            joystickRotation.setActuator((double) event.getX(), (double) event.getY());
+                        }
+
                         return true;
                     case MotionEvent.ACTION_UP:
                         joystickSteuerung.setIsPressed(false);
                         joystickSteuerung.resetActuator();
+                        joystickRotation.setIsPressed(false);
+                        joystickRotation.resetActuator();
                         return true;
                 }
                 return true;
