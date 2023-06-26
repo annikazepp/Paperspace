@@ -9,9 +9,6 @@ import java.util.Random;
 
 import de.fhkl.gatav.ut.paperspace.R;
 
-import de.fhkl.gatav.ut.paperspace.objects.Joystick;
-
-
 public class SpaceShip {
     //TODO eventuell abstrakte Klasse erzeugen
 
@@ -19,27 +16,32 @@ public class SpaceShip {
      * Eigenschaften der Klasse SpaceShip
      */
     private static SpaceShip player;
-    private float x,y; // Koordinaten des Asteroiden
+    private float x,y; // Koordinaten des Spaceship
     private float speed; //Geschwindigkeit SpaceShip
     private float width, height;  //Breite und Höhe Spaceship
-    private Joystick joystick;
 
     //Bitmap
     private Bitmap spaceshipBitmap;
 
 
     // Constants
-    private static final int FULL_HEALTH = 5;
-    private static final int MAX_SPEED = 1;
 
-    // Condition
-    private int health = FULL_HEALTH;
+    private static final int MAX_SPEED = 5;
+
+
 
 
 
 
     private Random random = new Random();
     private int screenWidth, screenHeight; // Bildschirmgröße
+
+    /**
+     * 1 Spieler wird erzeugt
+     * @param screenWidth
+     * @param screenHeight
+     * @param context
+     */
 
     public static void createPlayer(int screenWidth, int screenHeight, Context context) {
         if (player != null) {
@@ -51,6 +53,9 @@ public class SpaceShip {
     public static SpaceShip getPlayer() {
         return player;
     }
+
+
+
     // Constructor
     private SpaceShip(int screenWidth, int screenHeight, Context context){
 
@@ -66,8 +71,6 @@ public class SpaceShip {
 
         this.height = getHeight();
         this.width = getWidth();
-
-        this.joystick = joystick;
     }
 
     //Getter-Setter
@@ -78,17 +81,7 @@ public class SpaceShip {
         return y;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
 
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public int getHealth() {
-        return health;
-    }
 
     public float getWidth() {
         return spaceshipBitmap.getWidth();
@@ -110,34 +103,6 @@ public class SpaceShip {
 
     }
 
-    /**
-     * Schaden durch treffer eines Asteroiden wird von Leben abgezogen
-     * @param dmg Schaden des Asteroiden
-     */
-    public void damage(double dmg){
-        health -=dmg;
-    }
 
-    public void resetHealth(){
-        health = FULL_HEALTH;
-    } //TODO gibt es möglichkeit?
-
-
-    public void update(float joystickX, float joystickY) {
-        // Hier können Sie die Logik für die Bewegung des Raumschiffs basierend auf den Joystick-Eingaben implementieren
-        // Beispiel: Aktualisieren der Geschwindigkeit basierend auf Joystick-Eingaben
-        speed = joystickY * MAX_SPEED;
-
-        // Beispiel: Aktualisieren der Position basierend auf Geschwindigkeit und Joystick-Eingaben
-        x += joystickX * speed;
-        y += joystickY * speed;
-    }
-
-    public float getPositionX() {
-        return x;
-    }
-
-    public float getPositionY() {
-        return y;
-    }
 }
+

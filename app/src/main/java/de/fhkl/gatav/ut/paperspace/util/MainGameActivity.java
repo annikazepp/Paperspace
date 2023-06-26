@@ -1,7 +1,5 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,7 +7,6 @@ import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import de.fhkl.gatav.ut.paperspace.objects.Joystick;
 import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
 
 /**
@@ -17,18 +14,17 @@ import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
  */
 public class MainGameActivity extends AppCompatActivity {
     private SpaceView spaceView;
-    private Joystick joystick;
+    private Joystick joystickSteuerung;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        joystickSteuerung = Joystick.getJoystickSteuerung();
+
         /**
          * Ansicht des Hauptspiels wird angezeigt
          */
-
-        joystick = Joystick.getJoystick();
-
         RelativeLayout layout = new RelativeLayout(this);
         setContentView(layout);
 
@@ -44,18 +40,18 @@ public class MainGameActivity extends AppCompatActivity {
                 SpaceShip player = SpaceShip.getPlayer();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        if (joystick.isPressed((double) event.getX(), (double) event.getY())) {
-                            joystick.setIsPressed(true);
+                        if (joystickSteuerung.isPressed((double) event.getX(), (double) event.getY())) {
+                            joystickSteuerung.setIsPressed(true);
                         }
                         return true;
                     case MotionEvent.ACTION_MOVE:
-                        if(joystick.getIsPressed()){
-                            joystick.setActuator((double) event.getX(), (double) event.getY());
+                        if(joystickSteuerung.getIsPressed()){
+                            joystickSteuerung.setActuator((double) event.getX(), (double) event.getY());
                         }
                         return true;
                     case MotionEvent.ACTION_UP:
-                        joystick.setIsPressed(false);
-                        joystick.resetActuator();
+                        joystickSteuerung.setIsPressed(false);
+                        joystickSteuerung.resetActuator();
                         return true;
                 }
                 return true;
@@ -64,8 +60,21 @@ public class MainGameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
+    protected void onRestart(){
         super.onRestart();
     }
+    /**
+     @Override
+     protected void onResume() {
+     super.onResume();
+     spaceView.resume();
+     }
+
+     @Override
+     protected void onPause() {
+     super.onPause();
+     spaceView.pause();
+     }
+     */
 }
 

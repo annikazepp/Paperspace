@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.RectF;
 
 import java.util.Random;
 
@@ -135,25 +136,25 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
     //TODO könnte noch Verbessert werden
     public void bounceOff(Asteroid otherAsteroid) {
 
-            // Berechnen der Richtung vom aktuellen Asteroiden zum anderen Asteroiden
-            float directionX = otherAsteroid.x - this.x;
-            float directionY = otherAsteroid.y - this.y;
+        // Berechnen der Richtung vom aktuellen Asteroiden zum anderen Asteroiden
+        float directionX = otherAsteroid.x - this.x;
+        float directionY = otherAsteroid.y - this.y;
 
-            // Berechnen der Distanz zwischen den beiden Asteroiden
-            float distance = (float) Math.sqrt(directionX * directionX + directionY * directionY);
+        // Berechnen der Distanz zwischen den beiden Asteroiden
+        float distance = (float) Math.sqrt(directionX * directionX + directionY * directionY);
 
-            // Berechnen der normalisierten Richtungswerte
-            float normalizedDirectionX = directionX / distance;
-            float normalizedDirectionY = directionY / distance;
+        // Berechnen der normalisierten Richtungswerte
+        float normalizedDirectionX = directionX / distance;
+        float normalizedDirectionY = directionY / distance;
 
-            // Berechnen der Impulsgröße basierend auf der Masse der Asteroiden
-            float impulseMagnitude = 5.0f / (this.getWidthAsteroid() + otherAsteroid.getWidthAsteroid());
+        // Berechnen der Impulsgröße basierend auf der Masse der Asteroiden
+        float impulseMagnitude = 5.0f / (this.getWidthAsteroid() + otherAsteroid.getWidthAsteroid());
 
-            // Anwenden des Impulses auf die Positionen der Asteroiden
-            this.x -= impulseMagnitude * otherAsteroid.getWidthAsteroid() * normalizedDirectionX;
-            this.y -= impulseMagnitude * otherAsteroid.getHeightAsteroid() * normalizedDirectionY;
-            otherAsteroid.x += impulseMagnitude * this.getWidthAsteroid() * normalizedDirectionX;
-            otherAsteroid.y += impulseMagnitude * this.getHeightAsteroid() * normalizedDirectionY;
+        // Anwenden des Impulses auf die Positionen der Asteroiden
+        this.x -= impulseMagnitude * otherAsteroid.getWidthAsteroid() * normalizedDirectionX;
+        this.y -= impulseMagnitude * otherAsteroid.getHeightAsteroid() * normalizedDirectionY;
+        otherAsteroid.x += impulseMagnitude * this.getWidthAsteroid() * normalizedDirectionX;
+        otherAsteroid.y += impulseMagnitude * this.getHeightAsteroid() * normalizedDirectionY;
     }
 
     /**
@@ -216,4 +217,5 @@ public class Asteroid implements de.fhkl.gatav.ut.paperspace.objects.Drawable {
         this.destinationY = destY;
     }
 }
+
 

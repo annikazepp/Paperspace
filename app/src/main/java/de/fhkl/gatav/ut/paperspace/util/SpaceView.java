@@ -9,20 +9,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.GestureDetectorCompat;
 
 import de.fhkl.gatav.ut.paperspace.R;
-
-import de.fhkl.gatav.ut.paperspace.objects.Joystick;
-import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
-
 
 /**
  * @class SpaceView benutzerdefinierte Ansichtsklasse, die eigentliches Spiel darstellt
@@ -43,19 +33,25 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private boolean gameOver = false; //TODO WEG?
 
     /**
+     * Hintergrund und Lebenssymbol
      * Hintergrund, Lebenssymbol und Score
      */
     private Bitmap backgroundBitmap;
     private Bitmap healthBitmap;
     private Paint scorePaint;
     private static final int TEXT_SIZE = 50; //TODO WERT?
-    private Joystick joystick;
 
     /**
      * für den Spielinhalt
      */
     private GameContent gameContent;
 
+
+
+
+    public void setGameOver() {
+        this.gameOver = true;
+    }
 
     /**
      * Initialisiert Oberfläche und gameContent
@@ -64,8 +60,6 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
      */
     public SpaceView(Context context){
         super(context);
-
-        joystick = Joystick.getJoystick();
 
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
@@ -149,13 +143,12 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
             gameContent.draw(canvas);
 
             // Lebenssymbole
-           int life = gameContent.getHealthSpaceShip();
+            int life = gameContent.getHealthSpaceShip();
             for(int i = life; i>=1; i--){
                 canvas.drawBitmap(healthBitmap,
                         gameContent.getGameWidth() - (healthBitmap.getWidth() +5) * i ,40,null);
             }
-            // Score
-            // TODO in SpaceView? Koordinaten anpassen
+            // Score TODO Koordinaten anpassen?
             canvas.drawText("Score: " + gameContent.getScore(),  (scorePaint.getTextScaleX() + 15) ,85, scorePaint);
         }
     }
@@ -192,31 +185,11 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
                 }
             }
             if(gameContent.isGameOver()) {
+                Joystick.getJoystickSteuerung().resetActuator();
                 startGameOverActivity();
             }
         }
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        SpaceShip player = SpaceShip.getPlayer();
-        switch(event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (joystick.isPressed((double) event.getX(), (double) event.getY())) {
-                    joystick.setIsPressed(true);
-                }
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                if(joystick.getIsPressed()){
-                    joystick.setActuator((double) event.getX(), (double) event.getY());
-                }
-                return true;
-            case MotionEvent.ACTION_UP:
-                joystick.setIsPressed(false);
-                joystick.resetActuator();
-                return true;
-        }
-        return super.onTouchEvent(event);
-    };
 }
+
 

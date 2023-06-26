@@ -1,17 +1,15 @@
-package de.fhkl.gatav.ut.paperspace.objects;
+package de.fhkl.gatav.ut.paperspace.util;
 
 import android.graphics.Paint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 
-import de.fhkl.gatav.ut.paperspace.util.GameContent;
-
 public class Joystick {
 
-    private static Joystick joystick = new Joystick(250,850,150,80);
+    private static Joystick joystickSteuerung = new Joystick(250,850,150,80);
 
-    public static Joystick getJoystick() {
-        return joystick;
+    public static Joystick getJoystickSteuerung() {
+        return joystickSteuerung;
     }
 
     private int outerCircleRadius;
@@ -26,7 +24,7 @@ public class Joystick {
     private boolean isPressed = false;
     private double actuatorX;
     private double actuatorY;
-    private Joystick( int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius){
+    public Joystick(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius){
         //outer and inner circle of the joystick
         outerCircleCenterPositionX = centerPositionX;
         outerCircleCenterPositionY = centerPositionY;
@@ -64,10 +62,22 @@ public class Joystick {
         updateInnerCirclePosition();
     }
     private void updateInnerCirclePosition(){
-        innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + actuatorX*outerCircleRadius);
-        innerCircleCenterPositionY = (int) (outerCircleCenterPositionY + actuatorY*outerCircleRadius);
+        innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + actuatorX * outerCircleRadius);
+        innerCircleCenterPositionY = (int) (outerCircleCenterPositionY + actuatorY * outerCircleRadius);
 
+        // Calculate the distance between the inner circle and the outer circle center
+        double distance = Math.sqrt(Math.pow(innerCircleCenterPositionX - outerCircleCenterPositionX, 2) +
+              Math.pow(innerCircleCenterPositionY - outerCircleCenterPositionY, 2));
+
+        // If the distance exceeds the outer circle radius, normalize the position
+        if (distance > outerCircleRadius) {
+            double ratio = outerCircleRadius / distance;
+            innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + (innerCircleCenterPositionX - outerCircleCenterPositionX) * ratio);
+            innerCircleCenterPositionY = (int) (outerCircleCenterPositionY + (innerCircleCenterPositionY - outerCircleCenterPositionY) * ratio);
+        }
     }
+
+
     public boolean isPressed(double touchPositionX, double touchPositionY){
         joystickCenterToTouchDistance = Math.sqrt(
                 Math.pow(outerCircleCenterPositionX - touchPositionX, 2) +
@@ -92,8 +102,8 @@ public class Joystick {
             actuatorX = deltaX / outerCircleRadius;
             actuatorY = deltaY / outerCircleRadius;
         } else {
-            actuatorX = deltaX / deltaDistance;
-            actuatorY = deltaY / deltaDistance;
+            actuatorX = deltaX / deltaDistance * outerCircleRadius;
+            actuatorY = deltaY / deltaDistance * outerCircleRadius;
         }
     }
     public void resetActuator(){

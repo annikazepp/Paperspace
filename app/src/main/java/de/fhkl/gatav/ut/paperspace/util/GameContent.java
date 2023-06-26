@@ -5,8 +5,6 @@ import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,10 +13,9 @@ import de.fhkl.gatav.ut.paperspace.R;
 import de.fhkl.gatav.ut.paperspace.objects.Asteroid;
 import de.fhkl.gatav.ut.paperspace.objects.Drawable;
 import de.fhkl.gatav.ut.paperspace.objects.Explosion;
+import de.fhkl.gatav.ut.paperspace.objects.Hole;
 import de.fhkl.gatav.ut.paperspace.objects.Shot;
 import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
-import de.fhkl.gatav.ut.paperspace.objects.Joystick;
-import de.fhkl.gatav.ut.paperspace.objects.Hole;
 
 /**
  * Enthält Spielinhalt und Logik
@@ -40,16 +37,18 @@ public class GameContent implements Drawable {
     private ArrayList<Asteroid> asteroids;
     private Explosion explosion;
     private ArrayList<Explosion> explosions;
-    private Joystick joystick;
-
-    Random random = new Random();
-    private Context context;
     private Hole hole;
     private ArrayList<Hole>holes;
 
+    private Joystick joystickSteuerung;
+
+    Random random = new Random();
+    private Context context;
+
     // SOUND
     private MediaPlayer mLaserShoot;
-    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(10).build();
+    private MediaPlayer mExplosion;
+    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(5).build();
     private int explosionSoundId;
 
 
@@ -61,6 +60,26 @@ public class GameContent implements Drawable {
     private final float minSpawnDistanceToPlayer = 1.5f; //TODO WERT?
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
     private final float HOLE_FREQUENCY = 0.3f;
+
+    private static final int FULL_HEALTH = 5; // LEBEN SPACESHIP
+
+    // Condition
+    private int healthSpaceship = FULL_HEALTH;
+
+    /**
+     * Schaden durch treffer eines Asteroiden wird von Leben abgezogen
+     * @param dmg Schaden des Asteroiden
+     */
+    public void damage(double dmg){
+        healthSpaceship -=dmg;
+    }
+
+    public void resetHealth(){
+        healthSpaceship = FULL_HEALTH;
+    } //TODO gibt es möglichkeit?
+
+
+
 
     private boolean isShot = false; //TODO kann weg?
 
@@ -79,8 +98,11 @@ public class GameContent implements Drawable {
         mLaserShoot = MediaPlayer.create(context, R.raw.lasershoot);
         //mLaserShoot.start();
 
+        mExplosion = MediaPlayer.create(context, R.raw.hitboom);
+
         // Explosionssound in den Sound Pool laden
         explosionSoundId = soundPool.load(context, R.raw.hitboom, 1);
+
 
         asteroids = new ArrayList<>();
         SpaceShip.createPlayer(gameWidth, gameHeight, context);
@@ -90,11 +112,14 @@ public class GameContent implements Drawable {
         hole = new Hole(context);
         holes = new ArrayList<>();
 
+        joystickSteuerung = Joystick.getJoystickSteuerung();
+        //joystickSteuerung = new Joystick(250,850,150,80);
+
     }
 
     //Getter-Setter
     public int getHealthSpaceShip(){
-        return spaceShip.getHealth();
+        return healthSpaceship;
     }
     public int getGameWidth() {
         return gameWidth;
@@ -116,6 +141,8 @@ public class GameContent implements Drawable {
      */
     public void draw(Canvas c) { //TODO
 
+
+
         for(Hole hole : holes) {
             hole.draw(c);
         }
@@ -125,10 +152,10 @@ public class GameContent implements Drawable {
 
         //TODO Draw Shot. Dem Shot muss ein Bewegungsvektor mit festgelegter Länge (speed) übergeben werden
         /**
-        Shot shot = new Shot(context, spaceShip.getWidth()/2, spaceShip.getY());
-        shots.add(shot);
-        isShot = true;
-        shot.draw(c);
+         Shot shot = new Shot(context, spaceShip.getWidth()/2, spaceShip.getY());
+         shots.add(shot);
+         isShot = true;
+         shot.draw(c);
          */
 
         // Draw Asteroids
@@ -144,8 +171,7 @@ public class GameContent implements Drawable {
             }
         }
 
-        // Draw Joystick
-        joystick.draw(c);
+        joystickSteuerung.draw(c);
     }
 
 
@@ -156,7 +182,7 @@ public class GameContent implements Drawable {
     @Override
     public void update() {
 
-        joystick.update();
+        joystickSteuerung.update();
 
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
 
@@ -195,11 +221,12 @@ public class GameContent implements Drawable {
         // Kollision Asteroid - Spaceship
         for(Asteroid asteroid : asteroids){
             if(checkSpacshipCollision(spaceShip, asteroid)){
-                spaceShip.damage(asteroid.getDamage());
+                damage(asteroid.getDamage());
                 asteroidToRemove.add(asteroid);
                 // Explosion // TODO Explosion hier lassen? oder nur bei SHOT?
                 explosion = new Explosion(context, asteroid.getX(), asteroid.getY());
                 explosions.add(explosion);
+                mExplosion.start();
                 // Sound
                 soundPool.play(explosionSoundId, 30, 30, 1,0,1.0f);
                 //TODO "Loch im Blatt"?
@@ -275,8 +302,8 @@ public class GameContent implements Drawable {
         if (MAX_ASTEROIDS > asteroids.size()) {
             // Wahrscheinlichkeit, dass Asteroiden erzeugt werden //TODO SINNVOLL?
             if (Math.random() > ASTEROIDS_FREQUENCY) {
-             return;
-             }
+                return;
+            }
 
             for (int i = 0; i < MAX_ASTEROIDS - asteroids.size(); i++) {
                 float scale = (float) Math.random() * (asteroidMaxScale - asteroidMinScale) + asteroidMinScale;
@@ -367,6 +394,7 @@ public class GameContent implements Drawable {
             }
         }
     }
+
 
     public boolean isGameOver() {
         return getHealthSpaceShip() == 0;
