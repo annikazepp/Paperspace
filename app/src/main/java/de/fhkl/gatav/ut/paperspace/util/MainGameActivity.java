@@ -39,7 +39,6 @@ public class MainGameActivity extends AppCompatActivity {
         myView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-                SpaceShip player = SpaceShip.getPlayer();
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         if (joystickSteuerung.isPressed((double) event.getX(), (double) event.getY())) {
@@ -61,7 +60,8 @@ public class MainGameActivity extends AppCompatActivity {
                         joystickSteuerung.setIsPressed(false);
                         joystickSteuerung.resetActuator();
                         joystickRotation.setIsPressed(false);
-                        joystickRotation.resetActuator();
+                        //joystickRotation.resetActuator(); // TODO PROBLEM, wenn ma los lässt resetet sich auch Richtung des spaceships
+                        // TODO aber so ist joystick auch noch in der Richtung (also nicht in der mitte)
                         return true;
                 }
                 return true;

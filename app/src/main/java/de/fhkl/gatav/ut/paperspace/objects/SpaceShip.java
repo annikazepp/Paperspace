@@ -17,8 +17,8 @@ public class SpaceShip {
      * Eigenschaften der Klasse SpaceShip
      */
     private static SpaceShip player;
-    private static float x,y; // Koordinaten des Spaceship
-    private static double rX,rY = 0; //TODO
+    private static float x, y; // Koordinaten des Spaceship
+    private static double rX, rY = 0; //TODO
     private float speed; //Geschwindigkeit SpaceShip
     private float width, height;  //Breite und Höhe Spaceship
 
@@ -37,14 +37,12 @@ public class SpaceShip {
     private static final int MAX_ROTATION = 1;
 
 
-
-
-
     private Random random = new Random();
     private int screenWidth, screenHeight; // Bildschirmgröße
 
     /**
      * 1 Spieler wird erzeugt
+     *
      * @param screenWidth
      * @param screenHeight
      * @param context
@@ -62,16 +60,15 @@ public class SpaceShip {
     }
 
 
-
     // Constructor
-    private SpaceShip(int screenWidth, int screenHeight, Context context){
+    private SpaceShip(int screenWidth, int screenHeight, Context context) {
 
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
 
         // Start in der Mitte des Bildschirms
-        this.x = screenWidth/2;
-        this.y = screenHeight/2;
+        this.x = screenWidth / 2;
+        this.y = screenHeight / 2;
         this.speed = 10; //TODO anderer Wert?
 
         spaceshipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship2);
@@ -84,34 +81,36 @@ public class SpaceShip {
     public float getX() {
         return x;
     }
+
     public float getY() {
         return y;
     }
 
 
-
     public float getWidth() {
         return spaceshipBitmap.getWidth();
     }
+
     public float getHeight() {
         return spaceshipBitmap.getHeight();
     }
 
     /**
      * Zeichnet Raumschiff auf
+     *
      * @param canvas Leinwand
      */
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
         canvas.save(); // Aktueller Zustand
-        canvas.rotate((float) rX, x + width/2, y+height/2);
+        canvas.rotate((float) rX, x + width / 2, y + height / 2);
         canvas.drawBitmap(spaceshipBitmap, x, y, null);
         canvas.restore();
     }
 
     //TODO UPDATE SPACESHIP ?
-    public static void update(Joystick joystickSteuerung, Joystick joystickRotation){
-        velocityX = joystickSteuerung.getActuatorX()*MAX_SPEED;
-        velocityY = joystickSteuerung.getActuatorY()*MAX_SPEED;
+    public static void update(Joystick joystickSteuerung, Joystick joystickRotation) {
+        velocityX = joystickSteuerung.getActuatorX() * MAX_SPEED;
+        velocityY = joystickSteuerung.getActuatorY() * MAX_SPEED;
         x += velocityX;
         y += velocityY;
         /*
@@ -125,8 +124,19 @@ public class SpaceShip {
         double joysticAngle = Math.toDegrees(angle);
         rX = joysticAngle;
 
+
+        // Überprüfen, ob das Spaceship den Bildschirmrand erreicht hat
+        if (x < 0) {
+            x = 0;
+        } else if (x > getPlayer().screenWidth - getPlayer().width) {
+            x = getPlayer().screenWidth - getPlayer().width;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if (y > getPlayer().screenHeight - getPlayer().width) {
+            y = getPlayer().screenHeight - getPlayer().width;
+        }
     }
-
-
 }
 

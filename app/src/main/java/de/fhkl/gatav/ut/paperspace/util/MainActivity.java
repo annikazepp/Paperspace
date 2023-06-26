@@ -1,5 +1,6 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
+
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                  */
                 Intent intent = new Intent(MainActivity.this, MainGameActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

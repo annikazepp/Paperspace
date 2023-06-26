@@ -186,6 +186,7 @@ public class SpaceView extends SurfaceView implements SurfaceHolder.Callback, Ru
             }
             if(gameContent.isGameOver()) {
                 Joystick.getJoystickSteuerung().resetActuator();
+                Joystick.getJoystickRotation().resetActuator();
                 startGameOverActivity();
             }
         }
