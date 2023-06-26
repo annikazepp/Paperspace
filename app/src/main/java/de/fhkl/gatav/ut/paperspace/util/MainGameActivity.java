@@ -15,12 +15,14 @@ import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
 public class MainGameActivity extends AppCompatActivity {
     private SpaceView spaceView;
     private Joystick joystickSteuerung;
+    private Joystick joystickRotation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         joystickSteuerung = Joystick.getJoystickSteuerung();
+        joystickRotation = Joystick.getJoystickRotation();
 
         /**
          * Ansicht des Hauptspiels wird angezeigt

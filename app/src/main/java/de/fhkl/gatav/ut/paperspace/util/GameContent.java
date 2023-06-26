@@ -43,6 +43,7 @@ public class GameContent implements Drawable {
     private ArrayList<Hole>holes;
 
     private Joystick joystickSteuerung;
+    private Joystick joystickRotation;
 
     Random random = new Random();
     private Context context;
@@ -115,6 +116,7 @@ public class GameContent implements Drawable {
         holes = new ArrayList<>();
 
         joystickSteuerung = Joystick.getJoystickSteuerung();
+        joystickRotation = Joystick.getJoystickRotation();
     }
 
     //Getter-Setter
@@ -172,6 +174,7 @@ public class GameContent implements Drawable {
         }
 
         joystickSteuerung.draw(c);
+        joystickRotation.draw(c);
     }
 
 
