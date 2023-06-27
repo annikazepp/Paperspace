@@ -44,8 +44,9 @@ public class GameOver extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GameOver.this, MainActivity.class);
-                startActivity(intent); //Zurück zum StartBildschirm
+                Intent intent = new Intent(GameOver.this, MainGameActivity.class);
+                startActivity(intent); //Zurück zum Spiel
+                finish();
             }
 
         });
@@ -54,7 +55,11 @@ public class GameOver extends AppCompatActivity {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishAffinity(); //CLOSE APP
+                Intent intent = new Intent(GameOver.this, MainActivity.class);
+                startActivity(intent); //Zurück zum StartBildschirm
+                finish();
+
+                //finishAffinity(); //CLOSE APP
             }
 
         });
