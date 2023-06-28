@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -161,6 +162,10 @@ public class GameContent implements Drawable {
          shot.draw(c);
          */
 
+        for(Shot shot : shots){
+            shot.draw(c);
+        }
+
         // Draw Asteroids
         for (Asteroid asteroid : asteroids) {
             asteroid.draw(c);
@@ -189,8 +194,12 @@ public class GameContent implements Drawable {
         joystickSteuerung.update();
         joystickRotation.update();
         SpaceShip.update(Joystick.getJoystickSteuerung(),Joystick.getJoystickRotation());
+        double test = joystickRotation.getActuatorX();
+        //TODO Cooldown
+        if(joystickRotation.getActuatorX()!=0 || joystickRotation.getActuatorY()!=0){
+            shoot(joystickRotation);
 
-
+        }
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
 
         for(Shot shot:shots){
@@ -276,6 +285,19 @@ public class GameContent implements Drawable {
         for (Asteroid asteroid : asteroids) {
             asteroid.update();
         }
+    }
+
+
+    public void shoot(Joystick joystickRotation){
+        double xDirection = joystickRotation.getActuatorX();
+        double yDirection = joystickRotation.getActuatorY();
+
+        Shot shot = new Shot(10,10,context,spaceShip.getX(),spaceShip.getY(),xDirection,yDirection);
+        shots.add(shot);
+        Log.d("CREATIOM", "Shots: "+shots.size());
+
+
+
     }
 
     /**
