@@ -68,6 +68,8 @@ public class GameContent implements Drawable {
 
     private static final int FULL_HEALTH = 5; // LEBEN SPACESHIP
 
+    //counts the fps for shoot cooldown
+    int fps_count = 0;
     // Condition
     private int healthSpaceship = FULL_HEALTH;
 
@@ -190,17 +192,19 @@ public class GameContent implements Drawable {
      */
     @Override
     public void update() {
-
+        fps_count++;
         joystickSteuerung.update();
         joystickRotation.update();
         SpaceShip.update(Joystick.getJoystickSteuerung(),Joystick.getJoystickRotation());
         double test = joystickRotation.getActuatorX();
-        //TODO Cooldown
         if(joystickRotation.getActuatorX()!=0 || joystickRotation.getActuatorY()!=0){
-            shoot(joystickRotation);
-
+            if(fps_count>20) {
+                fps_count = 0;
+                shoot(joystickRotation);
+            }
         }
         ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
+        ArrayList<Shot> shotsToRemove = new ArrayList<>();
 
         for(Shot shot:shots){
             //move shots
@@ -252,10 +256,10 @@ public class GameContent implements Drawable {
         }
 
         //Kollision Shot - Asteroid
-        for(Shot shot : shots){
-            for(Asteroid asteroid : asteroids){
+        for(Asteroid asteroid : asteroids){
+            for(Shot shot : shots){
                 if(checkShotCollision(shot, asteroid)){
-                    shots.remove(shot);
+                    shotsToRemove.add(shot);
                     asteroidToRemove.add(asteroid); //TODO oder damage
                     //Explosion
                     explosion = new Explosion(context, asteroid.getX(), asteroid.getY());
@@ -268,7 +272,7 @@ public class GameContent implements Drawable {
 
         for(Shot shot: shots){
             if (shot.isobsolete()){
-                shots.remove(shot);
+                shotsToRemove.add(shot);
             }
         }
 
@@ -276,6 +280,9 @@ public class GameContent implements Drawable {
         asteroids.removeAll(asteroidToRemove);
         // Liste leeren
         asteroidToRemove.clear();
+
+        shots.removeAll(shotsToRemove);
+        shotsToRemove.clear();
 
         // Neue Asteroiden hinzufügen
         addAsteroids();
