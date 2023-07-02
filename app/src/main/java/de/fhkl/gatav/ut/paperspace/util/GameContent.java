@@ -209,6 +209,9 @@ public class GameContent implements Drawable {
         for(Shot shot:shots){
             //move shots
             shot.move();
+            if(shot.outOfView()){
+               shotsToRemove.add(shot);
+            }
 
         }
         for(Asteroid asteroid :asteroids){
@@ -270,11 +273,7 @@ public class GameContent implements Drawable {
             }
         }
 
-        for(Shot shot: shots){
-            if (shot.isobsolete()){
-                shotsToRemove.add(shot);
-            }
-        }
+
 
         // getroffene Asteroiden entfernen
         asteroids.removeAll(asteroidToRemove);
@@ -299,9 +298,9 @@ public class GameContent implements Drawable {
         double xDirection = joystickRotation.getActuatorX();
         double yDirection = joystickRotation.getActuatorY();
 
-        Shot shot = new Shot(10,10,context,spaceShip.getX(),spaceShip.getY(),xDirection,yDirection);
+        Shot shot = new Shot(gameWidth,gameHeight,context,spaceShip.getX(),spaceShip.getY(),xDirection,yDirection);
         shots.add(shot);
-        Log.d("CREATIOM", "Shots: "+shots.size());
+        Log.d("CREATIOM", "x: "+xDirection + " y: "+ yDirection );
 
 
 

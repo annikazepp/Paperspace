@@ -20,8 +20,8 @@ public class Shot {
         shotBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_purple);
         this.x = x;
         this.y = y;
-        this.speedX = speedX*max_speed;
-        this.speedY = speedY*max_speed;
+        this.speedX = speedX;
+        this.speedY = speedY;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         //setze screentolerance auf höchsten Wert + 10%
@@ -56,21 +56,12 @@ public class Shot {
         x += speedX;
         y += speedY;
 
-        //TODO
-            // Überprüfe die Kollision mit den Bildschirmrändern
-        /*
-        if (x < 0-screentolerance || x > screenWidth+screentolerance) {
-            obsolete = true;
-        }
 
-        if (y < 0-screentolerance || y > screenHeight+screentolerance) {
-            obsolete = true;
-        }
-
-         */
     }
-    public boolean isobsolete() {
-        return obsolete;
+    public boolean outOfView() {
+
+        //return x+widthAsteroid < 0 || x > screenWidth || y+heightAsteroid < 0 || y > screenHeight;
+        return x < 0 || x > screenWidth || y < 0 || y > screenHeight;
     }
 
 }
