@@ -39,12 +39,8 @@ public abstract class Circle extends GameObject{
         // "steckt" sichtbarer Asteroid fest und bewegt sich nicht
 
     public boolean isOutOfView() {
-        if(this instanceof Asteroid){
             //return this.positionX + radius < 0 || this.positionX - radius > GameView.screenWidth || this.positionY + radius < 0 || this.positionY - radius > GameView.screenHeight;
-
             return this.positionX < 0 || this.positionX > GameView.screenWidth || this.positionY < 0 || this.positionY > GameView.screenHeight;
-        }
-        return false;
     }
 
     public void draw(Canvas canvas) {

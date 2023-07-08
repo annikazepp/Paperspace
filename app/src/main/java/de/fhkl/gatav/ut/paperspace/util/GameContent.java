@@ -117,11 +117,6 @@ public class GameContent {
             return;
         }
 
-        for (Shot shot : shotList) {
-            shot.update();
-        }
-
-
         // Update game state
         steuerungJoystick.update();
         directionJoystick.update();
@@ -147,27 +142,24 @@ public class GameContent {
 
         for (Asteroid asteroid : asteroidList) {
             asteroid.update();
-
-
             if (asteroid.isOutOfView()) {
                 asteroidToRemove.add(asteroid);
             }
         }
 
         for (Shot shot : shotList) {
+            shot.update();
             if (shot.isOutOfView()) {
                 shotsToRemove.add(shot);
             }
         }
 
-        // getroffene Asteroiden entfernen
+        // getroffene Asteroiden/Shots entfernen
         asteroidList.removeAll(asteroidToRemove);
         shotList.removeAll(shotsToRemove);
-        // Liste leeren
+        // Listen leeren
         asteroidToRemove.clear();
         shotsToRemove.clear();
-
-
 
         // CHECK KOLLISION
         for (Asteroid asteroid : asteroidList) {
