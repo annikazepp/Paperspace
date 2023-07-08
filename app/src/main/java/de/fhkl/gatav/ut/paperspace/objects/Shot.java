@@ -1,76 +1,40 @@
 package de.fhkl.gatav.ut.paperspace.objects;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
+
+import androidx.core.content.ContextCompat;
 
 import de.fhkl.gatav.ut.paperspace.R;
+import de.fhkl.gatav.ut.paperspace.util.GameLoop;
+import de.fhkl.gatav.ut.paperspace.util.Joystick;
 
-public class Shot {
-    Bitmap shotBitmap;
-    float x,y;
-    float screenWidth,screenHeight;
-    double speedX,speedY;
-    double max_speed = 1;
-    boolean obsolete = false; //if shot is obsolete
+public class Shot extends Circle {
+    public static final double SPEED_PIXELS_PER_SECOND = 800.0;
+    private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
-    float screentolerance; //TODO how much the shot needs to leave the screen to disappear
-    public Shot(int screenWidth, int screenHeight,Context context, float x, float y, double speedX, double speedY){
-        shotBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_purple);
-        this.x = x;
-        this.y = y;
-        this.speedX = speedX*max_speed;
-        this.speedY = speedY*max_speed;
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-        //setze screentolerance auf höchsten Wert + 10%
-        if(this.screenHeight>this.screenWidth){
-            this.screentolerance = this.screenHeight + this.screenHeight/100*10;
-        }
-        else{
-            this.screentolerance = this.screenWidth + this.screenWidth/100*10;
-        }
+    public Shot(Context context, SpaceShip player, double xDirection, double yDirection, Joystick rotationJoystick) {
+        super(
+                context,
+                ContextCompat.getColor(context, R.color.shot),
+                player.getPositionX(),
+                player.getPositionY()
+        );
 
-    }
-    public float getX() {
-        return x;
-    }
-    public float getY() {
-        return y;
-    }
-    public Bitmap getShotBitmap(){
-        return shotBitmap;
+        double angle = Math.atan2(-rotationJoystick.getActuatorX(), rotationJoystick.getActuatorY());
+        double joysticAngle = Math.toDegrees(angle);
+        this.rX = joysticAngle; // Rotation wird beim erzeugen festgelegt, dann nicht mehr verändert
+
+        velocityX = xDirection * MAX_SPEED;
+        velocityY = yDirection * MAX_SPEED;
+
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_purple);
+        setRadius(bitmap.getHeight() / 2);
     }
 
-    public float getWidth() {
-        return shotBitmap.getWidth();
+    @Override
+    public void update() {
+        positionX = positionX + velocityX;
+        positionY = positionY + velocityY;
     }
-
-    public void draw(Canvas c) {
-        c.drawBitmap(shotBitmap, x,y,null);
-    }
-
-    public void move() {
-        // Bewege den Shot basierend auf seiner Geschwindigkeit.
-        x += speedX;
-        y += speedY;
-
-        //TODO
-            // Überprüfe die Kollision mit den Bildschirmrändern
-        /*
-        if (x < 0-screentolerance || x > screenWidth+screentolerance) {
-            obsolete = true;
-        }
-
-        if (y < 0-screentolerance || y > screenHeight+screentolerance) {
-            obsolete = true;
-        }
-
-         */
-    }
-    public boolean isobsolete() {
-        return obsolete;
-    }
-
 }

@@ -1,142 +1,64 @@
 package de.fhkl.gatav.ut.paperspace.objects;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 
-import java.util.Random;
+import androidx.core.content.ContextCompat;
 
 import de.fhkl.gatav.ut.paperspace.R;
+import de.fhkl.gatav.ut.paperspace.util.GameLoop;
+import de.fhkl.gatav.ut.paperspace.util.GameView;
 import de.fhkl.gatav.ut.paperspace.util.Joystick;
 
-public class SpaceShip {
-    //TODO eventuell abstrakte Klasse erzeugen
+public class SpaceShip extends Circle {
+    private static final double SPEED_PIXELS_PER_SECOND = 400.0;
+    private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
-    /**
-     * Eigenschaften der Klasse SpaceShip
-     */
-    private static SpaceShip player;
-    private static float x, y; // Koordinaten des Spaceship
-    private static double rX, rY = 0; //TODO
-    private float speed; //Geschwindigkeit SpaceShip
-    private float width, height;  //Breite und Höhe Spaceship
+    private Joystick joystickSteuerung;
+    private Joystick joystickRotation;
 
-    private static double velocityX;
-    private static double velocityY;
-    private static double rotateX;
-    private static double rotateY;
+    public SpaceShip(Context context, Joystick joystickSteuerung, Joystick joystickRotation, double positionX, double positionY) {
+        super(context, ContextCompat.getColor(context, R.color.player), positionX, positionY);
+        this.joystickSteuerung = joystickSteuerung;
+        this.joystickRotation = joystickRotation;
 
-    //Bitmap
-    private Bitmap spaceshipBitmap;
-
-
-    // Constants
-
-    private static final int MAX_SPEED = 1;
-    private static final int MAX_ROTATION = 1;
-
-
-    private Random random = new Random();
-    private int screenWidth, screenHeight; // Bildschirmgröße
-
-    /**
-     * 1 Spieler wird erzeugt
-     *
-     * @param screenWidth
-     * @param screenHeight
-     * @param context
-     */
-
-    public static void createPlayer(int screenWidth, int screenHeight, Context context) {
-        if (player != null) {
-            return;
-        }
-        player = new SpaceShip(screenWidth, screenHeight, context);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship2);
+        setRadius(bitmap.getHeight()/2);
     }
 
-    public static SpaceShip getPlayer() {
-        return player;
-    }
+    public void update() {
+        // Update velocity based on actuator of joystick
+        velocityX = joystickSteuerung.getActuatorX()*MAX_SPEED;
+        velocityY = joystickSteuerung.getActuatorY()*MAX_SPEED;
 
+        // Update position
+        positionX = positionX + velocityX;
+        positionY = positionY + velocityY;
 
-    // Constructor
-    private SpaceShip(int screenWidth, int screenHeight, Context context) {
-
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-
-        // Start in der Mitte des Bildschirms
-        this.x = screenWidth / 2;
-        this.y = screenHeight / 2;
-        this.speed = 10; //TODO anderer Wert?
-
-        spaceshipBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship2);
-
-        this.height = getHeight();
-        this.width = getWidth();
-    }
-
-    //Getter-Setter
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-
-    public float getWidth() {
-        return spaceshipBitmap.getWidth();
-    }
-
-    public float getHeight() {
-        return spaceshipBitmap.getHeight();
-    }
-
-    /**
-     * Zeichnet Raumschiff auf
-     *
-     * @param canvas Leinwand
-     */
-    public void draw(Canvas canvas) {
-        canvas.save(); // Aktueller Zustand
-        canvas.rotate((float) rX, x + width / 2, y + height / 2);
-        canvas.drawBitmap(spaceshipBitmap, x, y, null);
-        canvas.restore();
-    }
-
-    //TODO UPDATE SPACESHIP ?
-    public static void update(Joystick joystickSteuerung, Joystick joystickRotation) {
-        velocityX = joystickSteuerung.getActuatorX() * MAX_SPEED;
-        velocityY = joystickSteuerung.getActuatorY() * MAX_SPEED;
-        x += velocityX;
-        y += velocityY;
-        /*
-        rotateX = joystickRotation.getActuatorX()*MAX_ROTATION;
-        rotateY = joystickRotation.getActuatorX()*MAX_ROTATION;
-        rX += rotateX;
-        rY += rotateY;
-         */
-
-        double angle = Math.atan2(joystickRotation.getActuatorX(), -joystickRotation.getActuatorY());
-        double joysticAngle = Math.toDegrees(angle);
-        rX = joysticAngle;
-
-
-        // Überprüfen, ob das Spaceship den Bildschirmrand erreicht hat
-        if (x < 0) {
-            x = 0;
-        } else if (x > getPlayer().screenWidth - getPlayer().width) {
-            x = getPlayer().screenWidth - getPlayer().width;
+        // Update direction
+        if (velocityX != 0 || velocityY != 0) {
+            // Normalize velocity to get direction (unit vector of velocity)
+            double distance = getDistanceBetweenPoints(0, 0, velocityX, velocityY);
+            directionX = velocityX/distance;
+            directionY = velocityY/distance;
         }
 
-        if (y < 0) {
-            y = 0;
-        } else if (y > getPlayer().screenHeight - getPlayer().width) {
-            y = getPlayer().screenHeight - getPlayer().width;
+        double angle2 = Math.atan2(joystickRotation.getActuatorX(), -joystickRotation.getActuatorY());
+        double joysticAngle2 = Math.toDegrees(angle2);
+        rX = joysticAngle2;
+
+        // Am Bildschirmrand?
+        // LINKS RECHTS -> Auf anderen Seite wieder raus
+        if (positionX < 0) {
+            positionX = GameView.screenWidth;
+        } else if (positionX > GameView.screenWidth) {
+            positionX = 0;
+        }
+        // OBEN UNTEN -> geblockt
+        if(positionY < 0){
+            positionY = 0;
+        }else if( positionY > GameView.screenHeight){
+            positionY = GameView.screenHeight;
         }
     }
 }
-

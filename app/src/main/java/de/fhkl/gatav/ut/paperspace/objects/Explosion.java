@@ -3,16 +3,15 @@ package de.fhkl.gatav.ut.paperspace.objects;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
 
 import de.fhkl.gatav.ut.paperspace.R;
 
-public class Explosion {
+public class Explosion  {
     private Bitmap explosion[] = new Bitmap[9];
-    public int explosionFrame; // TODO nicht mehr private?
-    public float eX, eY;
+    public int explosionFrame;
+    public double eX, eY;
 
-    public Explosion(Context context, float eX, float eY) {
+    public Explosion(Context context, double eX, double eY) {
         explosion[0] = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.explosion0);
         explosion[1] = BitmapFactory.decodeResource(context.getResources(),
