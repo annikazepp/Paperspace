@@ -57,8 +57,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         scorePaint.setTextSize(TEXT_SIZE);
 
         // Joysticks initialisieren
-        steuerungJoystick = new Joystick(275,700,70,40);
-        directionJoystick = new Joystick(1920-275,700,70,40);
+        steuerungJoystick = new Joystick(265,900,130,70);
+        directionJoystick = new Joystick(1920-150,900,130,70);
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         this.screenWidth = displayMetrics.widthPixels;
