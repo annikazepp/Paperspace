@@ -1,6 +1,7 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -13,6 +14,8 @@ import de.fhkl.gatav.ut.paperspace.R;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private MediaPlayer mBackground2;
+    //Sounds
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
         });
+
+        mBackground2 = MediaPlayer.create(this, R.raw.background2);
+        mBackground2.start();
+        mBackground2.setLooping(true);
     }
 }
 
