@@ -27,11 +27,11 @@ public class GameContent {
     private final Joystick directionJoystick;
     private final float ASTEROIDS_FREQUENCY = 0.5f; // zu 50% entsteht ein Asteroid
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
-    private final float HOLE_FREQUENCY = 0.3f;
+    private final float HOLE_FREQUENCY = 0.05f;
 
     //counts the fps for shoot cooldown
     int fps_count = 0;
-    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(20).build(); // TODO MAXStreams Anpassen
+    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(10000).build(); // TODO MAXStreams Anpassen
 
     // Treffer Asteroiden
     private int score = 0;
@@ -47,10 +47,13 @@ public class GameContent {
     private Context context;
     //SOUND
     private MediaPlayer mExplosion;
-    private MediaPlayer mLaserShoot;
+    private MediaPlayer mCrash;
+    private MediaPlayer mLoch;
     private int explosionSoundId;
-    private int shootSoundId;
+    private int crashSoundId;
     private int health = FULL_HEALTH;
+
+    int soundsloaded = 0;
 
 
     public GameContent(Context context, Joystick steuerungJoystick, Joystick directionJoystick) {
@@ -63,15 +66,20 @@ public class GameContent {
         // Objekte
         player = new SpaceShip(context, steuerungJoystick, directionJoystick, 2 * 500, 500);
 
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                soundsloaded++;
+            }
+        });
 
         //Sounds
-        mLaserShoot = MediaPlayer.create(context, R.raw.lasershoot);
-        shootSoundId = soundPool.load(context, R.raw.lasershoot, 1);
+        mCrash = MediaPlayer.create(context, R.raw.crash);
+        crashSoundId = soundPool.load(context, R.raw.crash, 1);
 
         mExplosion = MediaPlayer.create(context, R.raw.hitboom);
         // Explosionssound in den Sound Pool laden
         explosionSoundId = soundPool.load(context, R.raw.hitboom, 1);
-
     }
 
     public int getScore() {
@@ -129,9 +137,6 @@ public class GameContent {
             if (fps_count > 20) {
                 fps_count = 0;
                 shoot(directionJoystick);
-                //mLaserShoot.start();
-                //soundPool.play(shootSoundId, 30, 30, 1, 0, 1.0f);
-
             }
         }
 
@@ -196,6 +201,9 @@ public class GameContent {
                 asteroidToRemove.add(asteroid);
                 // Explosion
                 startExplosion(obj2);
+                if(soundsloaded == 2) {
+                    soundPool.play(crashSoundId, 30, 30, 1, 0, 1.0f);
+                }
         }
 
         if(obj2 instanceof Asteroid){
@@ -207,6 +215,9 @@ public class GameContent {
             asteroidToRemove.add(asteroid);
             // Explosion
             startExplosion(asteroid);
+            if(soundsloaded == 2) {
+                soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
+            }
             // Loch
             addHole(asteroid.getPositionX(), asteroid.getPositionY());
             // Score
@@ -222,10 +233,6 @@ public class GameContent {
         // TODO POSITION MUSS ANGEPASST WERDEN
         explosion = new Explosion(context, obj.getPositionX()- obj.getRadius(), obj.getPositionY()-obj.getRadius());
         explosions.add(explosion);
-       // mExplosion.start();
-        // Sound
-        // TODO
-       soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
     }
 
 
@@ -246,6 +253,8 @@ public class GameContent {
         if (Math.random() <= HOLE_FREQUENCY) {
             hole = new Hole(context, x,y);
             holes.add(hole);
+            mLoch = MediaPlayer.create(context, R.raw.loch);
+            mLoch.start();
         }
     }
 

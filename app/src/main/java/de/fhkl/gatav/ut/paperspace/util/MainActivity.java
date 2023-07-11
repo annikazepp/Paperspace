@@ -1,6 +1,7 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -13,6 +14,8 @@ import de.fhkl.gatav.ut.paperspace.R;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private MediaPlayer mIntro;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +27,13 @@ public class MainActivity extends AppCompatActivity {
                 // Bei Klick auf Play Button wird die MainGameActivity gestartet
                 Intent intent = new Intent(MainActivity.this, MainGameActivity.class);
                 startActivity(intent);
+                mIntro.stop();
                 finish();
         });
+
+        mIntro = MediaPlayer.create(this, R.raw.intro);
+        mIntro.start();
+        mIntro.setLooping(true);
     }
 }
 
