@@ -1,11 +1,13 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +20,9 @@ public class GameOver extends AppCompatActivity {
     private ImageButton exitButton;
 
     private TextView dScore, dPersonalBestScore;
+    private ImageView krone;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,10 @@ public class GameOver extends AppCompatActivity {
         dPersonalBestScore = (TextView) findViewById(R.id.personalBest);
         dScore.setText("" + score);
         dPersonalBestScore.setText(""+personalBestScore);
+        krone = findViewById(R.id.krone);
+        if(score>=personalBestScore){
+            krone.setVisibility(View.VISIBLE);
+        }
 
 
         returnButton = findViewById(R.id.return_button); // in game_over.xml definiert
@@ -59,7 +67,6 @@ public class GameOver extends AppCompatActivity {
                 Intent intent = new Intent(GameOver.this, MainActivity.class);
                 startActivity(intent); //Zurück zum StartBildschirm
                 finish();
-
                 //finishAffinity(); //CLOSE APP
             }
 

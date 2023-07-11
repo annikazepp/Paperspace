@@ -10,7 +10,7 @@ import de.fhkl.gatav.ut.paperspace.util.GameLoop;
 import de.fhkl.gatav.ut.paperspace.util.Joystick;
 
 public class Shot extends Circle {
-    public static final double SPEED_PIXELS_PER_SECOND = 800.0;
+    public static final double SPEED_PIXELS_PER_SECOND = 1150.0;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
     public Shot(Context context, SpaceShip player, double xDirection, double yDirection, Joystick rotationJoystick) {

@@ -34,10 +34,6 @@ public abstract class Circle extends GameObject{
      * @return true, wenn x oder y Koordinaten des Asteroiden außerhalb des Display ist
      */
 
-        //TODO Asteroiden fliegen nach draußen und werden dann gelöscht - momentan werden sie sobald sie am rand ankommen gelöscht
-        // d.h. kein Übergang -> mit code untendrunter fliegen sie raus und verschwinden dann, aber falls ein Asteroid gerade erzeugt wird
-        // "steckt" sichtbarer Asteroid fest und bewegt sich nicht
-
     public boolean isOutOfView() {
             //return this.positionX + radius < 0 || this.positionX - radius > GameView.screenWidth || this.positionY + radius < 0 || this.positionY - radius > GameView.screenHeight;
             return this.positionX < 0 || this.positionX > GameView.screenWidth || this.positionY < 0 || this.positionY > GameView.screenHeight;

@@ -184,49 +184,55 @@ public class GameContent {
             }
         }
 
-        for(Asteroid asteroid : asteroidList){
-            for(Hole hole : holes){
-                checkCollision(asteroid,hole);
-            }
+        for(Hole hole : holes){
+            checkCollision(player,hole);
         }
+
 
     }
 
-    private void checkCollision(Asteroid asteroid, Circle obj2) {
-        if (!Circle.isColliding(asteroid, obj2)) {  // Wenn keine Kollision, wird Ausführung der Methode abgebrochen
+    private void checkCollision(Circle obj1, Circle obj2) {
+        if (!Circle.isColliding(obj1, obj2)) {  // Wenn keine Kollision, wird Ausführung der Methode abgebrochen
             return;
         }
-        if (obj2 instanceof SpaceShip) {
+        if(obj1 instanceof Asteroid) {
+            Asteroid asteroid = (Asteroid) obj1;
+            if (obj2 instanceof SpaceShip) {
                 damage(asteroid.getDamage());
                 asteroidToRemove.add(asteroid);
                 // Explosion
                 startExplosion(obj2);
-                if(soundsloaded == 2) {
+
+                if (soundsloaded == 2) {
                     soundPool.play(crashSoundId, 30, 30, 1, 0, 1.0f);
                 }
-        }
-
-        if(obj2 instanceof Asteroid){
-            asteroid.bounceOff((Asteroid) obj2);
-        }
-
-        if(obj2 instanceof Shot){
-            shotsToRemove.add((Shot) obj2);
-            asteroidToRemove.add(asteroid);
-            // Explosion
-            startExplosion(asteroid);
-            if(soundsloaded == 2) {
-                soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
             }
-            // Loch
-            addHole(asteroid.getPositionX(), asteroid.getPositionY());
-            // Score
-            score++;
+
+
+            if (obj2 instanceof Asteroid) {
+                asteroid.bounceOff((Asteroid) obj2);
+            }
+
+            if (obj2 instanceof Shot) {
+                shotsToRemove.add((Shot) obj2);
+                asteroidToRemove.add(asteroid);
+                // Explosion
+                startExplosion(asteroid);
+                if(soundsloaded == 2) {
+                    soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
+                }
+                // Loch
+                addHole(asteroid.getPositionX(), asteroid.getPositionY());
+                // Score
+                score++;
+            }
+        }
+        else if(obj1 instanceof SpaceShip){
+            if (obj2 instanceof Hole) {
+                health = 0;
+            }
         }
 
-        if(obj2 instanceof Hole){
-            asteroidToRemove.add(asteroid);
-        }
     }
 
     private void startExplosion(Circle obj) {

@@ -11,7 +11,7 @@ import de.fhkl.gatav.ut.paperspace.util.GameView;
 import de.fhkl.gatav.ut.paperspace.util.Joystick;
 
 public class SpaceShip extends Circle {
-    private static final double SPEED_PIXELS_PER_SECOND = 400.0;
+    private static final double SPEED_PIXELS_PER_SECOND = 600.0;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
     private Joystick joystickSteuerung;
@@ -54,11 +54,11 @@ public class SpaceShip extends Circle {
         } else if (positionX > GameView.screenWidth) {
             positionX = 0;
         }
-        // OBEN UNTEN -> geblockt
+        // OBEN UNTEN -> Auf anderen Seite wieder raus
         if(positionY < 0){
-            positionY = 0;
-        }else if( positionY > GameView.screenHeight){
             positionY = GameView.screenHeight;
+        }else if( positionY > GameView.screenHeight){
+            positionY = 0;
         }
     }
 }
