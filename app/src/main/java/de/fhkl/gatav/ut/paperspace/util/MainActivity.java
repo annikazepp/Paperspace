@@ -35,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
         mIntro.start();
         mIntro.setLooping(true);
     }
+
+    // Wenn App geschlossen wird
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mIntro.stop();
+    }
 }
 
 
