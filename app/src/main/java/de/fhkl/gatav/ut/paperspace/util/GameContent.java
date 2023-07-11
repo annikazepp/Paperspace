@@ -31,7 +31,7 @@ public class GameContent {
 
     //counts the fps for shoot cooldown
     int fps_count = 0;
-    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(20).build(); // TODO MAXStreams Anpassen
+    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(100).build(); // TODO MAXStreams Anpassen
 
     // Treffer Asteroiden
     private int score = 0;
@@ -47,9 +47,9 @@ public class GameContent {
     private Context context;
     //SOUND
     private MediaPlayer mExplosion;
-    private MediaPlayer mLaserShoot;
+    private MediaPlayer mCrash;
     private int explosionSoundId;
-    private int shootSoundId;
+    private int crashSoundId;
     private int health = FULL_HEALTH;
 
 
@@ -65,8 +65,8 @@ public class GameContent {
 
 
         //Sounds
-        mLaserShoot = MediaPlayer.create(context, R.raw.lasershoot);
-        shootSoundId = soundPool.load(context, R.raw.lasershoot, 1);
+        mCrash = MediaPlayer.create(context, R.raw.crash);
+        crashSoundId = soundPool.load(context, R.raw.crash, 1);
 
         mExplosion = MediaPlayer.create(context, R.raw.hitboom);
         // Explosionssound in den Sound Pool laden
@@ -191,6 +191,7 @@ public class GameContent {
                 asteroidToRemove.add(asteroid);
                 // Explosion
                 startExplosion(obj2);
+                soundPool.play(crashSoundId, 30, 30, 1, 0, 1.0f);
         }
 
         if(obj2 instanceof Asteroid){
@@ -202,6 +203,7 @@ public class GameContent {
             asteroidToRemove.add(asteroid);
             // Explosion
             startExplosion(asteroid);
+            soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
             // Loch
             addHole(asteroid.getPositionX(), asteroid.getPositionY());
             // Score
@@ -213,10 +215,6 @@ public class GameContent {
         // TODO POSITION MUSS ANGEPASST WERDEN
         explosion = new Explosion(context, obj.getPositionX()- obj.getRadius(), obj.getPositionY()-obj.getRadius());
         explosions.add(explosion);
-       // mExplosion.start();
-        // Sound
-        // TODO
-       soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
     }
 
 

@@ -14,8 +14,8 @@ import de.fhkl.gatav.ut.paperspace.R;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private MediaPlayer mBackground2;
-    //Sounds
+    private MediaPlayer mIntro;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,12 +27,13 @@ public class MainActivity extends AppCompatActivity {
                 // Bei Klick auf Play Button wird die MainGameActivity gestartet
                 Intent intent = new Intent(MainActivity.this, MainGameActivity.class);
                 startActivity(intent);
+                mIntro.stop();
                 finish();
         });
 
-        mBackground2 = MediaPlayer.create(this, R.raw.background2);
-        mBackground2.start();
-        mBackground2.setLooping(true);
+        mIntro = MediaPlayer.create(this, R.raw.intro);
+        mIntro.start();
+        mIntro.setLooping(true);
     }
 }
 
