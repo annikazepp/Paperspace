@@ -25,13 +25,13 @@ public class GameContent {
     private final SpaceShip player;
     private final Joystick steuerungJoystick;
     private final Joystick directionJoystick;
-    private final float ASTEROIDS_FREQUENCY = 0.5f; // zu 50% entsteht ein Asteroid
+    private final float ASTEROIDS_FREQUENCY = 0.25f; // zu 25% entsteht ein Asteroid
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
     private final float HOLE_FREQUENCY = 0.3f;
 
     //counts the fps for shoot cooldown
     int fps_count = 0;
-    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(100).build(); // TODO MAXStreams Anpassen
+    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(10000).build(); // TODO MAXStreams Anpassen
 
     // Treffer Asteroiden
     private int score = 0;
@@ -48,6 +48,7 @@ public class GameContent {
     //SOUND
     private MediaPlayer mExplosion;
     private MediaPlayer mCrash;
+    private MediaPlayer mLoch;
     private int explosionSoundId;
     private int crashSoundId;
     private int health = FULL_HEALTH;
@@ -130,9 +131,6 @@ public class GameContent {
             if (fps_count > 20) {
                 fps_count = 0;
                 shoot(directionJoystick);
-                //mLaserShoot.start();
-                //soundPool.play(shootSoundId, 30, 30, 1, 0, 1.0f);
-
             }
         }
 
@@ -235,6 +233,8 @@ public class GameContent {
         if (Math.random() <= HOLE_FREQUENCY) {
             hole = new Hole(context, x,y);
             holes.add(hole);
+            mLoch = MediaPlayer.create(context, R.raw.loch);
+            mLoch.start();
         }
     }
 
