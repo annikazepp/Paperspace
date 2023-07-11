@@ -123,8 +123,7 @@ public class GameContent {
         player.update();
 
         fps_count++;
-        steuerungJoystick.update();
-        directionJoystick.update();
+
 
         if (directionJoystick.getActuatorX() != 0 || directionJoystick.getActuatorY() != 0) {
             if (fps_count > 20) {
@@ -180,6 +179,12 @@ public class GameContent {
             }
         }
 
+        for(Asteroid asteroid : asteroidList){
+            for(Hole hole : holes){
+                checkCollision(asteroid,hole);
+            }
+        }
+
     }
 
     private void checkCollision(Asteroid asteroid, Circle obj2) {
@@ -206,6 +211,10 @@ public class GameContent {
             addHole(asteroid.getPositionX(), asteroid.getPositionY());
             // Score
             score++;
+        }
+
+        if(obj2 instanceof Hole){
+            asteroidToRemove.add(asteroid);
         }
     }
 

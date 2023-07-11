@@ -38,7 +38,7 @@ public class Joystick {
         outerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         innerCirclePaint = new Paint();
-        innerCirclePaint.setColor(Color.BLUE);
+        innerCirclePaint.setColor(Color.DKGRAY);
         innerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
 
