@@ -25,9 +25,9 @@ public class GameContent {
     private final SpaceShip player;
     private final Joystick steuerungJoystick;
     private final Joystick directionJoystick;
-    private final float ASTEROIDS_FREQUENCY = 0.25f; // zu 25% entsteht ein Asteroid
+    private final float ASTEROIDS_FREQUENCY = 0.5f; // zu 50% entsteht ein Asteroid
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
-    private final float HOLE_FREQUENCY = 0.3f;
+    private final float HOLE_FREQUENCY = 0.05f;
 
     //counts the fps for shoot cooldown
     int fps_count = 0;
@@ -53,6 +53,8 @@ public class GameContent {
     private int crashSoundId;
     private int health = FULL_HEALTH;
 
+    int soundsloaded = 0;
+
 
     public GameContent(Context context, Joystick steuerungJoystick, Joystick directionJoystick) {
         this.context = context;
@@ -64,6 +66,12 @@ public class GameContent {
         // Objekte
         player = new SpaceShip(context, steuerungJoystick, directionJoystick, 2 * 500, 500);
 
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                soundsloaded++;
+            }
+        });
 
         //Sounds
         mCrash = MediaPlayer.create(context, R.raw.crash);
@@ -72,7 +80,6 @@ public class GameContent {
         mExplosion = MediaPlayer.create(context, R.raw.hitboom);
         // Explosionssound in den Sound Pool laden
         explosionSoundId = soundPool.load(context, R.raw.hitboom, 1);
-
     }
 
     public int getScore() {
@@ -189,7 +196,9 @@ public class GameContent {
                 asteroidToRemove.add(asteroid);
                 // Explosion
                 startExplosion(obj2);
-                soundPool.play(crashSoundId, 30, 30, 1, 0, 1.0f);
+                if(soundsloaded == 2) {
+                    soundPool.play(crashSoundId, 30, 30, 1, 0, 1.0f);
+                }
         }
 
         if(obj2 instanceof Asteroid){
@@ -201,7 +210,9 @@ public class GameContent {
             asteroidToRemove.add(asteroid);
             // Explosion
             startExplosion(asteroid);
-            soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
+            if(soundsloaded == 2) {
+                soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
+            }
             // Loch
             addHole(asteroid.getPositionX(), asteroid.getPositionY());
             // Score
