@@ -14,8 +14,8 @@ public class SpaceShip extends Circle {
     private static final double SPEED_PIXELS_PER_SECOND = 600.0;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
-    private Joystick joystickSteuerung;
-    private Joystick joystickRotation;
+    private final Joystick joystickSteuerung;
+    private final Joystick joystickRotation;
 
     public SpaceShip(Context context, Joystick joystickSteuerung, Joystick joystickRotation, double positionX, double positionY) {
         super(context, ContextCompat.getColor(context, R.color.player), positionX, positionY);
@@ -23,7 +23,7 @@ public class SpaceShip extends Circle {
         this.joystickRotation = joystickRotation;
 
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship2);
-        setRadius(bitmap.getHeight()/2);
+        setRadius(bitmap.getHeight()/2.0);
     }
 
     public void update() {
@@ -43,9 +43,11 @@ public class SpaceShip extends Circle {
             directionY = velocityY/distance;
         }
 
-        double angle2 = Math.atan2(joystickRotation.getActuatorX(), -joystickRotation.getActuatorY());
-        double joysticAngle2 = Math.toDegrees(angle2);
-        rX = joysticAngle2;
+        // So wird die Richtung des Schiffs wenn Joystick nicht bewegt wird nicht zurückgesetzt
+        if(joystickRotation.getActuatorX() != 0 || joystickRotation.getActuatorY() != 0) {
+            double angle = Math.atan2(joystickRotation.getActuatorX(), -joystickRotation.getActuatorY());
+            rX = Math.toDegrees(angle);
+        }
 
         // Am Bildschirmrand?
         // LINKS RECHTS -> Auf anderen Seite wieder raus
