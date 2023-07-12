@@ -25,8 +25,16 @@ public class Shot extends Circle {
         double joysticAngle = Math.toDegrees(angle);
         this.rX = joysticAngle; // Rotation wird beim erzeugen festgelegt, dann nicht mehr verändert
 
-        velocityX = xDirection * MAX_SPEED;
-        velocityY = yDirection * MAX_SPEED;
+        double sum = Math.sqrt(xDirection*xDirection + yDirection*yDirection);
+
+        double xSpeed = xDirection/sum;
+        double ySpeed = yDirection/sum;
+
+        velocityX = xSpeed * MAX_SPEED;
+        velocityY = ySpeed * MAX_SPEED;
+
+        //velocityX = xDirection * MAX_SPEED;
+        //velocityY = yDirection * MAX_SPEED;
 
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_purple);
         setRadius(bitmap.getHeight() / 2);
