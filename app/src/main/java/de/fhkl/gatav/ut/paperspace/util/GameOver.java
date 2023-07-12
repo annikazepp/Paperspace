@@ -1,9 +1,7 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -22,7 +20,6 @@ public class GameOver extends AppCompatActivity {
     private TextView dScore, dPersonalBestScore;
     private ImageView krone;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
