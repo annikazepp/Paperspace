@@ -8,6 +8,16 @@
     android:background="@drawable/background"
     android:gravity="center">
 
+    <ImageButton
+        android:id="@+id/soundOnOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/ton_an"
+        android:contentDescription="@string/Sound" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -25,7 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Play" />
-
 
 
 </LinearLayout>

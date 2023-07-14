@@ -16,7 +16,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import de.fhkl.gatav.ut.paperspace.R;
-import de.fhkl.gatav.ut.paperspace.util.Joystick;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -33,19 +32,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public static double screenWidth, screenHeight;
 
     // GAME
-    private GameLoop gameLoop;
-    private GameContent gameContent;
+    private final GameLoop gameLoop;
+    private final GameContent gameContent;
 
     // Hintergrund, Leben und Score
-    private Bitmap backgroundBitmap;
-    private Bitmap healthBitmap;
-    private Paint scorePaint;
+    private final Bitmap backgroundBitmap;
+    private final Bitmap healthBitmap;
+    private final Paint scorePaint;
     private static final int TEXT_SIZE = 70; //TODO WERT?
 
     public GameView(Context context) {
         super(context);
 
-        surfaceHolder = getHolder();
+        SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
         // Background, Leben und Score
@@ -61,8 +60,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         directionJoystick = new Joystick(1920-150,900,130,70);
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        this.screenWidth = displayMetrics.widthPixels;
-        this.screenHeight = displayMetrics.heightPixels;
+        screenWidth = displayMetrics.widthPixels;
+        screenHeight = displayMetrics.heightPixels;
 
         gameLoop = new GameLoop(this, surfaceHolder);
         gameContent = new GameContent(context, steuerungJoystick, directionJoystick);
@@ -94,9 +93,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             store pointer id and setIsPressed(true) */
                     directionJoystickPointerId = pointerId;
                     directionJoystick.setIsPressed(true);
-                } else {
-                    // Joystick was not previously, and is not pressed in this event -> cast shot
-                    //GameContent.anzShot ++;
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -153,7 +149,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         if(canvas !=null) {
             // Hintergrundbild zeichnen
-            canvas.drawBitmap(backgroundBitmap, null, new RectF(0, 0, canvas.getWidth(), canvas.getHeight()), null);
+            canvas.drawBitmap(backgroundBitmap, null, new RectF(0, 0, getWidth(), getHeight()), null);
 
             // GameContent - Spielinhalte zeichnen
             gameContent.draw(canvas);
@@ -167,11 +163,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             // Score TODO Koordinaten anpassen?
             canvas.drawText("Score: " + gameContent.getScore(),  (scorePaint.getTextScaleX() + 15) ,85, scorePaint);
-        }
 
-        // Joystick zeichnen
-        steuerungJoystick.draw(canvas);
-        directionJoystick.draw(canvas);
+            // Joystick zeichnen
+            steuerungJoystick.draw(canvas);
+            directionJoystick.draw(canvas);
+        }
     }
 
     public void update() {
@@ -180,7 +176,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         if(gameContent.getHealth()==0) {
-            //surfaceHolder = null;
             directionJoystick.resetActuator();
             steuerungJoystick.resetActuator();
             startGameOverActivity();

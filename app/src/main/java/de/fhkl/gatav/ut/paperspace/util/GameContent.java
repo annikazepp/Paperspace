@@ -16,12 +16,13 @@ import de.fhkl.gatav.ut.paperspace.objects.Asteroid;
 import de.fhkl.gatav.ut.paperspace.objects.Circle;
 import de.fhkl.gatav.ut.paperspace.objects.Shot;
 import de.fhkl.gatav.ut.paperspace.objects.SpaceShip;
+import de.fhkl.gatav.ut.paperspace.powerUps.PowerUps;
 
 public class GameContent {
 
     // CONSTANTS
     private static final int FULL_HEALTH = 5; // LEBEN SPACESHIP
-        private int health = FULL_HEALTH;
+    private int health = FULL_HEALTH;
 
         // Asteroid
     private static final int MAX_ASTEROIDS = 10; //TODO WERT?
@@ -30,7 +31,7 @@ public class GameContent {
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
 
         // Hole
-    private final float HOLE_FREQUENCY = 0.05f; // TODO KANN WENN ANGEPASST WEG
+    private static final float POWERUP_FREQUENCY = 0.05f; // TODO WERT
 
     // OBJECTS
     private final SpaceShip player;
@@ -49,10 +50,10 @@ public class GameContent {
         // Extras
     private ArrayList<Explosion> explosions = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
+    private ArrayList<PowerUps> powerUpsList = new ArrayList<>();
 
         // Objects to Remove
-    ArrayList<Asteroid> asteroidToRemove = new ArrayList<>();
-    ArrayList<Shot> shotsToRemove = new ArrayList<>();
+    ArrayList<Circle> objectsToRemove = new ArrayList<>();
 
 
     //counts the fps for shoot cooldown
@@ -60,15 +61,11 @@ public class GameContent {
 
 
     //SOUND
-    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(10000).build(); // TODO MAXStreams Anpassen
-
-    private MediaPlayer mExplosion;
-    private MediaPlayer mCrash;
+    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(100).build(); // TODO MAXStreams Anpassen
     private MediaPlayer mLoch;
     private int explosionSoundId;
     private int crashSoundId;
 
-    int soundsloaded = 0;
 
     private Context context;
 
@@ -86,20 +83,10 @@ public class GameContent {
         // Objekte
         player = new SpaceShip(context, steuerungJoystick, directionJoystick, 2 * 500, 500);
 
-        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            @Override
-            public void onLoadComplete(SoundPool soundPool, int i, int i1) {
-                soundsloaded++;
-            }
-        });
-
-        //Sounds
-        //mCrash = MediaPlayer.create(context, R.raw.crash); // TODO braucht man das überhaupt? Wenn wir SoundPool benutzen?
+        // Sounds
         crashSoundId = soundPool.load(context, R.raw.crash, 1);
-
-        //mExplosion = MediaPlayer.create(context, R.raw.hitboom);
-        // Explosionssound in den Sound Pool laden
         explosionSoundId = soundPool.load(context, R.raw.hitboom, 1);
+
     }
 
     public int getScore() {
@@ -128,6 +115,10 @@ public class GameContent {
         }
         for (Asteroid asteroid : asteroidList) {
             asteroid.draw(canvas);
+        }
+
+        for (PowerUps powerUp : powerUpsList){
+            powerUp.draw(canvas);
         }
 
         for (Shot shot : shotList) {
@@ -168,7 +159,7 @@ public class GameContent {
         for (Asteroid asteroid : asteroidList) {
             asteroid.update();
             if (asteroid.isOutOfView()) {
-                asteroidToRemove.add(asteroid);
+                objectsToRemove.add(asteroid);
             }
         }
 
@@ -179,17 +170,17 @@ public class GameContent {
         for (Shot shot : shotList) {
             shot.update();
             if (shot.isOutOfView()) {
-                shotsToRemove.add(shot);
+                objectsToRemove.add(shot);
             }
         }
 
         // getroffene Asteroiden/Shots entfernen
-        asteroidList.removeAll(asteroidToRemove);
-        darkAsteroidsList.removeAll(asteroidToRemove);
-        shotList.removeAll(shotsToRemove);
+        asteroidList.removeAll(objectsToRemove);
+        darkAsteroidsList.removeAll(objectsToRemove);
+        shotList.removeAll(objectsToRemove);
+        powerUpsList.removeAll(objectsToRemove);
         // Listen leeren
-        asteroidToRemove.clear();
-        shotsToRemove.clear();
+        objectsToRemove.clear();
 
         // CHECK KOLLISION
         // ASTEROID UND ...
@@ -223,6 +214,26 @@ public class GameContent {
         for(Hole hole : holes){
             checkCollision(player,hole);
         }
+
+        // SPIELER UND POWERUP
+        for(PowerUps powerUp : powerUpsList){
+            checkCollision(player,powerUp);
+        }
+
+
+        // POWER UPS nach gewissen Zeit entfernen
+        removePowerUp();
+    }
+
+    private void removePowerUp(){
+        long currentTime = System.currentTimeMillis();
+
+        for(PowerUps powerUp : powerUpsList){
+            long elapsedTime = currentTime - powerUp.getCreationTime();
+            if(elapsedTime >= powerUp.getExpirationTime()){
+                objectsToRemove.add(powerUp);
+            }
+        }
     }
 
     private void checkCollision(Circle obj1, Circle obj2) {
@@ -235,41 +246,60 @@ public class GameContent {
             // .. SPACESHIP
             if (obj2 instanceof SpaceShip) {
                 damage(asteroid.getDamage());
-                asteroidToRemove.add(asteroid);
+                objectsToRemove.add(asteroid);
                 // EXPLOSION
                 startExplosion(obj2);
-
-                if (soundsloaded == 2) {
-                    soundPool.play(crashSoundId, 30, 30, 1, 0, 1.0f);
+                // SOUND
+                if(MainActivity.isSoundOn){
+                    if(crashSoundId !=0) {
+                        soundPool.play(crashSoundId, 1, 1, 0, 0, 1);
+                    }
                 }
             }
 
-
-            if (obj2 instanceof Asteroid) {
+            // .. ASTEROID
+            if (obj2 instanceof Asteroid || obj2 instanceof DarkAsteroid) {
                 asteroid.bounceOff((Asteroid) obj2);
             }
 
-            if(obj2 instanceof DarkAsteroid){
-                asteroid.bounceOff((Asteroid) obj2);
-            }
-
+            // .. SHOT
             if (obj2 instanceof Shot) {
-                shotsToRemove.add((Shot) obj2);
-                asteroidToRemove.add(asteroid);
+                objectsToRemove.add((Shot) obj2);
+                objectsToRemove.add(asteroid);
                 // Explosion
                 startExplosion(asteroid);
-                if(soundsloaded == 2) {
-                    soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
+                if(MainActivity.isSoundOn) { //TODO WENN SOUND AUS AUCH HIER AUS?
+                    if (explosionSoundId != 0) {
+                        soundPool.play(explosionSoundId, 1, 1, 0, 0, 1);
+                    }
                 }
                 // Score
                 score++;
+                // Power Up
+                addPowerUp(asteroid.getPositionX(), asteroid.getPositionY());
             }
         }
         // SPACESHIP UND ...
         if(obj1 instanceof SpaceShip){
-            // LOCH
+            // ... LOCH
             if (obj2 instanceof Hole) {
                 health = 0;
+            }
+            // ... POWER UP
+            if(obj2 instanceof PowerUps){
+                PowerUps.PowerUp selectedPowerUp = ((PowerUps) obj2).getPowerUp();
+                switch (selectedPowerUp){
+                    case HEART:
+                        health++;
+                        objectsToRemove.add((PowerUps) obj2);
+                        break;
+                    case STRONG_SHOT:
+                        //TODO
+                        break;
+                    case GHOST:
+                        //TODO
+                        break;
+                }
             }
         }
 
@@ -278,8 +308,8 @@ public class GameContent {
             DarkAsteroid darkAsteroid = (DarkAsteroid) obj1;
             // SCHUSS
             if(obj2 instanceof Shot){
-                shotsToRemove.add((Shot) obj2);
-                asteroidToRemove.add(darkAsteroid);
+                objectsToRemove.add((Shot) obj2);
+                objectsToRemove.add(darkAsteroid);
                 // Explosion
                 startExplosion(obj2);
                 //if(soundsloaded == 2) {
@@ -310,6 +340,13 @@ public class GameContent {
         shotList.add(shot);
     }
 
+    private void addPowerUp(double x, double y){
+        //if(Math.random() <= POWERUP_FREQUENCY) {
+            PowerUps powerUp = new PowerUps(context, x, y);
+            powerUpsList.add(powerUp);
+       // }
+    }
+
     /**
      Zu 5% wird ein Loch hinzugefügt
      @param x x-Koordinate des Asteroiden
@@ -320,8 +357,10 @@ public class GameContent {
             Hole hole = new Hole(context, x,y);
             holes.add(hole);
             // SOUND
-            mLoch = MediaPlayer.create(context, R.raw.loch);
-            mLoch.start();
+            if(MainActivity.isSoundOn) {
+                mLoch = MediaPlayer.create(context, R.raw.loch);
+                mLoch.start();
+            }
         //}
     }
 
