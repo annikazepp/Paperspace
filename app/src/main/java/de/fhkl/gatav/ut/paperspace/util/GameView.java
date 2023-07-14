@@ -164,6 +164,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             // Score TODO Koordinaten anpassen?
             canvas.drawText("Score: " + gameContent.getScore(),  (scorePaint.getTextScaleX() + 15) ,85, scorePaint);
 
+            // Aktive Power Ups
+            String powerup = " ";
+            if(gameContent.getIsGhost()){
+                powerup += " Ghost ";
+            } else if(gameContent.getIsStrongShot()){
+                powerup += " Strong Shot";
+            }else if(gameContent.getIsx2Score()) {
+                powerup += " x2Score";
+            }
+            canvas.drawText(powerup,scorePaint.getTextScaleX(), 200, scorePaint);
+
             // Joystick zeichnen
             steuerungJoystick.draw(canvas);
             directionJoystick.draw(canvas);

@@ -13,8 +13,20 @@ public class PowerUps extends Circle {
 
     public enum PowerUp{
         HEART,
-        GHOST,
-        STRONG_SHOT;
+        GHOST(5 * 1000L),
+        X2SCORE(20 * 1000L),
+        STRONG_SHOT(10 * 1000L);
+
+        private long duration;
+        PowerUp(long duration) {
+            this.duration = duration;
+        }
+        PowerUp(){
+        }
+
+        public long getDuration() {
+            return duration;
+        }
 
         /**
          * Pick a random value of the PowerUp enum.
@@ -39,6 +51,16 @@ public class PowerUps extends Circle {
     private long creationTime; // Zeitstempel der Erstellung
     private long expirationTime = 6000L; // TODO Dauer 6sek
 
+    private long activationTime; // Zeitstempel der Aktivierung des PowerUps
+
+    public void setActivationTime(long activationTime) {
+        this.activationTime = activationTime;
+    }
+
+    public long getActivationTime() {
+        return activationTime;
+    }
+
     public long getCreationTime() {
         return creationTime;
     }
@@ -46,6 +68,7 @@ public class PowerUps extends Circle {
     public long getExpirationTime() {
         return expirationTime;
     }
+
 
     public PowerUps(Context context, double positionX, double positionY) {
         super(context, Color.BLUE, positionX, positionY);
@@ -62,7 +85,7 @@ public class PowerUps extends Circle {
     private void loadBitmap() {
         switch (powerUp) {
             case GHOST:
-                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_purple);
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_purple); //TODO BITMAP ANPASSEN
                 break;
             case HEART:
                 bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.heart);
@@ -70,6 +93,8 @@ public class PowerUps extends Circle {
             case STRONG_SHOT:
                 bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_10);
                 break;
+            case X2SCORE:
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.play_button);
 
             default:
                 bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.home_button);
