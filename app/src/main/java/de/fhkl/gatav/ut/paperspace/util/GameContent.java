@@ -156,11 +156,11 @@ public class GameContent {
 
         // Aktive Power Ups
         if(isGhost){
-            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.item_ghost), (float) GameView.screenWidth/2,(float)40,null);
+            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ghost_timer),10,120,null);
         }else if(isStrongShot){
-            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.item_powerball), (float) GameView.screenWidth/2,(float)40,null);
+            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.itempowerball), 10 ,120,null);
         }else if(isx2Score){
-            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.itemx2), (float) GameView.screenWidth/2,(float)40,null);
+            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.itemx2_timer), 10, 120,null);
         }
     }
 
