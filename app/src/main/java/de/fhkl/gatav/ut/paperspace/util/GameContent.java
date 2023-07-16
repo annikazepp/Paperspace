@@ -1,6 +1,8 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -376,18 +378,21 @@ public class GameContent {
                     case STRONG_SHOT:
                         if(!isStrongShot) { // WENN NOCH NICHT AKTIVIERT
                             isStrongShot = true;
+                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.raumschiff_pink));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.STRONG_SHOT);
                         }
                         break;
                     case GHOST:
                         if(!isGhost) {
                             isGhost = true;
+                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.raumschiff_grun));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.GHOST);
                         }
                         break;
                     case X2SCORE:
                         if(!isx2Score) {
                             isx2Score = true;
+                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.raumschiff_orange));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.X2SCORE);
                         }
                 }
@@ -484,6 +489,7 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isGhost = false;
+                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship));
                         break;
                     case STRONG_SHOT:
                         endtime = currentTimeMillis + PowerUps.PowerUp.STRONG_SHOT.getDuration();
@@ -491,6 +497,7 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isStrongShot = false;
+                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship));
                         break;
                     case X2SCORE:
                         endtime = currentTimeMillis + PowerUps.PowerUp.X2SCORE.getDuration();
@@ -498,6 +505,7 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isx2Score = false;
+                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship));
                         break;
                     default:
                         break;

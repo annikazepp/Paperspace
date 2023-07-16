@@ -16,6 +16,11 @@ public abstract class Circle extends GameObject{
     protected Paint paint;
 
     protected Bitmap bitmap;
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
     protected double rX;
     public Circle(Context context, int color, double positionX, double positionY) {
         super(positionX, positionY);
