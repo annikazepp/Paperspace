@@ -204,14 +204,7 @@ public class GameContent {
             }
         }
 
-        // getroffene Asteroiden/Shots entfernen
-        asteroidList.removeAll(objectsToRemove);
-        darkAsteroidsList.removeAll(objectsToRemove);
-        bigAsteroidList.removeAll(objectsToRemove);
-        shotList.removeAll(objectsToRemove);
-        powerUpsList.removeAll(objectsToRemove);
-        // Listen leeren
-        objectsToRemove.clear();
+
 
         // CHECK KOLLISION
         // ASTEROID UND ...
@@ -284,6 +277,14 @@ public class GameContent {
             checkCollision(player,powerUp);
         }
 
+        // getroffene Asteroiden/Shots entfernen
+        asteroidList.removeAll(objectsToRemove);
+        darkAsteroidsList.removeAll(objectsToRemove);
+        bigAsteroidList.removeAll(objectsToRemove);
+        shotList.removeAll(objectsToRemove);
+        powerUpsList.removeAll(objectsToRemove);
+        // Listen leeren
+        objectsToRemove.clear();
 
         // POWER UPS nach gewissen Zeit entfernen
             // Wenn nicht eingesammelt
