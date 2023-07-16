@@ -433,6 +433,10 @@ public class GameContent {
                     }
                 }
             }
+            // .. ASTEROID
+            if (obj2 instanceof DarkAsteroid || obj2 instanceof BigAsteroid) {
+                darkAsteroid.bounceOff((Asteroid) obj2);
+            }
             // SCHUSS
             if(obj2 instanceof Shot){
                 objectsToRemove.add((Shot) obj2);
@@ -471,6 +475,10 @@ public class GameContent {
                         }
                     }
                 }
+            }
+            // .. ASTEROID
+            if (obj2 instanceof BigAsteroid) {
+                bigAsteroid.bounceOff((Asteroid) obj2);
             }
             //SHOT
             if(obj2 instanceof Shot){
@@ -531,18 +539,6 @@ public class GameContent {
         Explosion explosion = new Explosion(context, obj.getPositionX()- obj.getRadius(), obj.getPositionY()-obj.getRadius());
         explosions.add(explosion);
     }
-
-
-
-
-
-
-    private Bitmap scaleDownBitmap(Bitmap bitmap, float scaleFactor) {
-        int scaledWidth = (int) (bitmap.getWidth() * scaleFactor);
-        int scaledHeight = (int) (bitmap.getHeight() * scaleFactor);
-        return Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true);
-    }
-
 
     public void shoot(Joystick joystickRotation) {
         double xDirection = joystickRotation.getActuatorX();
