@@ -194,7 +194,6 @@ public class GameContent {
             }
         }
 
-        //TODO Asteroids werden nicht entfernt wenn sie den Bildschirm verlassen
         for(DarkAsteroid darkAsteroid : darkAsteroidsList){
             darkAsteroid.update();
         }
@@ -223,14 +222,6 @@ public class GameContent {
                 if (asteroid != otherAsteroid) {
                     checkCollision(asteroid, otherAsteroid);
                 }
-            }
-            // ASTEROID - DARK ASTEROID
-            for(DarkAsteroid darkAsteroid : darkAsteroidsList){
-                checkCollision(asteroid, darkAsteroid);
-            }
-            //ASTEROID - BIG ASTEROID
-            for(BigAsteroid bigAsteroid : bigAsteroidList){
-                checkCollision(asteroid, bigAsteroid);
             }
             // ASTEROID - SHOT
             for (Shot shot : shotList) {
@@ -321,7 +312,6 @@ public class GameContent {
             Asteroid asteroid = (Asteroid) obj1;
             // .. SPACESHIP
             if (obj2 instanceof SpaceShip) {
-                // TODO BILD ÄNDERN WENN GHOST?
                 if(!isGhost) {
                     damage(asteroid.getDamage());
                     objectsToRemove.add(asteroid);
@@ -337,7 +327,7 @@ public class GameContent {
             }
 
             // .. ASTEROID
-            if (obj2 instanceof Asteroid || obj2 instanceof DarkAsteroid || obj2 instanceof BigAsteroid) {
+            if (obj2 instanceof Asteroid) {
                 asteroid.bounceOff((Asteroid) obj2);
             }
 
