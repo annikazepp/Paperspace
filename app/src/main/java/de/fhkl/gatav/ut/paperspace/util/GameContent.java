@@ -1,11 +1,16 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -517,8 +522,19 @@ public class GameContent {
 
     private void startExplosion(Circle obj) {
         // TODO POSITION MUSS ANGEPASST WERDEN
-        Explosion explosion = new Explosion(context, obj.getPositionX()- obj.getRadius(), obj.getPositionY()-obj.getRadius());
-        explosions.add(explosion);
+        //Explosion explosion = new Explosion(context, obj.getPositionX()- obj.getRadius(), obj.getPositionY()-obj.getRadius());
+       // explosions.add(explosion);
+    }
+
+
+
+
+
+
+    private Bitmap scaleDownBitmap(Bitmap bitmap, float scaleFactor) {
+        int scaledWidth = (int) (bitmap.getWidth() * scaleFactor);
+        int scaledHeight = (int) (bitmap.getHeight() * scaleFactor);
+        return Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true);
     }
 
 

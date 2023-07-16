@@ -65,6 +65,7 @@ public class Asteroid extends Circle {
         // Aktualisiere die Position der Kreise entsprechend der Abstoßkraft
         this.setPosition( this.getPositionX() + abstoßkraftX1, this.getPositionY() + abstoßkraftY1);
         otherAsteroid.setPosition(otherAsteroid.getPositionX() + abstoßkraftX2, otherAsteroid.getPositionY() + abstoßkraftY2);
+       // rX = random.nextFloat() * 360 - 180;
     }
 
     public void update(){ //
@@ -78,6 +79,7 @@ public class Asteroid extends Circle {
         // Bewegung des Asteroiden in Richtung des Ziels
         positionX += directionX * velocityX;
         positionY += directionY * velocityY;
+
     }
 
     public double getDamage() {
