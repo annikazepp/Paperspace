@@ -85,6 +85,7 @@ public class GameContent {
     //SOUND
     SoundPool soundPool = new SoundPool.Builder().setMaxStreams(100).build(); // TODO MAXStreams Anpassen
     private MediaPlayer mLoch;
+    private MediaPlayer mPowerup;
     private int explosionSoundId;
     private int crashSoundId;
 
@@ -392,6 +393,8 @@ public class GameContent {
                 }
                 objectsToRemove.add((PowerUps) obj2);
             }
+                mPowerup = MediaPlayer.create(context, R.raw.powerup);
+                mPowerup.start();
         }
 
         // DARK ASTEROID UND..
