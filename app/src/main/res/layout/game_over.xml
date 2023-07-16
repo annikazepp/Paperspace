@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/asteroid_1"
+                app:srcCompat="@drawable/crown"
                 android:visibility="invisible"
                 android:layout_marginBottom="30dp"/>
         </LinearLayout>
