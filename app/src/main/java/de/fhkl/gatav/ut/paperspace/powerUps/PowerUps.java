@@ -49,7 +49,7 @@ public class PowerUps extends Circle {
     private Context context;
 
     private long creationTime; // Zeitstempel der Erstellung
-    private long expirationTime = 6000L; // TODO Dauer 6sek
+    private long expirationTime = 6 * 1000L; // TODO Dauer 6sek
 
     public long getCreationTime() {
         return creationTime;
@@ -75,7 +75,7 @@ public class PowerUps extends Circle {
     private void loadBitmap() {
         switch (powerUp) {
             case GHOST:
-                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.item_ghost); //TODO BITMAP ANPASSEN
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.item_ghost);
                 break;
             case HEART:
                 bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.heart);
@@ -89,8 +89,6 @@ public class PowerUps extends Circle {
         }
             setRadius(bitmap.getHeight() / 2.0);
     }
-
-
 
     @Override
     public void update() {
