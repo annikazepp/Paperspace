@@ -39,6 +39,18 @@
             android:gravity="center"
             android:orientation="vertical"
             android:layout_marginBottom="30dp">
+
+            <ImageView
+                android:id="@+id/krone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="30dp"
+                android:layout_marginBottom="-14dp"
+                android:visibility="visible"
+                android:elevation="8dp"
+                app:srcCompat="@drawable/krone" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,16 +82,9 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textColor="@color/black"
-                android:textSize="36sp" />
-
-            <ImageView
-                android:id="@+id/krone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/crown"
-                android:visibility="invisible"
+                android:textSize="36sp"
                 android:layout_marginBottom="30dp"/>
+
         </LinearLayout>
 
         <LinearLayout

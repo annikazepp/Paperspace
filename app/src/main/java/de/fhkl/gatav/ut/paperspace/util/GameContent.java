@@ -136,6 +136,9 @@ public class GameContent {
         for(Hole hole : holes) {
             hole.draw(canvas);
         }
+        for (PowerUps powerUp : powerUpsList){
+            powerUp.draw(canvas);
+        }
 
         player.draw(canvas);
 
@@ -145,17 +148,13 @@ public class GameContent {
         for (Asteroid asteroid : asteroidList) {
             asteroid.draw(canvas);
         }
-
-        for (PowerUps powerUp : powerUpsList){
-            powerUp.draw(canvas);
-        }
         for (BigAsteroid bigAsteroid : bigAsteroidList){
             bigAsteroid.draw(canvas);
         }
-
         for (Shot shot : shotList) {
             shot.draw(canvas);
         }
+
         for (int i = 0; i < explosions.size(); i++) {
             canvas.drawBitmap(explosions.get(i).getExplosion(explosions.get(i).explosionFrame), (float) explosions.get(i).eX, (float) explosions.get(i).eY, null);
             explosions.get(i).explosionFrame++;
@@ -163,6 +162,20 @@ public class GameContent {
                 explosions.remove(i);
             }
         }
+
+        // Aktive Power Ups
+       // if(isGhost){
+        //    canvas.drawBitmap(R.drawable.item_ghost, GameView.screenWidth,40,null);
+/*
+
+        } else if(gameContent.getIsStrongShot()){
+            powerup += " Strong Shot";
+        }else if(gameContent.getIsx2Score()) {
+            powerup += " x2Score";
+        }
+        canvas.drawText(powerup,scorePaint.getTextScaleX(), 200, scorePaint);
+
+ */
     }
 
     public void update() {
@@ -327,7 +340,7 @@ public class GameContent {
                     damage(asteroid.getDamage());
                     objectsToRemove.add(asteroid);
                     // EXPLOSION
-                    startExplosion(obj2);
+                    //startExplosion(obj2);
                     // SOUND
                     if (MainActivity.isSoundOn) {
                         if (crashSoundId != 0) {
@@ -349,7 +362,7 @@ public class GameContent {
                 }
                 objectsToRemove.add(asteroid);
                 // Explosion
-                startExplosion(asteroid);
+                //startExplosion(asteroid);
                 if(MainActivity.isSoundOn) { //TODO WENN SOUND AUS AUCH HIER AUS?
                     if (explosionSoundId != 0) {
                         soundPool.play(explosionSoundId, 1, 1, 0, 0, 1);
@@ -417,7 +430,7 @@ public class GameContent {
                     damage(darkAsteroid.getDamage());
                     objectsToRemove.add(darkAsteroid);
                     // EXPLOSION
-                    startExplosion(obj2);
+                    //startExplosion(obj2);
                     // SOUND
                     if (MainActivity.isSoundOn) {
                         if (crashSoundId != 0) {
@@ -431,7 +444,7 @@ public class GameContent {
                 objectsToRemove.add((Shot) obj2);
                 objectsToRemove.add(darkAsteroid);
                 // Explosion
-                startExplosion(obj2);
+                //startExplosion(obj2);
                 //if(soundsloaded == 2) {
                  //   soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
                // }
@@ -456,7 +469,7 @@ public class GameContent {
                     damage(bigAsteroid.getDamage());
                     objectsToRemove.add(bigAsteroid);
                     // EXPLOSION
-                    startExplosion(obj2);
+                    //startExplosion(obj2);
                     // SOUND
                     if (MainActivity.isSoundOn) {
                         if (crashSoundId != 0) {
@@ -470,7 +483,7 @@ public class GameContent {
                 objectsToRemove.add((Shot) obj2);
                 objectsToRemove.add(bigAsteroid);
                 //Explosion
-                startExplosion(obj2);
+                //startExplosion(obj2);
                 //if(soundsloaded == 2) {
                 //   soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
                 // }
@@ -521,9 +534,8 @@ public class GameContent {
     }
 
     private void startExplosion(Circle obj) {
-        // TODO POSITION MUSS ANGEPASST WERDEN
-        //Explosion explosion = new Explosion(context, obj.getPositionX()- obj.getRadius(), obj.getPositionY()-obj.getRadius());
-       // explosions.add(explosion);
+        Explosion explosion = new Explosion(context, obj.getPositionX()- obj.getRadius(), obj.getPositionY()-obj.getRadius());
+        explosions.add(explosion);
     }
 
 
