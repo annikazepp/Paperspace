@@ -223,6 +223,14 @@ public class GameContent {
                     checkCollision(asteroid, otherAsteroid);
                 }
             }
+            // ASTEROID - DARK ASTEROID
+            for(DarkAsteroid darkAsteroid : darkAsteroidsList){
+                checkCollision(asteroid, darkAsteroid);
+            }
+            //ASTEROID - BIG ASTEROID
+            for(BigAsteroid bigAsteroid : bigAsteroidList){
+                checkCollision(asteroid, bigAsteroid);
+            }
             // ASTEROID - SHOT
             for (Shot shot : shotList) {
                 checkCollision(asteroid, shot);
@@ -287,9 +295,6 @@ public class GameContent {
         // POWER UPS nach gewissen Zeit entfernen
             // Wenn nicht eingesammelt
         removePowerUp();
-            // Funktion entfernen
-        //resetPowerUp();
-
     }
 
     private void removePowerUp(){
@@ -327,7 +332,7 @@ public class GameContent {
             }
 
             // .. ASTEROID
-            if (obj2 instanceof Asteroid) {
+            if (obj2 instanceof Asteroid || obj2 instanceof DarkAsteroid || obj2 instanceof BigAsteroid) {
                 asteroid.bounceOff((Asteroid) obj2);
             }
 
