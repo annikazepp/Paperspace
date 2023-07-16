@@ -69,15 +69,6 @@ public class GameContent {
     private boolean isGhost = false;
     private boolean isStrongShot = false;
     private boolean isx2Score = false;
-    public boolean getIsGhost(){
-        return isGhost;
-    }
-    public boolean getIsStrongShot(){
-        return isStrongShot;
-    }
-    public boolean getIsx2Score(){
-        return isx2Score;
-    }
 
 
         // Objects to Remove
@@ -164,18 +155,13 @@ public class GameContent {
         }
 
         // Aktive Power Ups
-       // if(isGhost){
-        //    canvas.drawBitmap(R.drawable.item_ghost, GameView.screenWidth,40,null);
-/*
-
-        } else if(gameContent.getIsStrongShot()){
-            powerup += " Strong Shot";
-        }else if(gameContent.getIsx2Score()) {
-            powerup += " x2Score";
+        if(isGhost){
+            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.item_ghost), (float) GameView.screenWidth/2,(float)40,null);
+        }else if(isStrongShot){
+            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.item_powerball), (float) GameView.screenWidth/2,(float)40,null);
+        }else if(isx2Score){
+            canvas.drawBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.itemx2), (float) GameView.screenWidth/2,(float)40,null);
         }
-        canvas.drawText(powerup,scorePaint.getTextScaleX(), 200, scorePaint);
-
- */
     }
 
     public void update() {
@@ -396,6 +382,10 @@ public class GameContent {
                     case STRONG_SHOT:
                         if(!isStrongShot) { // WENN NOCH NICHT AKTIVIERT
                             isStrongShot = true;
+                            if(isGhost || isx2Score){
+                                isGhost = false;
+                                isx2Score = false;
+                            }
                             player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_pink));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.STRONG_SHOT);
                         }
@@ -403,6 +393,10 @@ public class GameContent {
                     case GHOST:
                         if(!isGhost) {
                             isGhost = true;
+                            if(isStrongShot || isx2Score){
+                                isStrongShot = false;
+                                isx2Score = false;
+                            }
                             player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_grun));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.GHOST);
                         }
@@ -410,14 +404,20 @@ public class GameContent {
                     case X2SCORE:
                         if(!isx2Score) {
                             isx2Score = true;
+                            if(isGhost || isStrongShot){
+                                isGhost = false;
+                                isStrongShot = false;
+                            }
                             player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_orange));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.X2SCORE);
                         }
                 }
                 objectsToRemove.add((PowerUps) obj2);
             }
-                mPowerup = MediaPlayer.create(context, R.raw.powerup);
-                mPowerup.start();
+                if(MainActivity.isSoundOn) {
+                    mPowerup = MediaPlayer.create(context, R.raw.powerup);
+                    mPowerup.start();
+                }
         }
 
         // DARK ASTEROID UND..
@@ -425,7 +425,6 @@ public class GameContent {
             DarkAsteroid darkAsteroid = (DarkAsteroid) obj1;
             // .. SPACESHIP
             if (obj2 instanceof SpaceShip) {
-                // TODO BILD ÄNDERN WENN GHOST?
                 if(!isGhost) {
                     damage(darkAsteroid.getDamage());
                     objectsToRemove.add(darkAsteroid);
