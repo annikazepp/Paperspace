@@ -397,6 +397,22 @@ public class GameContent {
         // DARK ASTEROID UND..
         if(obj1 instanceof DarkAsteroid){
             DarkAsteroid darkAsteroid = (DarkAsteroid) obj1;
+            // .. SPACESHIP
+            if (obj2 instanceof SpaceShip) {
+                // TODO BILD ÄNDERN WENN GHOST?
+                if(!isGhost) {
+                    damage(darkAsteroid.getDamage());
+                    objectsToRemove.add(darkAsteroid);
+                    // EXPLOSION
+                    startExplosion(obj2);
+                    // SOUND
+                    if (MainActivity.isSoundOn) {
+                        if (crashSoundId != 0) {
+                            soundPool.play(crashSoundId, 1, 1, 0, 0, 1);
+                        }
+                    }
+                }
+            }
             // SCHUSS
             if(obj2 instanceof Shot){
                 objectsToRemove.add((Shot) obj2);
@@ -420,6 +436,22 @@ public class GameContent {
         //BIG ASTEROID UND ...
         if(obj1 instanceof BigAsteroid){
             BigAsteroid bigAsteroid = (BigAsteroid) obj1;
+            // .. SPACESHIP
+            if (obj2 instanceof SpaceShip) {
+                // TODO BILD ÄNDERN WENN GHOST?
+                if(!isGhost) {
+                    damage(bigAsteroid.getDamage());
+                    objectsToRemove.add(bigAsteroid);
+                    // EXPLOSION
+                    startExplosion(obj2);
+                    // SOUND
+                    if (MainActivity.isSoundOn) {
+                        if (crashSoundId != 0) {
+                            soundPool.play(crashSoundId, 1, 1, 0, 0, 1);
+                        }
+                    }
+                }
+            }
             //SHOT
             if(obj2 instanceof Shot){
                 objectsToRemove.add((Shot) obj2);
