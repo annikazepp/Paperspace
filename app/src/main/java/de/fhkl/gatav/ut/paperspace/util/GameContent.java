@@ -378,21 +378,21 @@ public class GameContent {
                     case STRONG_SHOT:
                         if(!isStrongShot) { // WENN NOCH NICHT AKTIVIERT
                             isStrongShot = true;
-                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.raumschiff_pink));
+                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_pink));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.STRONG_SHOT);
                         }
                         break;
                     case GHOST:
                         if(!isGhost) {
                             isGhost = true;
-                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.raumschiff_grun));
+                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_grun));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.GHOST);
                         }
                         break;
                     case X2SCORE:
                         if(!isx2Score) {
                             isx2Score = true;
-                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.raumschiff_orange));
+                            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_orange));
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.X2SCORE);
                         }
                 }
@@ -489,7 +489,7 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isGhost = false;
-                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship));
+                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_schwarz));
                         break;
                     case STRONG_SHOT:
                         endtime = currentTimeMillis + PowerUps.PowerUp.STRONG_SHOT.getDuration();
@@ -497,7 +497,7 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isStrongShot = false;
-                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship));
+                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_schwarz));
                         break;
                     case X2SCORE:
                         endtime = currentTimeMillis + PowerUps.PowerUp.X2SCORE.getDuration();
@@ -505,7 +505,7 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isx2Score = false;
-                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship));
+                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_schwarz));
                         break;
                     default:
                         break;

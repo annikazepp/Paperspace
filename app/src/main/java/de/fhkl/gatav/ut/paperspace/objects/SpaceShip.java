@@ -22,7 +22,7 @@ public class SpaceShip extends Circle {
         this.joystickSteuerung = joystickSteuerung;
         this.joystickRotation = joystickRotation;
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_schwarz);
         setRadius(bitmap.getHeight()/2.0);
     }
 
