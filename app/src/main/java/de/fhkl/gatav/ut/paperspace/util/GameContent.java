@@ -561,14 +561,6 @@ public class GameContent {
         Asteroid asteroid1 = new Asteroid(context, x, y);
         asteroid.setDestination(-1, 1);
         asteroidList.add(asteroid1);
-        Asteroid asteroid2 = new Asteroid(context, x, y);
-        asteroid.setDestination(1, -1);
-        asteroidList.add(asteroid2);
-        Asteroid asteroid3 = new Asteroid(context, x, y);
-        asteroid.setDestination(-1, -1);
-        asteroidList.add(asteroid3);
-
-
     }
 
     private void addAsteroid() {
