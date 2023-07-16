@@ -180,12 +180,14 @@ public class GameContent {
             }
         }
 
+        //TODO Asteroids werden nicht entfernt wenn sie den Bildschirm verlassen
         for(DarkAsteroid darkAsteroid : darkAsteroidsList){
             darkAsteroid.update();
         }
 
         for (BigAsteroid bigAsteroid : bigAsteroidList){
             bigAsteroid.update();
+
         }
 
         for (Shot shot : shotList) {
