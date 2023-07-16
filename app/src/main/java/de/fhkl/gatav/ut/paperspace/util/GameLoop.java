@@ -19,14 +19,6 @@ public class GameLoop extends Thread{
         this.surfaceHolder = surfaceHolder;
     }
 
-    public double getAverageUPS() {
-        return averageUPS;
-    }
-
-    public double getAverageFPS() {
-        return averageFPS;
-    }
-
     public void startLoop() {
         isRunning = true;
         start();

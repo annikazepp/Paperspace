@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import de.fhkl.gatav.ut.paperspace.R;
 
-public class GameOver extends AppCompatActivity {
+public class GameOverActivity extends AppCompatActivity {
 
     private ImageButton returnButton;
     private ImageButton exitButton;
@@ -23,7 +23,7 @@ public class GameOver extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_over); // TODO -> GameOver-Bildschirm unter Layout einstellen
+        setContentView(R.layout.game_over); // TODO -> GameOverActivity-Bildschirm unter Layout einstellen
 
         int score = getIntent().getExtras().getInt("score");
 
@@ -50,7 +50,7 @@ public class GameOver extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GameOver.this, MainGameActivity.class);
+                Intent intent = new Intent(GameOverActivity.this, MainGameActivity.class);
                 startActivity(intent); //Zurück zum Spiel
                 finish();
             }
@@ -61,7 +61,7 @@ public class GameOver extends AppCompatActivity {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GameOver.this, MainActivity.class);
+                Intent intent = new Intent(GameOverActivity.this, MainActivity.class);
                 startActivity(intent); //Zurück zum StartBildschirm
                 finish();
                 //finishAffinity(); //CLOSE APP

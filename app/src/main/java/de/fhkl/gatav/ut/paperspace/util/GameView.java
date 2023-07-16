@@ -19,7 +19,6 @@ import de.fhkl.gatav.ut.paperspace.R;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private SurfaceHolder surfaceHolder;
     private Context context = getContext();
 
     // Steuerung
@@ -163,7 +162,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             // Score TODO Koordinaten anpassen?
             canvas.drawText("Score: " + gameContent.getScore(),  (scorePaint.getTextScaleX() + 15) ,85, scorePaint);
-            /*
+
             // Aktive Power Ups
             String powerup = " ";
             if(gameContent.getIsGhost()){
@@ -174,7 +173,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 powerup += " x2Score";
             }
             canvas.drawText(powerup,scorePaint.getTextScaleX(), 200, scorePaint);
-            */
+
             // Joystick zeichnen
             steuerungJoystick.draw(canvas);
             directionJoystick.draw(canvas);
@@ -194,8 +193,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     protected void startGameOverActivity() {
-        // Startet GameOver Activity und übermittelt den Score
-        Intent gameOverIntent = new Intent(context, GameOver.class);
+        // Startet GameOverActivity Activity und übermittelt den Score
+        Intent gameOverIntent = new Intent(context, GameOverActivity.class);
         gameOverIntent.putExtra("score", gameContent.getScore());
         context.startActivity(gameOverIntent);
         ((Activity) context).finish();
