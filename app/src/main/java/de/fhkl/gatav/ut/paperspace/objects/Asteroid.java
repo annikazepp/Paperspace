@@ -21,9 +21,7 @@ public class Asteroid extends Circle {
             R.drawable.asteroid_2,
             R.drawable.asteroid_3,
             R.drawable.asteroid_4,
-            R.drawable.asteroid_5,
-            R.drawable.asteroid_6,
-            R.drawable.asteroid_7
+            R.drawable.asteroid_5
     };
 
     public Asteroid(Context context, double positionX, double positionY) {

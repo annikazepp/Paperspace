@@ -49,17 +49,7 @@ public class PowerUps extends Circle {
     private Context context;
 
     private long creationTime; // Zeitstempel der Erstellung
-    private long expirationTime = 6000L; // TODO Dauer 6sek
-
-    private long activationTime; // Zeitstempel der Aktivierung des PowerUps
-
-    public void setActivationTime(long activationTime) {
-        this.activationTime = activationTime;
-    }
-
-    public long getActivationTime() {
-        return activationTime;
-    }
+    private long expirationTime = 6 * 1000L; // TODO Dauer 6sek
 
     public long getCreationTime() {
         return creationTime;
@@ -85,25 +75,20 @@ public class PowerUps extends Circle {
     private void loadBitmap() {
         switch (powerUp) {
             case GHOST:
-                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.effect_purple); //TODO BITMAP ANPASSEN
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.item_ghost);
                 break;
             case HEART:
                 bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.heart);
                 break;
             case STRONG_SHOT:
-                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.asteroid_10);
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.item_powerball);
                 break;
             case X2SCORE:
-                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.play_button);
-
-            default:
-                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.home_button);
+                bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.itemx2);
                 break;
         }
             setRadius(bitmap.getHeight() / 2.0);
     }
-
-
 
     @Override
     public void update() {

@@ -15,7 +15,7 @@ public class DarkAsteroid extends Asteroid{
         this.velocityY = random.nextDouble() * (MAX_SPEED - MIN_SPEED ) + MIN_SPEED;
 
 
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.heart); // TODO BILD ANPASSEN
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.dark_asteroid);
         setRadius(bitmap.getWidth()/2);
     }
     @Override
