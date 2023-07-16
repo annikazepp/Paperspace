@@ -187,7 +187,6 @@ public class GameContent {
             }
         }
 
-        //TODO Asteroids werden nicht entfernt wenn sie den Bildschirm verlassen
         for(DarkAsteroid darkAsteroid : darkAsteroidsList){
             darkAsteroid.update();
         }
@@ -283,15 +282,12 @@ public class GameContent {
         bigAsteroidList.removeAll(objectsToRemove);
         shotList.removeAll(objectsToRemove);
         powerUpsList.removeAll(objectsToRemove);
-        // Listen leeren
+        // Liste leeren
         objectsToRemove.clear();
 
         // POWER UPS nach gewissen Zeit entfernen
             // Wenn nicht eingesammelt
         removePowerUp();
-            // Funktion entfernen
-        //resetPowerUp();
-
     }
 
     private void removePowerUp(){
@@ -397,6 +393,10 @@ public class GameContent {
         // DARK ASTEROID UND..
         if(obj1 instanceof DarkAsteroid){
             DarkAsteroid darkAsteroid = (DarkAsteroid) obj1;
+            //  ASTEROID
+            if (obj2 instanceof DarkAsteroid || obj2 instanceof BigAsteroid) {
+                darkAsteroid.bounceOff((Asteroid) obj2);
+            }
             // SCHUSS
             if(obj2 instanceof Shot){
                 objectsToRemove.add((Shot) obj2);
@@ -420,6 +420,10 @@ public class GameContent {
         //BIG ASTEROID UND ...
         if(obj1 instanceof BigAsteroid){
             BigAsteroid bigAsteroid = (BigAsteroid) obj1;
+            // BIG ASTEROID
+            if (obj2 instanceof BigAsteroid) {
+                bigAsteroid.bounceOff((Asteroid) obj2);
+            }
             //SHOT
             if(obj2 instanceof Shot){
                 objectsToRemove.add((Shot) obj2);
