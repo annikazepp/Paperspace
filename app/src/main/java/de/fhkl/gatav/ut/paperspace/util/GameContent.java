@@ -1,16 +1,10 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
-import android.animation.AnimatorSet;
-import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +25,9 @@ public class GameContent {
     // CONSTANTS
     private static final int FULL_HEALTH = 5; // LEBEN SPACESHIP
         private int health = FULL_HEALTH;
+        public int getHealth() {
+        return health;
+    }
 
         // Asteroid
     private static final int MAX_ASTEROIDS = 10; //TODO WERT?
@@ -227,7 +224,7 @@ public class GameContent {
             for(DarkAsteroid darkAsteroid : darkAsteroidsList){
                 checkCollision(asteroid, darkAsteroid);
             }
-            //ASTEROID - BIG ASTEROID
+            // ASTEROID - BIG ASTEROID
             for(BigAsteroid bigAsteroid : bigAsteroidList){
                 checkCollision(asteroid, bigAsteroid);
             }
@@ -239,35 +236,35 @@ public class GameContent {
 
         // DARK ASTEROID UND ...
         for(DarkAsteroid darkAsteroid : darkAsteroidsList){
-            //PLAYER
+            // PLAYER
             checkCollision(darkAsteroid,player);
-            //DARK ASTEROID
+            // DARK ASTEROID
             for (DarkAsteroid otherAsteroid : darkAsteroidsList) {
                 if (darkAsteroid != otherAsteroid) {
                     checkCollision(darkAsteroid, otherAsteroid);
                 }
             }
-            //BIG ASTEROID
+            // BIG ASTEROID
             for(BigAsteroid bigAsteroid : bigAsteroidList){
                 checkCollision(darkAsteroid,bigAsteroid);
             }
-            //SHOT
+            // SHOT
             for (Shot shot : shotList) {
                 checkCollision(darkAsteroid, shot);
             }
         }
 
-        //BIG ASTEROID UND ...
+        // BIG ASTEROID UND ...
         for(BigAsteroid bigAsteroid : bigAsteroidList){
-            //PLAYER
+            // PLAYER
             checkCollision(bigAsteroid,player);
-            //BIG ASTEROID
+            // BIG ASTEROID
             for (BigAsteroid otherAsteroid : bigAsteroidList) {
                 if (bigAsteroid != otherAsteroid) {
                     checkCollision(bigAsteroid, otherAsteroid);
                 }
             }
-            //SHOT
+            // SHOT
             for (Shot shot : shotList) {
                 checkCollision(bigAsteroid, shot);
             }
@@ -408,11 +405,12 @@ public class GameContent {
                         }
                 }
                 objectsToRemove.add((PowerUps) obj2);
-            }
+
                 if(MainActivity.isSoundOn) {
                     mPowerup = MediaPlayer.create(context, R.raw.powerup);
                     mPowerup.start();
                 }
+            }
         }
 
         // DARK ASTEROID UND..
@@ -439,7 +437,9 @@ public class GameContent {
             }
             // SCHUSS
             if(obj2 instanceof Shot){
-                objectsToRemove.add((Shot) obj2);
+                if(!isStrongShot) {
+                    objectsToRemove.add((Shot) obj2);
+                }
                 objectsToRemove.add(darkAsteroid);
                 // Explosion
                 //startExplosion(obj2);
@@ -462,7 +462,6 @@ public class GameContent {
             BigAsteroid bigAsteroid = (BigAsteroid) obj1;
             // .. SPACESHIP
             if (obj2 instanceof SpaceShip) {
-                // TODO BILD ÄNDERN WENN GHOST?
                 if(!isGhost) {
                     damage(bigAsteroid.getDamage());
                     objectsToRemove.add(bigAsteroid);
@@ -480,9 +479,11 @@ public class GameContent {
             if (obj2 instanceof BigAsteroid) {
                 bigAsteroid.bounceOff((Asteroid) obj2);
             }
-            //SHOT
+            // ...SHOT
             if(obj2 instanceof Shot){
-                objectsToRemove.add((Shot) obj2);
+                if(!isStrongShot) {
+                    objectsToRemove.add((Shot) obj2);
+                }
                 objectsToRemove.add(bigAsteroid);
                 //Explosion
                 //startExplosion(obj2);
@@ -556,7 +557,7 @@ public class GameContent {
     }
 
     /**
-     Zu 5% wird ein Loch hinzugefügt
+     Loch wird hinzugefügt
      @param x x-Koordinate des Asteroiden
      @param y y-Koordinate des Asteroiden
      */
@@ -679,9 +680,6 @@ public class GameContent {
 
             }
         }
-    }
-    public int getHealth() {
-        return health;
     }
 }
 

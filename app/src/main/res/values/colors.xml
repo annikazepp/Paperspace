@@ -13,4 +13,6 @@
     <color name="shot">#2196F3</color>
     <color name="asteroid">#FF5722</color>
     <color name="player">#FFEB3B</color>
+    <color name="healthBarBorder">#000000</color>
+    <color name="TimeBarTime">#03A9F4</color>
 </resources>
