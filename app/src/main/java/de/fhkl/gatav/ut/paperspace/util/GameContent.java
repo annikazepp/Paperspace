@@ -292,6 +292,10 @@ public class GameContent {
         // POWER UPS nach gewissen Zeit entfernen
             // Wenn nicht eingesammelt
         removePowerUp();
+
+        if(!isGhost && !isStrongShot && !isx2Score){
+            player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_schwarz));
+        }
     }
 
     private void removePowerUp(){
@@ -510,7 +514,6 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isGhost = false;
-                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_schwarz));
                         break;
                     case STRONG_SHOT:
                         endtime = currentTimeMillis + PowerUps.PowerUp.STRONG_SHOT.getDuration();
@@ -518,7 +521,6 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isStrongShot = false;
-                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_schwarz));
                         break;
                     case X2SCORE:
                         endtime = currentTimeMillis + PowerUps.PowerUp.X2SCORE.getDuration();
@@ -526,7 +528,6 @@ public class GameContent {
                             // TUE NICHTS
                         }
                         isx2Score = false;
-                        player.setBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.spaceship_schwarz));
                         break;
                     default:
                         break;
