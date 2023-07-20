@@ -579,7 +579,7 @@ public class GameContent {
         asteroid.setDestination(dX, dY);
         asteroidList.add(asteroid);
         Asteroid asteroid1 = new Asteroid(context, x, y);
-        asteroid.setDestination(-dX, -dY);
+        asteroid.setDestination(dX, dY);
         asteroidList.add(asteroid1);
     }
 
