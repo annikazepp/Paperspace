@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Layout festlegen
-        setContentView(R.layout.activity_main); // TODO STARTBILDSCHIRM ANPASSEN
+        setContentView(R.layout.activity_main);
         // Play Button konfigurieren und Klick-Event hinzufügen
         Button playButton = findViewById(R.id.play_button);
         playButton.setOnClickListener(v -> {

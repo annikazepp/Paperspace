@@ -13,7 +13,7 @@ public class PowerUps extends Circle {
 
     public enum PowerUp{
         HEART,
-        GHOST(5 * 1000L),
+        GHOST(10 * 1000L),
         X2SCORE(20 * 1000L),
         STRONG_SHOT(10 * 1000L);
 

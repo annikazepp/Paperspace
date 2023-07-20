@@ -16,7 +16,7 @@ public class Asteroid extends Circle {
     public static final int MAX_SPEED = 6;
     private int damage;
 
-    private static final int[] ASTEROID_IMAGES ={ //TODO verschiedene Asteroiden Bilder anpassen? ZUSCHNEIDEN
+    private static final int[] ASTEROID_IMAGES ={
             R.drawable.asteroid_1,
             R.drawable.asteroid_2,
             R.drawable.asteroid_3,

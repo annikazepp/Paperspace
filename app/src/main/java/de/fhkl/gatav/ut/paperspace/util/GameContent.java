@@ -341,7 +341,7 @@ public class GameContent {
                 objectsToRemove.add(asteroid);
                 // Explosion
                 //startExplosion(asteroid);
-                if(MainActivity.isSoundOn) { //TODO WENN SOUND AUS AUCH HIER AUS?
+                if(MainActivity.isSoundOn) {
                     if (explosionSoundId != 0) {
                         soundPool.play(explosionSoundId, 1, 1, 0, 0, 1);
                     }

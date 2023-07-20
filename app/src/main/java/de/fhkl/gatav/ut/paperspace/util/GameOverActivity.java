@@ -23,7 +23,7 @@ public class GameOverActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_over); // TODO -> GameOverActivity-Bildschirm unter Layout einstellen
+        setContentView(R.layout.game_over);
 
         int score = getIntent().getExtras().getInt("score");
 
