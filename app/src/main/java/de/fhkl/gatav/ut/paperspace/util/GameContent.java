@@ -463,7 +463,7 @@ public class GameContent {
             // .. SPACESHIP
             if (obj2 instanceof SpaceShip) {
                 if(!isGhost) {
-                    damage(bigAsteroid.getDamage());
+                    //damage(bigAsteroid.getDamage()); HIER RAUS GENOMMEN - wird nur noch ein Leben abgezogen
                     objectsToRemove.add(bigAsteroid);
                     // EXPLOSION
                     //startExplosion(obj2);
