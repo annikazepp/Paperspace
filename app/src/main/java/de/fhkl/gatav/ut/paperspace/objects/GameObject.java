@@ -10,7 +10,7 @@ import java.util.Random;
 public abstract class GameObject {
     protected double positionX, positionY = 0.0;
     protected double velocityX, velocityY = 0.0;
-    protected double directionX = 1.0, directionY; // Zielkoordinaten, zu denen sich der Asteroid bewegt
+    protected double directionX = 1.0, directionY; // Zielkoordinaten
 
 
     protected Random random = new Random();
@@ -24,6 +24,14 @@ public abstract class GameObject {
 
     public double getPositionX() { return positionX; }
     public double getPositionY() { return positionY; }
+
+    public double getDirectionX() {
+        return directionX;
+    }
+
+    public double getDirectionY() {
+        return directionY;
+    }
 
     public abstract void draw(Canvas canvas);
     public abstract void update();

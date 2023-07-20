@@ -38,7 +38,7 @@ public class GameContent {
     private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
 
         // Power Up
-    private static final float POWERUP_FREQUENCY = 0.5f; // TODO WERT
+    private static final float POWERUP_FREQUENCY = 0.2f;
 
     // OBJECTS
     private final SpaceShip player;
@@ -78,7 +78,7 @@ public class GameContent {
 
 
     //SOUND
-    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(100).build(); // TODO MAXStreams Anpassen
+    SoundPool soundPool = new SoundPool.Builder().setMaxStreams(100).build();
     private MediaPlayer mLoch;
     private MediaPlayer mPowerup;
     private int explosionSoundId;
@@ -340,7 +340,7 @@ public class GameContent {
             // .. SHOT
             if (obj2 instanceof Shot) {
                 if(!isStrongShot) {
-                    objectsToRemove.add((Shot) obj2);
+                    objectsToRemove.add(obj2);
                 }
                 objectsToRemove.add(asteroid);
                 // Explosion
@@ -408,7 +408,7 @@ public class GameContent {
                             startDuration(System.currentTimeMillis(), PowerUps.PowerUp.X2SCORE);
                         }
                 }
-                objectsToRemove.add((PowerUps) obj2);
+                objectsToRemove.add(obj2);
 
                 if(MainActivity.isSoundOn) {
                     mPowerup = MediaPlayer.create(context, R.raw.powerup);
@@ -442,7 +442,7 @@ public class GameContent {
             // SCHUSS
             if(obj2 instanceof Shot){
                 if(!isStrongShot) {
-                    objectsToRemove.add((Shot) obj2);
+                    objectsToRemove.add(obj2);
                 }
                 objectsToRemove.add(darkAsteroid);
                 // Explosion
@@ -486,7 +486,7 @@ public class GameContent {
             // ...SHOT
             if(obj2 instanceof Shot){
                 if(!isStrongShot) {
-                    objectsToRemove.add((Shot) obj2);
+                    objectsToRemove.add(obj2);
                 }
                 objectsToRemove.add(bigAsteroid);
                 //Explosion
@@ -495,7 +495,7 @@ public class GameContent {
                 //   soundPool.play(explosionSoundId, 30, 30, 1, 0, 1.0f);
                 // }
                 // OTHER ASTEROIDS
-                bigAsteroidHit(bigAsteroid.getPositionX(),bigAsteroid.getPositionY());
+                bigAsteroidHit(bigAsteroid.getPositionX(),bigAsteroid.getPositionY(), bigAsteroid.getDirectionX(), bigAsteroid.getDirectionY());
                 // Score
                 score++;
             }
@@ -574,12 +574,12 @@ public class GameContent {
         //}
     }
 
-    private void bigAsteroidHit(double x, double y){
+    private void bigAsteroidHit(double x, double y, double dX, double dY){
         Asteroid asteroid = new Asteroid(context, x, y);
-        asteroid.setDestination(1, 1);
+        asteroid.setDestination(dX, dY);
         asteroidList.add(asteroid);
         Asteroid asteroid1 = new Asteroid(context, x, y);
-        asteroid.setDestination(-1, 1);
+        asteroid.setDestination(-dX, -dY);
         asteroidList.add(asteroid1);
     }
 

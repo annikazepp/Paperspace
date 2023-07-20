@@ -49,7 +49,7 @@ public class PowerUps extends Circle {
     private Context context;
 
     private long creationTime; // Zeitstempel der Erstellung
-    private long expirationTime = 6 * 1000L; // TODO Dauer 6sek
+    private long expirationTime = 6 * 1000L;
 
     public long getCreationTime() {
         return creationTime;
