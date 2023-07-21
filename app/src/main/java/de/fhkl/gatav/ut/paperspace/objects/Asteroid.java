@@ -42,7 +42,7 @@ public class Asteroid extends Circle {
      * Berechnet die Abstoßungsreaktion zwischen zwei Asteroiden
      * @param otherAsteroid
      */
-    //TODO könnte noch Verbessert werden
+
     public void bounceOff(Asteroid otherAsteroid) {
         double abstandX = this.getPositionX() - otherAsteroid.getPositionX();
         double abstandY = this.getPositionY() - otherAsteroid.getPositionY();

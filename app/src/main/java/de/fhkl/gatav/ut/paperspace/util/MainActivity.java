@@ -1,9 +1,6 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;

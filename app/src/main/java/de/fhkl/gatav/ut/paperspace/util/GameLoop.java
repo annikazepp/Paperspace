@@ -58,7 +58,6 @@ public class GameLoop extends Thread{
                 synchronized (surfaceHolder) {
                     gameView.update();
                     updateCount++;
-
                     gameView.draw(canvas);
                 }
             } catch (IllegalArgumentException e) {
@@ -104,8 +103,4 @@ public class GameLoop extends Thread{
             }
         }
     }
-
-
-
-
 }

@@ -30,12 +30,12 @@ public class GameContent {
     }
 
         // Asteroid
-    private static final int MAX_ASTEROIDS = 10; //TODO WERT?
-    private static final int MAX_DARK_ASTEROIDS = 3; // TODO WERT?
+    private static final int MAX_ASTEROIDS = 10;
+    private static final int MAX_DARK_ASTEROIDS = 3;
 
-    private static final int MAX_BIG_ASTEROIDS = 2; //TODO WERT?
-    private final float ASTEROIDS_FREQUENCY = 0.5f; // zu 50% entsteht ein Asteroid
-    private final float minSpawnDistanceBetweenAsteroids = 1.5f; //TODO WERT?
+    private static final int MAX_BIG_ASTEROIDS = 2;
+    private final float ASTEROIDS_FREQUENCY = 0.5f;
+    private final float minSpawnDistanceBetweenAsteroids = 1.5f;
 
         // Power Up
     private static final float POWERUP_FREQUENCY = 0.2f;
@@ -592,7 +592,7 @@ public class GameContent {
             }
 
             for (int i = 0; i < MAX_ASTEROIDS - asteroidList.size(); i++) {
-                double spawnOffset = 1.0; //TODO WERT?
+                double spawnOffset = 1.0;
 
                 // Calculate spawn position
                 double spawnX, spawnY;
@@ -607,14 +607,14 @@ public class GameContent {
                 if (side == 0) {
                     spawnX = (Math.random() * GameView.screenWidth);
                     spawnY = -spawnOffset;
-                    destX = (Math.random() * GameView.screenWidth); //TODO anpassen?
+                    destX = (Math.random() * GameView.screenWidth);
                     destY = GameView.screenHeight + spawnOffset;
                 }
                 // Spawn on the right side
                 else if (side == 1) {
                     spawnX = GameView.screenWidth + spawnOffset;
                     spawnY = (Math.random() * GameView.screenHeight);
-                    destX = -spawnOffset; //TODO anpassen?
+                    destX = -spawnOffset;
                     destY = (Math.random() * GameView.screenHeight);
                 }
                 // Spawn on the bottom side
@@ -634,8 +634,6 @@ public class GameContent {
 
                 boolean positionOk = true;
 
-                //TODO wenn check Distanc wenn player sich bewegen kann
-                // check distance to player
                 double minPlayerDistance = 0.5f * spawnOffset + 0.5f * player.getRadius() + 5.0;
                 if (Math.abs(spawnX - player.getPositionX()) < minPlayerDistance &&
                         Math.abs(spawnY - player.getPositionY()) < minPlayerDistance)

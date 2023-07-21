@@ -1,6 +1,5 @@
 package de.fhkl.gatav.ut.paperspace.util;
 
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 

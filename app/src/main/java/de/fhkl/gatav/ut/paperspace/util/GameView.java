@@ -38,7 +38,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final Bitmap backgroundBitmap;
     private final Bitmap healthBitmap;
     private final Paint scorePaint;
-    private static final int TEXT_SIZE = 70; //TODO WERT?
+    private static final int TEXT_SIZE = 70;
 
     public GameView(Context context) {
         super(context);
@@ -51,7 +51,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         healthBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.heart);
 
         scorePaint = new Paint();
-        scorePaint.setColor(Color.rgb(8,22,64)); //TODO Farbe anpassen
+        scorePaint.setColor(Color.rgb(8,22,64));
         scorePaint.setTextSize(TEXT_SIZE);
 
         // Joysticks initialisieren
@@ -146,7 +146,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if(canvas !=null) {
+        if(canvas != null) {
             // Hintergrundbild zeichnen
             canvas.drawBitmap(backgroundBitmap, null, new RectF(0, 0, getWidth(), getHeight()), null);
 
@@ -160,7 +160,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         (float) (screenWidth - (healthBitmap.getWidth() +5) * i),40,null);
             }
 
-            // Score TODO Koordinaten anpassen?
+            // Score
             canvas.drawText("Score: " + gameContent.getScore(),  (scorePaint.getTextScaleX() + 15) ,85, scorePaint);
 
             // Joystick zeichnen
